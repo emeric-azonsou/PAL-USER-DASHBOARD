@@ -5,6 +5,41 @@ import { VexRoutes } from '../@vex/interfaces/vex-route.interface';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 const routes: VexRoutes = [
+
+  {
+    path: "",
+    redirectTo: "auth/login",
+    pathMatch: "full",
+  },
+
+  {
+    path: "auth",
+    children: [
+      {
+        path: "login",
+        loadChildren: () =>
+          import("./pages/pages/auth/login/login.module").then(
+            (m) => m.LoginModule
+          ),
+      },
+      {
+        path: "register",
+        loadChildren: () =>
+          import("./pages/pages/auth/register/register.module").then(
+            (m) => m.RegisterModule
+          ),
+      },
+      {
+        path: "forgot-password",
+        loadChildren: () =>
+          import(
+            "./pages/pages/auth/forgot-password/forgot-password.module"
+          ).then((m) => m.ForgotPasswordModule),
+      },
+    ],
+  },
+
+
   {
     path: 'login',
     loadChildren: () => import('./pages/pages/auth/login/login.module').then(m => m.LoginModule),
