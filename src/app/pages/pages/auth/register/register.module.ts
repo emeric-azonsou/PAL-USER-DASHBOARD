@@ -11,10 +11,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IconModule } from '@visurel/iconify-angular';
+import { Step1Component } from './step1/step1.component';
+import { Step2Component } from './step2/step2.component';
 
 
 @NgModule({
-  declarations: [RegisterComponent],
+  declarations: [RegisterComponent, Step1Component, Step2Component],
   imports: [
     CommonModule,
     RegisterRoutingModule,
