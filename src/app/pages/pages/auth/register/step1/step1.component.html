@@ -15,12 +15,22 @@
             <div fxFlex="auto" fxLayout="column">
                 <mat-form-field fxFlex="grow">
                     <mat-label>Full Name </mat-label>
-                    <input formControlName="name" matInput required>
+                    <input formControlName="fullName" matInput required>
+                    <mat-error>
+                        <span *ngFor="let error of form.get('fullName').errors | keyvalue">
+                          {{ validationMessages.fullName[error.key] }}
+                        </span>
+                      </mat-error>
                 </mat-form-field>
 
                 <mat-form-field fxFlex="grow">
                     <mat-label>Email address</mat-label>
                     <input formControlName="email" matInput required>
+                    <mat-error>
+                        <span *ngFor="let error of form.get('email').errors | keyvalue">
+                          {{ validationMessages.email[error.key] }}
+                        </span>
+                      </mat-error>
                 </mat-form-field>
 
 
@@ -32,6 +42,11 @@
                         <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
                         <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
                     </button>
+                    <mat-error>
+                        <span *ngFor="let error of form.get('password').errors | keyvalue">
+                          {{ validationMessages.password[error.key] }}
+                        </span>
+                      </mat-error>
                     <mat-hint>Click the eye to toggle visibility</mat-hint>
                 </mat-form-field>
 
@@ -43,10 +58,13 @@
                         <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
                         <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
                     </button>
+                    <mat-error *ngIf="form.hasError('passwordsDoNotMatch')">
+                          {{ validationMessages.passwordsDoNotMatch }}
+                      </mat-error>
                     <mat-hint>Please repeat your password from above</mat-hint>
                 </mat-form-field>
             </div>
-            <button (click)="send()" class="authButton" mat-raised-button type="button">
+            <button (click)="send()" [disabled]="form.invalid" class="authButton" mat-raised-button type="button">
                 Continue
             </button>
             <p class="text-secondary text-center">
