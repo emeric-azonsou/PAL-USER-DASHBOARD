@@ -7,6 +7,7 @@ import icSend from '@iconify/icons-ic/twotone-send';
 import icAttachFile from '@iconify/icons-ic/twotone-attach-file';
 import icPictureAsPdf from '@iconify/icons-ic/twotone-picture-as-pdf';
 import icImage from '@iconify/icons-ic/twotone-image';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'vex-mail-compose',
@@ -32,7 +33,7 @@ export class MailComposeComponent implements OnInit {
   dropdownOpen = false;
 
   constructor(private cd: ChangeDetectorRef,
-              private dialogRef: MatDialogRef<MailComposeComponent>) { }
+              private dialogRef: MatDialogRef<MailComposeComponent>,private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -44,5 +45,10 @@ export class MailComposeComponent implements OnInit {
 
   submit() {
     this.dialogRef.close();
+  }
+
+  onAccept(){
+    this.dialogRef.close();
+    window.location.href='https://pals.africa/'
   }
 }

@@ -18,9 +18,9 @@
                     <input formControlName="fullName" matInput required>
                     <mat-error>
                         <span *ngFor="let error of form.get('fullName').errors | keyvalue">
-                          {{ validationMessages.fullName[error.key] }}
+                            {{ validationMessages.fullName[error.key] }}
                         </span>
-                      </mat-error>
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field fxFlex="grow">
@@ -28,9 +28,9 @@
                     <input formControlName="email" matInput required>
                     <mat-error>
                         <span *ngFor="let error of form.get('email').errors | keyvalue">
-                          {{ validationMessages.email[error.key] }}
+                            {{ validationMessages.email[error.key] }}
                         </span>
-                      </mat-error>
+                    </mat-error>
                 </mat-form-field>
 
 
@@ -44,9 +44,9 @@
                     </button>
                     <mat-error>
                         <span *ngFor="let error of form.get('password').errors | keyvalue">
-                          {{ validationMessages.password[error.key] }}
+                            {{ validationMessages.password[error.key] }}
                         </span>
-                      </mat-error>
+                    </mat-error>
                     <mat-hint>Click the eye to toggle visibility</mat-hint>
                 </mat-form-field>
 
@@ -59,8 +59,8 @@
                         <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
                     </button>
                     <mat-error *ngIf="form.hasError('passwordsDoNotMatch')">
-                          {{ validationMessages.passwordsDoNotMatch }}
-                      </mat-error>
+                        {{ validationMessages.passwordsDoNotMatch }}
+                    </mat-error>
                     <mat-hint>Please repeat your password from above</mat-hint>
                 </mat-form-field>
             </div>

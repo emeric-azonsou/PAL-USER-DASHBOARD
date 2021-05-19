@@ -13,6 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IconModule } from '@visurel/iconify-angular';
 import { Step1Component } from './step1/step1.component';
 import { Step2Component } from './step2/step2.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { Step2Component } from './step2/step2.component';
     MatButtonModule,
     MatTooltipModule,
     MatCheckboxModule,
-    IconModule
+    IconModule,
+    MatDialogModule
   ]
 })
 export class RegisterModule {

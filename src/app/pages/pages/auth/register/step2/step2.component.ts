@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { GeoLocationService } from 'src/app/services/geo-location.service';
 import { AuthserviceService } from 'src/app/services/authservice.service';
 import { take, takeUntil } from 'rxjs/operators';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MailComposeComponent } from '../../../../apps/mail/components/mail-compose/mail-compose.component';
 
 
 @Component({
@@ -52,7 +54,9 @@ export class Step2Component implements OnInit {
               private fb: FormBuilder,
               private cd: ChangeDetectorRef,
               private geoLocationService: GeoLocationService,
-              private authService: AuthserviceService
+              private authService: AuthserviceService,
+              private dialog: MatDialog,
+            
   ) {
     const step1Data = sessionStorage.getItem('step1RegData');
     if (!!step1Data) {
@@ -82,29 +86,9 @@ export class Step2Component implements OnInit {
       });
     })
       .then(() => {
-        if (!this.locationData) {
-          this.waitingDisplayInput = false;
-        } else {
-          this.waitingDisplayInput = true;
-          this.countryData = {
-            preferredCountries: [`${this.locationData}`],
-            localizedCountries: { ng: "Nigeria", gh: "Ghana" },
-            onlyCountries: ["GH", "NG"],
-          };
-        }
+           this.prefixCountryCode=this.locationData.country_calling_code;
       })
-      .then(() => {
-        if (
-          this.locationData.country_code === "GH" ||
-          this.locationData.country_code === "NG"
-        ) {
-          this.prefixCountryCode = this.locationData.country_calling_code;
-          this.isValidCountry = false;
-        } else {
-          this.isValidCountry = true;
-          this.prefixCountryCode = "+233";
-        }
-      });
+      
   }
 
   processPhoneNumber() {
@@ -144,7 +128,8 @@ export class Step2Component implements OnInit {
           this.isLoadingButton = false;
           this.isButtonActive = true;
           setTimeout(() => {
-            this.router.navigate(["/auth/login"]);
+            // this.router.navigate(["/auth/login"]);
+            this.openCompose();
           }, 3000);
         } else {
           this.errorMessage = 'Something went wrong please try again';
@@ -153,4 +138,15 @@ export class Step2Component implements OnInit {
         }
       });
   }
+
+
+  openCompose() {
+    this.dialog.open(MailComposeComponent, {
+      width: '100%',
+      maxWidth:700,
+    });
+  }
+
+
+
 }
