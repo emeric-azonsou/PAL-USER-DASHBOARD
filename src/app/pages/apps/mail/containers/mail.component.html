@@ -1,11 +1,7 @@
 <div class="h-full w-full" vexContainer>
   <mat-drawer-container class="h-full w-full">
-    <mat-drawer #drawer
-                [(opened)]="drawerOpen"
-                [mode]="drawerMode$ | async"
-                [disableClose]="isDesktop$ | async"
-                class="vex-mail-drawer max-w-xxxs w-full bg-base"
-                position="start">
+    <mat-drawer #drawer [(opened)]="drawerOpen" [mode]="drawerMode$ | async" [disableClose]="isDesktop$ | async"
+      class="vex-mail-drawer max-w-xxxs w-full bg-base" position="start">
       <div class="vex-mail-header bg-primary text-primary-contrast px-gutter relative flex flex-col">
         <div *ngIf="isDesktop$ | async" class="flex-1 flex items-center">
           <p class="text-2xl font-medium flex items-center">
@@ -29,18 +25,10 @@
             <mat-icon [icIcon]="icMenu" class="text-contrast-white" size="24px"></mat-icon>
           </button>
           <div class="bg-card shadow rounded-full w-full flex items-center ltr:mr-gutter rtl:ml-gutter">
-            <ic-icon [class.p-2]="ltLg$ | async"
-                     [class.px-5]="isDesktop$ | async"
-                     [class.py-4]="isDesktop$ | async"
-                     [icon]="icSearch"
-                     class="text-secondary"
-                     size="24px"></ic-icon>
-            <input [class.h-14]="isDesktop$ | async"
-                   [class.h-8]="ltLg$ | async"
-                   [formControl]="searchCtrl"
-                   class="w-full outline-none placeholder-black bg-transparent"
-                   placeholder="Search mails..."
-                   type="text"/>
+            <ic-icon [class.p-2]="ltLg$ | async" [class.px-5]="isDesktop$ | async" [class.py-4]="isDesktop$ | async"
+              [icon]="icSearch" class="text-secondary" size="24px"></ic-icon>
+            <input [class.h-14]="isDesktop$ | async" [class.h-8]="ltLg$ | async" [formControl]="searchCtrl"
+              class="w-full outline-none placeholder-black bg-transparent" placeholder="Search mails..." type="text" />
           </div>
         </div>
 
@@ -48,7 +36,7 @@
       </div>
 
       <div [ngClass]="{ 'ltr:mr-gutter rtl:ml-gutter mb-gutter': isDesktop$ | async }"
-           class="vex-mail-content-overflow flex-auto bg-white rounded shadow flex flex-col overflow-hidden">
+        class="vex-mail-content-overflow flex-auto bg-white rounded shadow flex flex-col overflow-hidden">
         <router-outlet></router-outlet>
       </div>
     </mat-drawer-content>

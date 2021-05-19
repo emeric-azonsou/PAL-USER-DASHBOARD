@@ -3,6 +3,8 @@ import icVisibility from '@iconify/icons-ic/twotone-visibility';
 import icVisibilityOff from '@iconify/icons-ic/twotone-visibility-off';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MailComposeComponent } from '../../../../apps/mail/components/mail-compose/mail-compose.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -49,6 +51,7 @@ export class Step1Component implements OnInit {
   constructor(private router: Router,
               private fb: FormBuilder,
               private cd: ChangeDetectorRef,
+              private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -103,5 +106,7 @@ export class Step1Component implements OnInit {
       this.cd.markForCheck();
     }
   }
+
+  
 
 }
