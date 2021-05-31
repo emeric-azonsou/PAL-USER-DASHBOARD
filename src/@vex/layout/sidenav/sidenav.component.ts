@@ -6,6 +6,9 @@ import icRadioButtonUnchecked from '@iconify/icons-ic/twotone-radio-button-unche
 import { LayoutService } from '../../services/layout.service';
 import { ConfigService } from '../../services/config.service';
 import { map } from 'rxjs/operators';
+import icHome from '@iconify/icons-ic/twotone-home';
+import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
+
 
 @Component({
   selector: 'vex-sidenav',
@@ -24,6 +27,8 @@ export class SidenavComponent implements OnInit {
   trackByRoute = trackByRoute;
   icRadioButtonChecked = icRadioButtonChecked;
   icRadioButtonUnchecked = icRadioButtonUnchecked;
+  icHome= icHome;
+  icAttachMoney= icAttachMoney;
 
   constructor(private navigationService: NavigationService,
               private layoutService: LayoutService,

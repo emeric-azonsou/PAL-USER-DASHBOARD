@@ -7,7 +7,7 @@ export interface NavigationLink {
   route: string | any;
   fragment?: string;
   label: string;
-  icon?: Icon;
+  icon?: any;
   routerLinkActiveOptions?: { exact: boolean };
   badge?: {
     value: string;
