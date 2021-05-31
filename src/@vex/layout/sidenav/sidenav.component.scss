@@ -18,10 +18,12 @@
       ::ng-deep {
         .sidenav-items {
           .item-icon {
-            margin-inline-end: var(--sidenav-item-padding)
+            margin-inline-end: var(--sidenav-item-padding);
           }
 
-          .subheading, .item-badge, .item-label {
+          .subheading,
+          .item-badge,
+          .item-label {
             opacity: 0;
           }
         }
@@ -33,7 +35,9 @@
     }
 
     ::ng-deep {
-      .subheading, .item-badge, .item-label {
+      .subheading,
+      .item-badge,
+      .item-label {
         transition: all 200ms var(--trans-ease-out-timing-function);
       }
     }
@@ -56,10 +60,46 @@
   width: 100%;
 
   .title {
-    transition: padding var(--trans-ease-out-duration) var(--trans-ease-out-timing-function), opacity var(--trans-ease-out-duration) var(--trans-ease-out-timing-function);
+    transition: padding var(--trans-ease-out-duration)
+        var(--trans-ease-out-timing-function),
+      opacity var(--trans-ease-out-duration)
+        var(--trans-ease-out-timing-function);
   }
 }
 
 .sidenav-items {
   padding-top: var(--padding);
+}
+
+.button {
+  align-items: center;
+  box-sizing: border-box;
+  color: var(--sidenav-item-color);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  min-height: 48px;
+  padding: var(--padding-8) var(--sidenav-item-padding);
+  position: relative;
+  text-decoration: none;
+  transition: var(--trans-ease-out);
+  user-select: none;
+  width: 100%;
+  border-left: var(--sidenav-item-border);
+  button {
+    color: #ffffff;
+
+    &:focus {
+      text-align: left;
+      color: #2bb996;
+      background: #ecf3ff 0% 0% no-repeat padding-box;
+      border: 1px solid #888888;
+      width: 170px;
+      border-radius: 9px;
+      font-weight: 600;
+    }
+  }
+}
+.active {
+  background-color: red;
 }

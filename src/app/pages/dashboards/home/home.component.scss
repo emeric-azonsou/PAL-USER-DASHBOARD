@@ -1,0 +1,22 @@
+.table {
+  width: 500px;
+}
+table {
+  position: relative;
+  top: 60px;
+  width: 145%;
+  left: 5%;
+}
+th {
+  background-color: #ecf3ff;
+  color: #000000;
+}
+td {
+  button {
+    width: 4rem;
+    height: 2rem;
+    background-color: #ecf3ff;
+    border-radius: 8px;
+    color: black;
+  }
+}

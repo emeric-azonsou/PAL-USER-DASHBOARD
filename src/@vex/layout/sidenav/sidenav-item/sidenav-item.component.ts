@@ -28,6 +28,13 @@ export class SidenavItemComponent implements OnInit, OnChanges {
   isDropdown = this.navigationService.isDropdown;
   isSubheading = this.navigationService.isSubheading;
 
+
+  contryFlag=[
+   {
+    contry:'../../../../assets/contryFlg/1200px-Flag_of_Ghana.svg.png'
+   }
+  ]
+
   constructor(private router: Router,
               private cd: ChangeDetectorRef,
               private navigationService: NavigationService) { }

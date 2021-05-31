@@ -1,26 +1,33 @@
-<div (mouseenter)="onMouseEnter()"
-     (mouseleave)="onMouseLeave()"
-     [class.collapsed]="collapsed"
-     [class.open]="collapsed && collapsedOpen$ | async"
-     class="sidenav flex flex-col">
+<div (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" [class.collapsed]="collapsed"
+  [class.open]="collapsed && collapsedOpen$ | async" class="sidenav flex flex-col">
   <div class="sidenav-toolbar flex-none flex items-center">
-    <img [src]="imageUrl$ | async" class="w-6 select-none flex-none">
-    <h2 class="title ltr:pl-4 rtl:pr-4 select-none flex-auto">{{ title$ | async }}</h2>
-    <button (click)="toggleCollapse()"
-            *ngIf="showCollapsePin$ | async"
-            class="w-8 h-8 -mr-2 leading-none flex-none hidden lg:block"
-            mat-icon-button
-            type="button">
-      <mat-icon *ngIf="!collapsed" [icIcon]="icRadioButtonChecked" size="14px"></mat-icon>
-      <mat-icon *ngIf="collapsed" [icIcon]="icRadioButtonUnchecked" size="14px"></mat-icon>
-    </button>
+    <h6 class=" ltr:pl-4 rtl:pr-4 select-none flex-auto">TransFlexmoney <br>
+      <span>4563252</span>
+    </h6>
   </div>
-
   <vex-scrollbar class="flex-auto">
     <div class="sidenav-items">
-      <vex-sidenav-item *ngFor="let item of items; trackBy: trackByRoute"
-                        [item]="item"
-                        [level]="0"></vex-sidenav-item>
+      <div class=" grid grid-rows-2 grid-flow-col">
+        <div class="button">
+          <a href='/dashboards/home'>
+            <span>
+              <button class=" text-white  py-1 rounded">
+                <ic-icon [icon]="icHome" class="mr-1" inline="true" size="1.25em"></ic-icon>
+                Home
+              </button>
+            </span>
+          </a>
+        </div>
+        <div class="button">
+          <a href="/dashboards/transactions">
+            <button class="  text-white py-1  rounded">
+              <ic-icon [icon]=" icAttachMoney" class="mr-1" inline="true" size="1.25em"></ic-icon>
+              Top Up Transactions
+            </button>
+          </a>
+        </div>
+      </div>
+      <vex-sidenav-item *ngFor="let item of items; trackBy: trackByRoute" [item]="item" [level]="0"></vex-sidenav-item>
     </div>
   </vex-scrollbar>
 </div>
