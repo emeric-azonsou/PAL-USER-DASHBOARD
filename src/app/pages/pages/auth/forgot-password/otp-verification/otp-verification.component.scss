@@ -1,0 +1,15 @@
+.flex-wrap {
+  position: relative;
+  top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.authButton {
+  display: flex;
+  justify-content: center;
+  button {
+    background-color: rgb(1, 164, 121);
+    color: white;
+  }
+}

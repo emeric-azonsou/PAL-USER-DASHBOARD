@@ -68,6 +68,7 @@ const routes: VexRoutes = [
         (m) => m.ComingSoonModule
       ),
   },
+
   {
     path: "dashboards",
     component: CustomLayoutComponent,
