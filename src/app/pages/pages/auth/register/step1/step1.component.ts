@@ -79,21 +79,27 @@ export class Step1Component implements OnInit {
   }
 
   send() {
-      let userProfilInformation = {
-      full_name: this.form.value["fullName"],
-      email: this.form.value["email"],
-      password: this.form.value['password'],
-    };
-    this.saveUserData(userProfilInformation);
+
+  //  le flow de l'auth en deux en deux etape n'est plus valide Yoan. Le signin est seulement  en 1 step//
+
+
+
+
+    //   let userProfilInformation = {
+    //   full_name: this.form.value["fullName"],
+    //   email: this.form.value["email"],
+    //   password: this.form.value['password'],
+    // };
+    // this.saveUserData(userProfilInformation);
   }
 
-  saveUserData(userProfilInformation) {
-      sessionStorage.setItem(
-        'step1RegData',
-        JSON.stringify(userProfilInformation)
-      );
-      this.router.navigate(["/auth/register/step2"]);
-  }
+  // saveUserData(userProfilInformation) {
+  //     sessionStorage.setItem(
+  //       'step1RegData',
+  //       JSON.stringify(userProfilInformation)
+  //     );
+  //     this.router.navigate(["/auth/register/step2"]);
+  // }
 
   toggleVisibility() {
     if (this.visible) {

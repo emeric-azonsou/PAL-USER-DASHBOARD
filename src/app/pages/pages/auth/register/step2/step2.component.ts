@@ -1,32 +1,34 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import icVisibility from '@iconify/icons-ic/twotone-visibility';
-import icVisibilityOff from '@iconify/icons-ic/twotone-visibility-off';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { GeoLocationService } from 'src/app/services/geo-location.service';
-import { AuthserviceService } from 'src/app/services/authservice.service';
-import { take, takeUntil } from 'rxjs/operators';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MailComposeComponent } from '../../../../apps/mail/components/mail-compose/mail-compose.component';
-
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import icVisibility from "@iconify/icons-ic/twotone-visibility";
+import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { GeoLocationService } from "src/app/services/geo-location.service";
+import { AuthserviceService } from "src/app/services/authservice.service";
+import { take, takeUntil } from "rxjs/operators";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MailComposeComponent } from "../../../../apps/mail/components/mail-compose/mail-compose.component";
 
 @Component({
-  selector: 'vex-step2',
-  templateUrl: './step2.component.html',
-  styleUrls: ['./step2.component.scss']
+  selector: "vex-step2",
+  templateUrl: "./step2.component.html",
+  styleUrls: ["./step2.component.scss"],
 })
 export class Step2Component implements OnInit {
-
   form: FormGroup;
   phoneNumberPattern = /^\d+$/;
-  inputType = 'password';
+  inputType = "password";
   visible = false;
   step1data: any;
   processedPhoneNo: any;
   prefixCountryCode: any;
   isCorrectPhoneEntry: boolean;
   locationData: any;
-  countryData: { preferredCountries: string[]; localizedCountries: { ng: string; gh: string; }; onlyCountries: string[]; };
+  countryData: {
+    preferredCountries: string[];
+    localizedCountries: { ng: string; gh: string };
+    onlyCountries: string[];
+  };
   waitingDisplayInput: boolean;
   icVisibility = icVisibility;
   icVisibilityOff = icVisibilityOff;
@@ -48,105 +50,98 @@ export class Step2Component implements OnInit {
     phoneNumber: {
       required: "Email  is required.",
       email: "Please enter a valid email",
-    }
+    },
   };
-  constructor(private router: Router,
-              private fb: FormBuilder,
-              private cd: ChangeDetectorRef,
-              private geoLocationService: GeoLocationService,
-              private authService: AuthserviceService,
-              private dialog: MatDialog,
-            
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private geoLocationService: GeoLocationService,
+    private authService: AuthserviceService,
+    private dialog: MatDialog
   ) {
-    const step1Data = sessionStorage.getItem('step1RegData');
+    const step1Data = sessionStorage.getItem("step1RegData");
     if (!!step1Data) {
       this.step1data = JSON.parse(step1Data);
     } else {
-      router.navigate(['auth/register/step1']);
+      router.navigate(["auth/register/step1"]);
     }
   }
 
   ngOnInit() {
-    this.form = this.fb.group({
-      phoneNumber: ['', Validators.required],
-      companyName: ['', Validators.required],
-      country: ['', Validators.required],
-      description: ['', Validators.required],
-      terms: ['', Validators.required],
-    });
-
-    this.getLocationData();
+    // this.form = this.fb.group({
+    //   phoneNumber: ['', Validators.required],
+    //   companyName: ['', Validators.required],
+    //   country: ['', Validators.required],
+    //   description: ['', Validators.required],
+    //   terms: ['', Validators.required],
+    // });
+    // this.getLocationData();
   }
 
-  
-  getLocationData() {
-    new Promise((resolve) => {
-      this.geoLocationService.getLocation().subscribe((data) => {
-        resolve((this.locationData = data));
-      });
-    })
-      .then(() => {
-           this.prefixCountryCode=this.locationData.country_calling_code;
-      })
-      
-  }
+  // getLocationData() {
+  //   new Promise((resolve) => {
+  //     this.geoLocationService.getLocation().subscribe((data) => {
+  //       resolve((this.locationData = data));
+  //     });
+  //   })
+  //     .then(() => {
+  //          this.prefixCountryCode=this.locationData.country_calling_code;
+  //     })
 
-  processPhoneNumber() {
-    let rawPhoneNumber = this.form.value["phoneNumber"];
+  // }
 
-    let phoneNumberWithoutSpace = rawPhoneNumber.split(/\s/).join("");
-    if (phoneNumberWithoutSpace.match(this.phoneNumberPattern)) {
-      if (phoneNumberWithoutSpace.charAt(0) === "0") {
-        this.isCorrectPhoneEntry = true;
-        this.processedPhoneNo =
-          this.prefixCountryCode + phoneNumberWithoutSpace.substr(1);
-      } else {
-        this.isCorrectPhoneEntry = true;
-        this.processedPhoneNo = this.prefixCountryCode + phoneNumberWithoutSpace;
-      }
-    } else {
-      this.isCorrectPhoneEntry = false;
-    }
-  }
-  
-  
-  register() {
-    this.processPhoneNumber();
+  // processPhoneNumber() {
+  //   let rawPhoneNumber = this.form.value["phoneNumber"];
 
-    let userData = {
-      ...this.step1data,
-      country: this.form.value['country'],
-      company_name: this.form.value['companyName'],
-      description: this.form.value['description'],
-      phone_no: this.processedPhoneNo,
-    };
-    this.authService
-      .registerPalUser(userData)
-      .pipe(take(1))
-      .subscribe((response) => {
-        if(response?.status === true) {
-          this.isLoadingButton = false;
-          this.isButtonActive = true;
-          setTimeout(() => {
-            // this.router.navigate(["/auth/login"]);
-            this.openCompose();
-          }, 3000);
-        } else {
-          this.errorMessage = 'Something went wrong please try again';
-          this.isLoadingButton = false;
-          this.isButtonActive = true;
-        }
-      });
-  }
+  //   let phoneNumberWithoutSpace = rawPhoneNumber.split(/\s/).join("");
+  //   if (phoneNumberWithoutSpace.match(this.phoneNumberPattern)) {
+  //     if (phoneNumberWithoutSpace.charAt(0) === "0") {
+  //       this.isCorrectPhoneEntry = true;
+  //       this.processedPhoneNo =
+  //         this.prefixCountryCode + phoneNumberWithoutSpace.substr(1);
+  //     } else {
+  //       this.isCorrectPhoneEntry = true;
+  //       this.processedPhoneNo = this.prefixCountryCode + phoneNumberWithoutSpace;
+  //     }
+  //   } else {
+  //     this.isCorrectPhoneEntry = false;
+  //   }
+  // }
 
+  // register() {
+  //   this.processPhoneNumber();
+
+  //   let userData = {
+  //     ...this.step1data,
+  //     country: this.form.value['country'],
+  //     company_name: this.form.value['companyName'],
+  //     description: this.form.value['description'],
+  //     phone_no: this.processedPhoneNo,
+  //   };
+  //   this.authService
+  //     .registerPalUser(userData)
+  //     .pipe(take(1))
+  //     .subscribe((response) => {
+  //       if(response?.status === true) {
+  //         this.isLoadingButton = false;
+  //         this.isButtonActive = true;
+  //         setTimeout(() => {
+  //           // this.router.navigate(["/auth/login"]);
+  //           this.openCompose();
+  //         }, 3000);
+  //       } else {
+  //         this.errorMessage = 'Something went wrong please try again';
+  //         this.isLoadingButton = false;
+  //         this.isButtonActive = true;
+  //       }
+  //     });
+  // }
 
   openCompose() {
     this.dialog.open(MailComposeComponent, {
-      width: '100%',
-      maxWidth:700,
+      width: "100%",
+      maxWidth: 700,
     });
   }
-
-
-
 }
