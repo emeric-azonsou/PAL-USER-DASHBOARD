@@ -5,6 +5,7 @@ import { VexRoutes } from "../@vex/interfaces/vex-route.interface";
 import { QuicklinkModule, QuicklinkStrategy } from "ngx-quicklink";
 import { HomeComponent } from "./pages/dashboards/home/home.component";
 import { TopUpTransactionComponent } from "./pages/dashboards/top-up-transaction/top-up-transaction.component";
+import { ProfilComponent } from "./pages/dashboards/profil/profil.component";
 
 const routes: VexRoutes = [
   {
@@ -84,6 +85,10 @@ const routes: VexRoutes = [
       {
         path: "transactions",
         component: TopUpTransactionComponent,
+      },
+      {
+        path: "profil",
+        component: ProfilComponent,
       },
       {
         path: "",

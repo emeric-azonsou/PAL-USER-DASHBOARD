@@ -1,0 +1,23 @@
+.upload{
+    color: gray;
+    padding-bottom: 10px;
+}
+.owner{
+    margin-top: 50px;
+}
+.top{
+    margin-top: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.proFilPhoto{
+    display: flex;
+    justify-content: center;
+    img{
+        width: 130px;
+        height: 130px;
+        border-radius: 50px;
+    }
+}

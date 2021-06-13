@@ -28,3 +28,22 @@
   // --color-warn: yellow;
   // --color-warn-contrast: black;
 }
+.afu-upload-btn {
+  background-color: #5C77FF;
+  padding: 8px;
+  position: relative;
+  top: 30px;
+  border-radius: 5px;
+  color: aliceblue;
+}
+.afu-select-btn {
+ background-color: rgb(187, 184, 184);
+  padding: 10px;
+  position: relative;
+  top: 13px;
+  cursor: pointer;
+}
+.afu-constraints-info {
+  position: relative;
+  top: 20px;
+}

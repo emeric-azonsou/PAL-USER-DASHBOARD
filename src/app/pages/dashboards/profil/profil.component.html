@@ -1,0 +1,247 @@
+<vex-secondary-toolbar current="Form Elements">
+    <vex-breadcrumbs [crumbs]="['Forms', 'Form Elements']" fxFlex="auto"></vex-breadcrumbs>
+
+    <button class="ml-2" color="primary" mat-icon-button type="button">
+        <mat-icon [icIcon]="icMoreVert"></mat-icon>
+    </button>
+</vex-secondary-toolbar>
+<div [@stagger]="true" class="p-gutter" vexContainer>
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+        <div @fadeInUp class="card" fxFlex="auto">
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+                <h2 class="m-0 title">Profile </h2>
+            </div>
+
+           
+            <div>
+                <div class="top">
+                    <div class="proFilPhoto">
+                        <img src="../../../../assets/img/demo/1.jpg" alt="">
+                    </div>
+                    <div>
+                     
+                        <angular-file-uploader [config]="profilPhotoConfig">
+                        </angular-file-uploader>
+                    </div>
+                </div>
+                <div class="px-6 py-4" fxLayout="column">
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field fxFlex="auto">
+                            <mat-label>Company legal name
+                            </mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="auto">
+                            <mat-label>Website</mat-label>
+                            <input matInput required>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field>
+                            <mat-label>Country of the establishment </mat-label>
+                            <mat-select>
+                                <mat-option>Algérie</mat-option>
+                                <mat-option>Allemagne</mat-option>
+                                <mat-option> Andorre</mat-option>
+                                <mat-option> </mat-option>
+                                <mat-option> Afghanistan</mat-option>
+                                <mat-option> Afrique du Sud</mat-option>
+                                <mat-option>Albanie </mat-option>
+                                <mat-option> Afrique du Sud</mat-option>
+                                <mat-option> Afrique du Sud</mat-option>
+                                <mat-option> Afrique du Sud</mat-option>
+                                <mat-option> Afrique du Sud</mat-option>
+                                <mat-option> Afrique du Sud</mat-option>
+                                <mat-option> Afrique du Sud</mat-option>
+                                <mat-option> Afrique du Sud</mat-option>
+
+
+                                <!-- Angola	Anguilla	Antigua-et-Barbuda
+Antilles Néerlandaises	Arabie Saoudite	Argentine
+Arménie	Aruba	Australie
+Autriche	Azerbaïdjan	Bahamas
+Bahreïn	Bangladesh	Barbade
+Belgique	Belize	Bénin
+Bermudes	Bhoutan	Biélorussie
+Birmanie (Myanmar)	Bolivie	Bosnie-Herzégovine
+Botswana	Brésil	Brunei
+Bulgarie	Burkina Faso	Burundi
+Cambodge	Cameroun	Canada
+Cap-vert	Chili	Chine
+Chypre	Colombie	Comores
+Corée du Nord	Corée du Sud	Costa Rica
+Côte d'Ivoire	Croatie	Cuba
+Danemark	Djibouti	Dominique
+Égypte	Émirats Arabes Unis	Équateur
+Érythrée	Espagne	Estonie
+États Fédérés de Micronésie	États-Unis	Éthiopie
+Fidji	Finlande	France
+Gabon	Gambie	Géorgie
+Géorgie du Sud et les Îles Sandwich du Sud	Ghana	Gibraltar
+Grèce	Grenade	Groenland
+Guadeloupe	Guam	Guatemala
+Guinée	Guinée-Bissau	Guinée Équatoriale
+Guyana	Guyane Française	Haïti
+Honduras	Hong-Kong	Hongrie
+Île Christmas	Île de Man	Île Norfolk
+Îles Åland	Îles Caïmanes	Îles Cocos (Keeling)
+Îles Cook	Îles Féroé	Îles Malouines
+Îles Mariannes du Nord	Îles Marshall	Îles Pitcairn
+Îles Salomon	Îles Turks et Caïques	Îles Vierges Britanniques
+Îles Vierges des États-Unis	Inde	Indonésie
+Iran	Iraq	Irlande
+Islande	Israël	Italie
+Jamaïque	Japon	Jordanie
+Kazakhstan	Kenya	Kirghizistan
+Kiribati	Koweït	Laos
+Le Vatican	Lesotho	Lettonie
+Liban	Libéria	Libye
+Liechtenstein	Lituanie	Luxembourg
+Macao	Madagascar	Malaisie
+Malawi	Maldives	Mali
+Malte	Maroc	Martinique
+Maurice	Mauritanie	Mayotte
+Mexique	Moldavie	Monaco
+Mongolie	Monténégro	Montserrat
+Mozambique	Namibie	Nauru
+Népal	Nicaragua	Niger
+Nigéria	Niué	Norvège
+Nouvelle-Calédonie	Nouvelle-Zélande	Oman
+Ouganda	Ouzbékistan	Pakistan
+Palaos	Panama	Papouasie-Nouvelle-Guinée
+Paraguay	Pays-Bas	Pérou
+Philippines	Pologne	Polynésie Française
+Porto Rico	Portugal	Qatar
+République Centrafricaine	République de Macédoine	République Démocratique du Congo
+République Dominicaine	République du Congo	République Tchèque
+Réunion	Roumanie	Royaume-Uni
+Russie	Rwanda	Saint-Kitts-et-Nevis
+Saint-Marin	Saint-Pierre-et-Miquelon	Saint-Vincent-et-les Grenadines
+Sainte-Hélène	Sainte-Lucie	Salvador
+Samoa	Samoa Américaines	Sao Tomé-et-Principe
+Sénégal	Serbie	Seychelles
+Sierra Leone	Singapour	Slovaquie
+Slovénie	Somalie	Soudan
+Sri Lanka	Suède	Suisse
+Suriname	Svalbard et Jan Mayen	Swaziland
+Syrie	Tadjikistan	Taïwan
+Tanzanie	Tchad	Terres Australes Françaises
+Thaïlande	Timor Oriental	Togo
+Tonga	Trinité-et-Tobago	Tunisie
+Turkménistan	Turquie	Tuvalu
+Ukraine	Uruguay	Vanuatu
+Venezuela	Viet Nam	Wallis et Futuna
+Yémen	Zambie	Zimbabwe -->
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="auto">
+                            <mat-label>Describe what your company does
+                            </mat-label>
+                            <input matInput required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Staff Size </mat-label>
+                            <mat-select>
+                                <mat-option>1-5 people </mat-option>
+                                <mat-option>5-50 people</mat-option>
+                                <mat-option>+50 people</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                        <mat-form-field>
+                            <mat-label>Industry </mat-label>
+                            <mat-select>
+                                <mat-option>Agriculture</mat-option>
+                                <mat-option> Commerce</mat-option>
+                                <mat-option> Financial service</mat-option>
+                                <mat-option> Money Transfer </mat-option>
+                                <mat-option> Education</mat-option>
+                                <mat-option> Gaming</mat-option>
+                                <mat-option> Health</mat-option>
+                                <mat-option> Hospitality</mat-option>
+                                <mat-option> Logistic</mat-option>
+                                <mat-option> Travel</mat-option>
+                                <mat-option> Leisure & Entertainment </mat-option>
+                                <mat-option> Utilities</mat-option>
+                                <mat-option> Non profits </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="auto">
+                            <mat-label>Business phone</mat-label>
+                            <input matInput required>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="auto">
+                            <mat-label>Company physical address</mat-label>
+                            <input matInput required>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row">
+                        <mat-label class='upload'>Upload your company registration document </mat-label>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <angular-file-uploader [config]="afuConfig">
+                        </angular-file-uploader>
+
+                    </div>
+                    <div class="px-6 py-4 owner" fxLayout="column">
+                        <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+                            <h2 class="m-0 title">Owner
+                            </h2>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                            <mat-form-field fxFlex="auto">
+                                <mat-label>Your full name
+                                </mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="auto">
+                                <mat-label>Your full name
+                                </mat-label>
+                                <input matInput required>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="auto">
+                                <mat-label>Your address
+                                </mat-label>
+                                <input matInput required>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row">
+                            <mat-label class='upload'>Upload your ID document </mat-label>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start">
+                            <angular-file-uploader [config]="afuConfig">
+                            </angular-file-uploader>
+
+
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+                            <button mat-button type="button">CANCEL</button>
+                            <button color="primary" mat-raised-button type="button">SUBMIT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
