@@ -1,3 +1,5 @@
+import { IconModule } from '@visurel/iconify-angular';
+
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 
@@ -39,6 +41,8 @@ import { MatSelectModule } from "@angular/material/select";
     ReactiveFormsModule,
     FormsModule,
     MatSelectModule,
+    IconModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent],

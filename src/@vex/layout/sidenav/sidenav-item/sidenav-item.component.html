@@ -4,12 +4,23 @@
   <img *ngIf="level === 0" [src]='item.icon' alt="">
   <span class="item-label text-md" fxFlex="auto">{{ item.label }}</span>
   <span *ngIf="item.badge" class="item-badge" fxFlex="none">
-    <button class="btn   px-4 rounded">
-      {{ item.badge.value }}
-    </button>
+
+    <div _ngcontent-ftu-c226="" fxflex="none"
+      class="px-2 py-1 text-xs font-medium rounded ng-tns-c226-93 text-purple bg-purple-light ng-star-inserted"
+      style="flex: 0 0 auto; box-sizing: border-box; margin-right: 4px;"> {{ item.badge.value }} </div>
+    <div _ngcontent-ftu-c226="" fxflex="none" fxlayout="row" fxlayoutalign="center center"
+      class="cursor-pointer text-secondary bg-base text-hint hover:bg-hover ng-tns-c226-93"
+      style="margin-right: 4px; flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center; flex: 0 0 auto;">
+      <ic-icon _ngcontent-ftu-c226="" size="18px" class="ng-tns-c226-93"><svg xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+          style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"></path>
+        </svg></ic-icon>
+    </div>
+
   </span>
 </a>
-
 <div (click)="item.route()" *ngIf="isLink(item) && isFunction(item.route)" class="item" fxLayout="row" matRipple
   routerLinkActive="active">
   <mat-icon *ngIf="level === 0" [icIcon]="item.icon" class="item-icon" fxFlex="none"></mat-icon>
@@ -34,6 +45,6 @@
 
 
 <ng-container *ngIf="isSubheading(item)">
-  <div class="subheading text-lg">{{ item.label }}</div>
+  <div class="text-lg subheading">{{ item.label }}</div>
   <vex-sidenav-item *ngFor="let subItem of item.children" [item]="subItem" [level]="0"></vex-sidenav-item>
 </ng-container>

@@ -1,4 +1,9 @@
+import  icPhone  from '@iconify/icons-ic/twotone-phone';
+import { MatSelectChange } from '@angular/material/select';
+import { aioTableLabels } from './../../../../static-data/aio-table-data';
+import { Customer } from './../../apps/aio-table/interfaces/customer.model';
 import { Component, OnInit } from "@angular/core";
+import { Observable, of, ReplaySubject } from 'rxjs';
 const ELEMENT_DATA: PeriodicElement[] = [
   {
     position: "BG452515",
@@ -29,6 +34,20 @@ export interface PeriodicElement {
   styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
+
+  labels = aioTableLabels;
+
+  icPhone = icPhone
+  
+  
+
+  subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
+  data$: Observable<Customer[]> = this.subject$.asObservable();
+  customers: Customer[];
+
+
+
+
   displayedColumns: string[] = [
     "position",
     "name",
@@ -42,5 +61,10 @@ export class HomeComponent implements OnInit {
   dataSource = ELEMENT_DATA;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    
+  }
+
+
+  
 }

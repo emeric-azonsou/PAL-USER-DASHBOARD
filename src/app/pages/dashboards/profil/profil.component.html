@@ -1,25 +1,16 @@
-<vex-secondary-toolbar current="Form Elements">
-    <vex-breadcrumbs [crumbs]="['Forms', 'Form Elements']" fxFlex="auto"></vex-breadcrumbs>
 
-    <button class="ml-2" color="primary" mat-icon-button type="button">
-        <mat-icon [icIcon]="icMoreVert"></mat-icon>
-    </button>
-</vex-secondary-toolbar>
 <div [@stagger]="true" class="p-gutter" vexContainer>
     <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
         <div @fadeInUp class="card" fxFlex="auto">
             <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
                 <h2 class="m-0 title">Profile </h2>
             </div>
-
-           
             <div>
                 <div class="top">
                     <div class="proFilPhoto">
                         <img src="../../../../assets/img/demo/1.jpg" alt="">
                     </div>
                     <div>
-                     
                         <angular-file-uploader [config]="profilPhotoConfig">
                         </angular-file-uploader>
                     </div>
@@ -29,11 +20,13 @@
                         <mat-form-field fxFlex="auto">
                             <mat-label>Company legal name
                             </mat-label>
-                            <input matInput>
+                            <mat-icon [icIcon]="icEdit" (click)='onEdit()' matSuffix></mat-icon>
+                            <input matInput >
                         </mat-form-field>
                         <mat-form-field fxFlex="auto">
                             <mat-label>Website</mat-label>
                             <input matInput required>
+                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                         </mat-form-field>
                     </div>
                     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
@@ -43,26 +36,30 @@
                                 <mat-option>Algérie</mat-option>
                                 <mat-option>Allemagne</mat-option>
                                 <mat-option> Andorre</mat-option>
-                                <mat-option> </mat-option>
+                                <mat-option>Biélorussie </mat-option>
                                 <mat-option> Afghanistan</mat-option>
                                 <mat-option> Afrique du Sud</mat-option>
                                 <mat-option>Albanie </mat-option>
-                                <mat-option> Afrique du Sud</mat-option>
-                                <mat-option> Afrique du Sud</mat-option>
-                                <mat-option> Afrique du Sud</mat-option>
-                                <mat-option> Afrique du Sud</mat-option>
-                                <mat-option> Afrique du Sud</mat-option>
-                                <mat-option> Afrique du Sud</mat-option>
-                                <mat-option> Afrique du Sud</mat-option>
+                                <mat-option> Angola Anguilla</mat-option>
+                                <mat-option> Antigua-et-Barbuda</mat-option>
+                                <mat-option> Antilles Néerlandaises</mat-option>
+                                <mat-option> Arabie Saoudite Argentine</mat-option>
+                                <mat-option> Australie</mat-option>
+                                <mat-option> Arménie Aruba </mat-option>
+                                <mat-option> Autriche</mat-option>
+                                <mat-option> Azerbaïdjan </mat-option>
+                                <mat-option> Bahamas</mat-option>
+                                <mat-option> Barbade</mat-option>
+                                <mat-option> Bangladesh</mat-option>
+                                <mat-option> Bahreïn</mat-option>
+                                <mat-option> Belgique</mat-option>
+                                <mat-option> Belize</mat-option>
+                                <mat-option> Bénin</mat-option>
+                                <mat-option> Bermudes</mat-option>
+                                <mat-option> Bhoutan</mat-option>
 
 
-                                <!-- Angola	Anguilla	Antigua-et-Barbuda
-Antilles Néerlandaises	Arabie Saoudite	Argentine
-Arménie	Aruba	Australie
-Autriche	Azerbaïdjan	Bahamas
-Bahreïn	Bangladesh	Barbade
-Belgique	Belize	Bénin
-Bermudes	Bhoutan	Biélorussie
+                                <!-- 	
 Birmanie (Myanmar)	Bolivie	Bosnie-Herzégovine
 Botswana	Brésil	Brunei
 Bulgarie	Burkina Faso	Burundi
@@ -132,12 +129,15 @@ Turkménistan	Turquie	Tuvalu
 Ukraine	Uruguay	Vanuatu
 Venezuela	Viet Nam	Wallis et Futuna
 Yémen	Zambie	Zimbabwe -->
+
                             </mat-select>
+                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                         </mat-form-field>
                         <mat-form-field fxFlex="auto">
                             <mat-label>Describe what your company does
                             </mat-label>
                             <input matInput required>
+                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Staff Size </mat-label>
@@ -146,6 +146,7 @@ Yémen	Zambie	Zimbabwe -->
                                 <mat-option>5-50 people</mat-option>
                                 <mat-option>+50 people</mat-option>
                             </mat-select>
+                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                         </mat-form-field>
                     </div>
                     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
@@ -165,17 +166,18 @@ Yémen	Zambie	Zimbabwe -->
                                 <mat-option> Leisure & Entertainment </mat-option>
                                 <mat-option> Utilities</mat-option>
                                 <mat-option> Non profits </mat-option>
-
                             </mat-select>
+                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                         </mat-form-field>
-
                         <mat-form-field fxFlex="auto">
                             <mat-label>Business phone</mat-label>
                             <input matInput required>
+                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                         </mat-form-field>
                         <mat-form-field fxFlex="auto">
                             <mat-label>Company physical address</mat-label>
                             <input matInput required>
+                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                         </mat-form-field>
                     </div>
                     <div fxLayout="row">
@@ -184,29 +186,30 @@ Yémen	Zambie	Zimbabwe -->
                     <div fxLayout="row" fxLayoutAlign="start">
                         <angular-file-uploader [config]="afuConfig">
                         </angular-file-uploader>
-
                     </div>
                     <div class="px-6 py-4 owner" fxLayout="column">
                         <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
                             <h2 class="m-0 title">Owner
                             </h2>
                         </div>
-
                         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
                             <mat-form-field fxFlex="auto">
                                 <mat-label>Your full name
                                 </mat-label>
                                 <input matInput>
+                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                             </mat-form-field>
                             <mat-form-field fxFlex="auto">
                                 <mat-label>Your full name
                                 </mat-label>
                                 <input matInput required>
+                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                             </mat-form-field>
                             <mat-form-field fxFlex="auto">
                                 <mat-label>Your address
                                 </mat-label>
                                 <input matInput required>
+                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                             </mat-form-field>
                         </div>
                         <div fxLayout="row">
@@ -215,33 +218,11 @@ Yémen	Zambie	Zimbabwe -->
                         <div fxLayout="row" fxLayoutAlign="start">
                             <angular-file-uploader [config]="afuConfig">
                             </angular-file-uploader>
-
-
                         </div>
-
                         <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
-                            <button mat-button type="button">CANCEL</button>
                             <button color="primary" mat-raised-button type="button">SUBMIT</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
