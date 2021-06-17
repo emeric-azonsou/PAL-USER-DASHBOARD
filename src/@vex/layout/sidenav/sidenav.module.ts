@@ -20,7 +20,8 @@ import { IconModule } from '@visurel/iconify-angular';
     FlexLayoutModule,
     MatButtonModule,
     MatIconModule,
-    IconModule
+    IconModule,
+    
   ],
   exports: [SidenavComponent]
 })

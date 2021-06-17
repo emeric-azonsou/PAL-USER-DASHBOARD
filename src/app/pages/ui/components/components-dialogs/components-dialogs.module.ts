@@ -19,7 +19,8 @@ import { ContainerModule } from '../../../../../@vex/directives/container/contai
     PageLayoutModule,
     SecondaryToolbarModule,
     BreadcrumbsModule,
-    ContainerModule
+    ContainerModule,
+    
   ]
 })
 export class ComponentsDialogsModule {
