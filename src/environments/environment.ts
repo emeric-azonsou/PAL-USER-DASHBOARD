@@ -4,23 +4,25 @@
 
 export const environment = {
   production: false,
-  payStackCheckoutUrl: `https://api.noworri.com/api/securewithpaystacktest`,
-  payStackReleaseUrl: `https://api.noworri.com/api/initiatereleasetest/`,
-  processPayoutUrl: `https://api.noworri.com/api/processbusinesspayouttest`,
-  checkTransactionStatusUrl: `https://api.noworri.com/api/chektransactionstatustest`,
-  addAccountUrl: `https://api.noworri.com/api/createrecipienttest/`,
-  updateAccountUrl: `https://api.noworri.com/api/updateuseraccounttest/`,
-  createTransactionUrl: `https://api.noworri.com/api/newtransactiontest`,
-  deleteAccountUrl: `https://api.noworri.com/api/deleteduseraccounttest`,
-  getTransactionByIdUrl: `https://api.noworri.com/api/getusertransactiontest/`,
-  getTransactionsListUrl: `https://api.noworri.com/api/usertransactionstest/`,
-  verifyReleaseCodeUrl: `https://api.noworri.com/api/verifycodetest`,
-  cancelTransactionUrl: `https://api.noworri.com/api/cancelescrowtransactiontest/`,
-  getBusinessUserPayoutsUrl: `https://api.noworri.com/api/getbusinessuserpayoutstest/`,
-  getBusinessTransactionsSummaryUrl: `https://api.noworri.com/api/getusertransactionssummarytest/`,
-  updateDeliveyUrl: `https://api.noworri.com/api/updatedeliveryphonetest`,
-  getUserAccountDetailsUrl: `https://api.noworri.com/api/getbusinessuseraccountdetailstest/`,
-  registerPalUserUrl: `https://api.noworri.com/api/registerpaluser`
+  payStackCheckoutUrl: `https://api-test.pals.africa/api/securewithpaystack`,
+  payStackReleaseUrl: `https://api-test.pals.africa/api/initiaterelease`,
+  processPayoutUrl: `https://api-test.pals.africa/api/processbusinesspayout`,
+  checkTransactionStatusUrl: `https://api-test.pals.africa/api/chektransactionstatus`,
+  addAccountUrl: `https://api-test.pals.africa/api/createrecipient`,
+  updateAccountUrl: `https://api-test.pals.africa/api/updateuseraccount`,
+  createTransactionUrl: `https://api-test.pals.africa/api/newtransaction`,
+  deleteAccountUrl: `https://api-test.pals.africa/api/deleteduseraccount`,
+  getTransactionByIdUrl: `https://api-test.pals.africa/api/getusertransaction`,
+
+  getTransactionsListUrl: `https://api-test.pals.africa/api/getmerchanttransactions/`,
+  verifyReleaseCodeUrl: `https://api-test.pals.africa/api/verifycode`,
+  cancelTransactionUrl: `https://api-test.pals.africa/api/cancelescrowtransaction`,
+  getBusinessUserPayoutsUrl: `https://api-test.pals.africa/api/getbusinessuserpayouts`,
+  getBusinessTransactionsSummaryUrl: `https://api-test.pals.africa/api/getusertransactionssummary`,
+  updateDeliveyUrl: `https://api-test.pals.africa/api/updatedeliveryphone`,
+  getUserAccountDetailsUrl: `https://api-test.pals.africa/api/getbusinessuseraccountdetails`,
+  registerPalUserUrl: `https://api-test.pals.africa/api/registerpaluser`,
+  registerUserUrl: `https://api-test.pals.africa/api/register`
 };
 
 /*

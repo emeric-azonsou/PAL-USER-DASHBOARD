@@ -12,7 +12,7 @@ export class DisputeDataService {
 constructor(private http: HttpClient) { }
 
 openDistpute(data): Observable<DisputeReference> {
-  const url = "https://api.noworri.com/api/createdispute" ;
+  const url = "https://api.pals.africa/api/createdispute" ;
   return this.http.post(url, data).pipe(
     map((response: DisputeReference) => {
       const dipute = response;

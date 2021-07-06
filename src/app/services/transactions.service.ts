@@ -26,32 +26,30 @@ export class TransactionsService {
     } else {
       params = null;
     }
-    const url = `${environment.getTransactionsListUrl}${userId}`;
+
+    const url =`http://127.0.0.1:8000/api/getmerchanttransactions/${userId}`
+    // const url = `${environment.getTransactionsListUrl}${userId}`;
     return this.http.get(url, { params: params }).pipe(
-      map((data: TransactionsReference[]) => {
-        data.map((values) => {
+      map((transaction: any) => {
+        transaction.data.map((values) => {
           if (typeof values.total_price === undefined) {
             values.total_price = values.price;
           }
 
-          if (values.etat)
-            if (values.etat === "0") {
+          if (values.status)
+            if (values.status === 0) {
               values.state = "Cancelled";
-            } else if (values.etat === "1") {
+            } else if (values.status === 1) {
               values.state = "Pending";
-            } else if (values.etat === "3") {
-              values.state = "Funds Released";
-            } else if (values.etat === "5") {
-              values.state = "Funds Withdrawn";
-            } else if (values.etat === "2") {
-              values.state = "Funds Secured";
-            } else if (values.etat === "4") {
-              values.state = "Deleted";
+            } else if (values.status === 2) {
+              values.state = "Processing";
+            } else if (values.status === 3) {
+              values.state = "Completed";
             }
           return values;
         });
 
-        return data;
+        return transaction;
       }),
       catchError((error: HttpErrorResponse) => {
         console.log("Error", error.message);
@@ -95,7 +93,7 @@ export class TransactionsService {
   }
 
   processPayment(body): Observable<any> {
-    const url = "https://api.noworri.com/api/makecardpayment";
+    const url = "https://api.pals.africa/api/makecardpayment";
     let params = new HttpParams();
     const amount = body.paymentDetails.amount.toString();
 
@@ -113,7 +111,7 @@ export class TransactionsService {
   }
 
   markSecuredFunds(transaction_id) {
-    const url = `https://api.noworri.com/api/securefunds/${transaction_id}`;
+    const url = `https://api.pals.africa/api/securefunds/${transaction_id}`;
     return this.http.post(url, null).pipe(
       map((response) => {
         return response;
@@ -126,7 +124,7 @@ export class TransactionsService {
   }
 
   releaseFunds(transaction_id) {
-    const url = `https://api.noworri.com/api/releasepayment/${transaction_id}`;
+    const url = `https://api.pals.africa/api/releasepayment/${transaction_id}`;
     return this.http.post(url, null).pipe(
       map((response) => {
         return response;
@@ -186,7 +184,7 @@ export class TransactionsService {
   }
 
   initiateRefundPaystack(data) {
-    const url = `https://api.noworri.com/api/initiaterefund`;
+    const url = `https://api.pals.africa/api/initiaterefund`;
     let params = new HttpParams();
     params = params.append("transaction", data.transaction_ref);
     params = params.append("customer_note", "Transaction cancelled");
@@ -208,7 +206,7 @@ export class TransactionsService {
   }
 
   finalizeReleasePaystack(data) {
-    const url = `https://api.noworri.com/api/paystackrelease/test`;
+    const url = `https://api.pals.africa/api/paystackrelease/test`;
     let params = new HttpParams();
     params = params.append("transfer_code", data.transfer_code);
 
@@ -242,7 +240,7 @@ export class TransactionsService {
   }
 
   startService(transaction_id) {
-    const url = `https://api.noworri.com/api/startservice/${transaction_id}`;
+    const url = `https://api.pals.africa/api/startservice/${transaction_id}`;
     return this.http.post(url, null).pipe(
       map((response) => {
         return response;
@@ -255,7 +253,7 @@ export class TransactionsService {
   }
 
   approveService(transaction_id) {
-    const url = `https://api.noworri.com/api/approveservice/${transaction_id}`;
+    const url = `https://api.pals.africa/api/approveservice/${transaction_id}`;
     return this.http.post(url, null).pipe(
       map((response) => {
         return response;
@@ -348,7 +346,7 @@ export class TransactionsService {
   }
 
   addNewAccount(accountDetails) {
-    const url = `https://api.noworri.com/api/adduseraccounttest/${accountDetails.userId}`;
+    const url = `https://api.pals.africa/api/adduseraccounttest/${accountDetails.userId}`;
     let params = new HttpParams();
     params = params.append("bank_name", accountDetails.bankName);
     params = params.append("bank_code", accountDetails.bankCode);
@@ -412,7 +410,7 @@ export class TransactionsService {
 
   uploadFile(file: File) {
     // 279414289
-    const url = `https://api.noworri.com/api/newtransactionupload`;
+    const url = `https://api.pals.africa/api/newtransactionupload`;
     // let params = new HttpParams();
     // params = params.append('file', files);
     const formData: FormData = new FormData();
@@ -430,7 +428,7 @@ export class TransactionsService {
   }
 
   mapUploadedFiles(transaction_id, paths) {
-    const url = `https://api.noworri.com/api/matchtransactionupload`;
+    const url = `https://api.pals.africa/api/matchtransactionupload`;
     let params = new HttpParams();
     params = params.append("path", paths);
     params = params.append("transaction_id", transaction_id);
@@ -449,7 +447,7 @@ export class TransactionsService {
   }
 
   makeMomoPayment() {
-    const url = "https://api.noworri.com/api/paywithmomo";
+    const url = "https://api.pals.africa/api/paywithmomo";
     return this.http.post(url, null).pipe(
       map((response) => {
         return response;
@@ -462,7 +460,7 @@ export class TransactionsService {
   }
 
   updateDeadline(data) {
-    const url = `https://api.noworri.com/api/updatedeadline/${data.transaction_id}/${data.new_deadline}`;
+    const url = `https://api.pals.africa/api/updatedeadline/${data.transaction_id}/${data.new_deadline}`;
 
     return this.http.post(url, null).pipe(
       map((response) => {
@@ -545,7 +543,7 @@ export class TransactionsService {
   }
 
   getStepTransDetails(transaction_id) {
-    const url = `https://api.noworri.com/api/getsteptransdetails/${transaction_id}`;
+    const url = `https://api.pals.africa/api/getsteptransdetails/${transaction_id}`;
     return this.http.get(url).pipe(
       map((response) => {
         return response;
@@ -578,7 +576,7 @@ export class TransactionsService {
   }
 
   getTransactionUploads(transaction_id) {
-    const url = `https://api.noworri.com/api/gettransactionfiles/${transaction_id}`;
+    const url = `https://api.pals.africa/api/gettransactionfiles/${transaction_id}`;
     return this.http.get(url).pipe(
       map((response) => {
         return response;
@@ -591,7 +589,7 @@ export class TransactionsService {
   }
 
   setStepTransaction(stepDetails) {
-    const url = "https://api.noworri.com/api/createsteptrans";
+    const url = "https://api.pals.africa/api/createsteptrans";
     let params = new HttpParams();
     if (!stepDetails.accepted) {
       stepDetails.accepted = 0;

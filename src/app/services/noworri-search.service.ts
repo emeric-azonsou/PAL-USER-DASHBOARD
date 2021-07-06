@@ -15,7 +15,7 @@ export class NoworriSearchService {
   constructor(private http: HttpClient) {}
 
   getCompanyDetails(phoneNumber: string): Observable<any> {
-    const url = 'https://api.noworri.com/api/getcompany/' + phoneNumber;
+    const url = 'https://api.pals.africa/api/getcompany/' + phoneNumber;
 
     return this.http.get(url).pipe(
       map((data: CompanyReference) => {
@@ -29,7 +29,7 @@ export class NoworriSearchService {
   }
 
   getCompanyDetailsByUid(uid: string): Observable<any> {
-    const url = 'https://api.noworri.com/api/getcompany/' + uid;
+    const url = 'https://api.pals.africa/api/getcompany/' + uid;
 
     return this.http.get(url).pipe(
       map((data: CompanyReference) => {
@@ -43,7 +43,7 @@ export class NoworriSearchService {
   }
 
   countSearch(phoneNumber: string) {
-    const url = 'https://api.noworri.com/api/countsearch';
+    const url = 'https://api.pals.africa/api/countsearch';
     let params = new HttpParams();
     params = params.append('phone_number', phoneNumber);
     return this.http

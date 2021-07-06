@@ -19,7 +19,7 @@ export class BusinessService {
 
 
   createNewBusiness(businessData) {
-    const url = 'https://api.noworri.com/api/addbusiness';
+    const url = 'https://api.pals.africa/api/addbusiness';
     const formData = new FormData();
     formData.append('business_email', businessData['business_email']);
     formData.append('business_legal_name', businessData['business_legal_name']);
@@ -60,7 +60,7 @@ export class BusinessService {
   }
 
   getBusinessDetails(user_id) {
-    const url = `https://api.noworri.com/api/getuserbusiness/${user_id}`;
+    const url = `https://api.pals.africa/api/getuserbusiness/${user_id}`;
     return this.http.get(url).pipe(
       map((response) => {
         return response;
