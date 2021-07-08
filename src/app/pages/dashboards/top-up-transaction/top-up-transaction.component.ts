@@ -109,6 +109,9 @@ export class TopUpTransactionComponent implements OnInit {
   ) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
+    if(!sessionData){
+      router.navigate(['/auth/login']);
+    }
   }
 
   applyFilter(event: Event) {

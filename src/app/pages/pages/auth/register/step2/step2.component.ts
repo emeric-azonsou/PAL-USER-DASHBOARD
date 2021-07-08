@@ -107,7 +107,7 @@ export class Step2Component implements OnInit {
       .registerPalUser(userData)
       .pipe(take(1))
       .subscribe((response:any) => {
-        if(response?.status === true) {
+        if(response?.user_id) {
           this.isLoadingButton = false;
           this.isButtonActive = true;
           this.router.navigate(["/auth/login"]);
