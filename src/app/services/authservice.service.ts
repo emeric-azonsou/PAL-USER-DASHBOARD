@@ -15,8 +15,8 @@ export class AuthserviceService {
   constructor(private http: HttpClient) {}
 
   login(email, password): Observable<any> {
-    // const url = "https://api.pals.africa/api/login";
-    const url = "http://127.0.0.1:8000/api/login";
+    const url = "https://api.pals.africa/api/login";
+    // const url = "http://127.0.0.1:8000/api/login";
     const body = {
       email: email,
       password: password,
@@ -27,7 +27,7 @@ export class AuthserviceService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -43,15 +43,15 @@ export class AuthserviceService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
   }
 
   registerPalUser(userData): Observable<any> {
-    // const url = environment.registerPalUserUrl;
-    const url = 'http://127.0.0.1:8000/api/register';
+    const url = environment.registerUserUrl;
+    // const url = 'http://127.0.0.1:8000/api/register';
 
     return this.http
       .post(url, userData, { responseType: "json" })

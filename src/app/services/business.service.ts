@@ -102,8 +102,8 @@ export class BusinessService {
   }
 
   getUserBalances(user_id) {
-    // const url = `https://api.pals.africa/api/getbusinessuserbalances/${user_id}`;
-    const url = `http://127.0.0.1:8000/api/getbusinessuserbalances/${user_id}`;
+    const url = `https://api.pals.africa/api/getbusinessuserbalances/${user_id}`;
+    // const url = `http://127.0.0.1:8000/api/getbusinessuserbalances/${user_id}`;
     return this.http.get(url).pipe(
       map(response => {
         return response;

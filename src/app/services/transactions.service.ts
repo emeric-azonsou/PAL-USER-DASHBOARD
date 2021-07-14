@@ -27,8 +27,8 @@ export class TransactionsService {
       params = null;
     }
 
-    const url =`http://127.0.0.1:8000/api/getmerchanttransactions/${userId}`
-    // const url = `${environment.getTransactionsListUrl}${userId}`;
+    // const url =`http://127.0.0.1:8000/api/getmerchanttransactions/${userId}`
+    const url = `${environment.getTransactionsListUrl}${userId}`;
     return this.http.get(url, { params: params }).pipe(
       map((transaction: any) => {
         transaction.data.map((values) => {

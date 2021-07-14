@@ -35,9 +35,10 @@
         <a [routerLink]="['/auth/forgot-password']" class="caption">Forgot Password?</a>
       </div>
 
-      <button (click)="login()" class="authButton" mat-raised-button type="button">
-        SIGNIN
+      <button (click)="login()" [disabled]="isProcessing" class="authButton" mat-raised-button type="button">
+        {{ isProcessing ? 'SIGNING IN...' : 'SIGN IN' }}
       </button>
+      <mat-error *ngIf="hasError"> Invalid email/password !</mat-error>
       <p class="text-secondary text-center">
         Don't have an account?<br />
         <a [routerLink]="['/auth/register/step1']">Click here to create one</a>

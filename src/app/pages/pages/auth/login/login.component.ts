@@ -13,6 +13,7 @@ import { fadeInUp400ms } from "../../../../../@vex/animations/fade-in-up.animati
 import { AuthserviceService } from "src/app/services/authservice.service";
 import { take } from "rxjs/operators";
 import { USER_SESSION_KEY } from "src/app/Models/constants";
+import { throwError } from "rxjs";
 
 @Component({
   selector: "vex-login",
@@ -29,6 +30,8 @@ export class LoginComponent implements OnInit {
 
   icVisibility = icVisibility;
   icVisibilityOff = icVisibilityOff;
+  hasError: boolean = false;
+  isProcessing: boolean = false;
 
   constructor(
     private router: Router,
@@ -57,20 +60,30 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.isProcessing = true
     const email = this.form.value["email"];
     const password = this.form.value["password"];
     this.authService
       .login(email, password)
       .pipe(take(1))
       .subscribe((response) => {
+        this.isProcessing = false;
         if (response && response.currentUser) {
           localStorage.setItem(
             USER_SESSION_KEY,
             JSON.stringify(response.currentUser)
           );
           this.router.navigate(["/dashboards/home"]);
+        } else {
+          this.hasError = true;
         }
-      });
+      }),
+      (error) => {
+        this.isProcessing = false;
+        console.log(error);
+        this.hasError = true;
+        return throwError(error);
+      };
   }
 
   toggleVisibility() {
