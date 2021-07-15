@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GeoLocationService } from "src/app/services/geo-location.service";
 import { AuthserviceService } from "src/app/services/authservice.service";
@@ -15,50 +15,52 @@ import { MailComposeComponent } from "../../../../apps/mail/components/mail-comp
   styleUrls: ["./step2.component.scss"],
 })
 export class Step2Component implements OnInit {
+
   form: FormGroup;
-  phoneNumberPattern = /^\d+$/;
-  inputType = "password";
+
+  inputType = 'password';
   visible = false;
-  step1data: any;
+
+  icVisibility = icVisibility;
+  icVisibilityOff = icVisibilityOff;
+  validationMessages = {
+    lastName: {
+      required: "Full Name  is required.",
+      pattern: "Only characters allowed",
+    },
+    firstName: {
+      required: "Full Name  is required.",
+      pattern: "Only characters allowed",
+    },
+    password: {
+      required: "password  is required.",
+      pattern: "Minimum 6 characters required"
+    },
+    passwordConfirm: {
+      required: "password  is required.",
+    },
+    email: {
+      required: "Email  is required.",
+      email: "Please enter a valid email",
+    },
+    passwordsDoNotMatch: 'The 2 passwords do no match'
+  };
   processedPhoneNo: any;
   prefixCountryCode: any;
   isCorrectPhoneEntry: boolean;
   locationData: any;
-  countryData: {
-    preferredCountries: string[];
-    localizedCountries: { ng: string; gh: string };
-    onlyCountries: string[];
-  };
+  countryData: { preferredCountries: string[]; localizedCountries: { ng: string; gh: string; }; onlyCountries: string[]; };
   waitingDisplayInput: boolean;
-  icVisibility = icVisibility;
-  icVisibilityOff = icVisibilityOff;
-  isValidCountry: boolean;
-  isButtonActive: boolean;
+  step1data: any;
   isLoadingButton: boolean;
+  isButtonActive: boolean;
   errorMessage: string;
-  validationMessages = {
-    companyName: {
-      required: "First name  is required.",
-    },
-    description: {
-      required: "Description is required",
-    },
-    country: {
-      required: "Country is required",
-      pattern: "Please enter a valid Country name",
-    },
-    phoneNumber: {
-      required: "Email  is required.",
-      email: "Please enter a valid email",
-    },
-  };
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
-    private geoLocationService: GeoLocationService,
     private authService: AuthserviceService,
-    private dialog: MatDialog
   ) {
     const step1Data = sessionStorage.getItem("step1RegData");
     if (!!step1Data) {
@@ -69,79 +71,69 @@ export class Step2Component implements OnInit {
   }
 
   ngOnInit() {
-    // this.form = this.fb.group({
-    //   phoneNumber: ['', Validators.required],
-    //   companyName: ['', Validators.required],
-    //   country: ['', Validators.required],
-    //   description: ['', Validators.required],
-    //   terms: ['', Validators.required],
-    // });
-    // this.getLocationData();
-  }
-
-  // getLocationData() {
-  //   new Promise((resolve) => {
-  //     this.geoLocationService.getLocation().subscribe((data) => {
-  //       resolve((this.locationData = data));
-  //     });
-  //   })
-  //     .then(() => {
-  //          this.prefixCountryCode=this.locationData.country_calling_code;
-  //     })
-
-  // }
-
-  // processPhoneNumber() {
-  //   let rawPhoneNumber = this.form.value["phoneNumber"];
-
-  //   let phoneNumberWithoutSpace = rawPhoneNumber.split(/\s/).join("");
-  //   if (phoneNumberWithoutSpace.match(this.phoneNumberPattern)) {
-  //     if (phoneNumberWithoutSpace.charAt(0) === "0") {
-  //       this.isCorrectPhoneEntry = true;
-  //       this.processedPhoneNo =
-  //         this.prefixCountryCode + phoneNumberWithoutSpace.substr(1);
-  //     } else {
-  //       this.isCorrectPhoneEntry = true;
-  //       this.processedPhoneNo = this.prefixCountryCode + phoneNumberWithoutSpace;
-  //     }
-  //   } else {
-  //     this.isCorrectPhoneEntry = false;
-  //   }
-  // }
-
-  // register() {
-  //   this.processPhoneNumber();
-
-  //   let userData = {
-  //     ...this.step1data,
-  //     country: this.form.value['country'],
-  //     company_name: this.form.value['companyName'],
-  //     description: this.form.value['description'],
-  //     phone_no: this.processedPhoneNo,
-  //   };
-  //   this.authService
-  //     .registerPalUser(userData)
-  //     .pipe(take(1))
-  //     .subscribe((response) => {
-  //       if(response?.status === true) {
-  //         this.isLoadingButton = false;
-  //         this.isButtonActive = true;
-  //         setTimeout(() => {
-  //           // this.router.navigate(["/auth/login"]);
-  //           this.openCompose();
-  //         }, 3000);
-  //       } else {
-  //         this.errorMessage = 'Something went wrong please try again';
-  //         this.isLoadingButton = false;
-  //         this.isButtonActive = true;
-  //       }
-  //     });
-  // }
-
-  openCompose() {
-    this.dialog.open(MailComposeComponent, {
-      width: "100%",
-      maxWidth: 700,
+    this.form = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.pattern(/^.{6,}$/)]],
+      passwordConfirm: ['', Validators.required],
+    },
+    {
+      validator: this.validatePasswords
     });
   }
+
+  validatePasswords(form: FormGroup): ValidationErrors {
+    const password = form.value["password"];
+    const confirmPassword = form.value["passwordConfirm"];
+    if (confirmPassword === password) {
+      return null;
+    } else {
+      return {
+        passwordsDoNotMatch: true,
+      };
+    }
+  }
+
+  register() {
+    let userData = {
+      ...this.step1data,
+      first_name: this.form.value["firstName"],
+      last_name: this.form.value["lastName"],
+      email: this.form.value["email"],
+      password: this.form.value['password'],
+    };
+    this.authService
+      .registerPalUser(userData)
+      .pipe(take(1))
+      .subscribe((response:any) => {
+        if(response?.user_id) {
+          this.isLoadingButton = false;
+          this.isButtonActive = true;
+          this.router.navigate(["/auth/login"]);
+          // setTimeout(() => {
+          //   this.router.navigate(["/auth/login"]);
+          //   this.openCompose();
+          // }, 3000);
+        } else {
+          this.errorMessage = 'Something went wrong please try again';
+          this.isLoadingButton = false;
+          this.isButtonActive = true;
+        }
+      });
+  }
+
+
+  toggleVisibility() {
+    if (this.visible) {
+      this.inputType = 'password';
+      this.visible = false;
+      this.cd.markForCheck();
+    } else {
+      this.inputType = 'text';
+      this.visible = true;
+      this.cd.markForCheck();
+    }
+  }
+
 }

@@ -19,7 +19,7 @@ export class BusinessService {
 
 
   createNewBusiness(businessData) {
-    const url = 'https://api.noworri.com/api/addbusiness';
+    const url = 'https://api.pals.africa/api/addbusiness';
     const formData = new FormData();
     formData.append('business_email', businessData['business_email']);
     formData.append('business_legal_name', businessData['business_legal_name']);
@@ -60,18 +60,59 @@ export class BusinessService {
   }
 
   getBusinessDetails(user_id) {
-    const url = `https://api.noworri.com/api/getuserbusiness/${user_id}`;
+    const url = `https://api.pals.africa/api/getuserbusiness/${user_id}`;
     return this.http.get(url).pipe(
       map((response) => {
         return response;
       }),
 
       catchError((error: HttpErrorResponse) => {
-        console.log("Error:", error.message);
+        console.error("Error:", error.message);
         return observableThrowError(error);
       })
     );
   }
 
+  rechargeAcountBalance(accountData) {
+    const url = `https://api.pals.africa/api/rechargeuseraccount`;
+    return this.http.post(url, accountData).pipe(
+      map(response => {
+        return response;
+      }),
 
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error:", error.message);
+        return observableThrowError(error);
+      })
+    )
+  }
+
+  createtransfer(data) {
+    const url = `https://api.pals.africa/api/createtransfer`;
+    return this.http.post(url, data).pipe(
+      map(response => {
+        return response;
+      }),
+
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error:", error.message);
+        return observableThrowError(error);
+      })
+    )
+  }
+
+  getUserBalances(user_id) {
+    const url = `https://api.pals.africa/api/getbusinessuserbalances/${user_id}`;
+    // const url = `http://127.0.0.1:8000/api/getbusinessuserbalances/${user_id}`;
+    return this.http.get(url).pipe(
+      map(response => {
+        return response;
+      }),
+
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error:", error.message);
+        return observableThrowError(error);
+      })
+    )
+  }
 }

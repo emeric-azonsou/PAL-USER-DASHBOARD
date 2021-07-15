@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { PopoverService } from '../../../components/popover/popover.service';
 import { ToolbarUserDropdownComponent } from './toolbar-user-dropdown/toolbar-user-dropdown.component';
 import icPerson from '@iconify/icons-ic/twotone-person';
+import { USER_SESSION_KEY } from '../../../../app/Models/constants';
+import { User } from 'src/app/Models/models.interface';
 
 @Component({
   selector: 'vex-toolbar-user',
@@ -12,11 +14,18 @@ export class ToolbarUserComponent implements OnInit {
 
   dropdownOpen: boolean;
   icPerson = icPerson;
+  userData: User;
+  userPhoto: string;
 
   constructor(private popover: PopoverService,
-              private cd: ChangeDetectorRef) { }
+              private cd: ChangeDetectorRef) {
+
+                const sessionData = localStorage.getItem(USER_SESSION_KEY);
+                this.userData = JSON.parse(sessionData);
+              }
 
   ngOnInit() {
+    this.userPhoto = `https://api.pals.africa/api/public/uploads/users/${this.userData.photo}`;
   }
 
   showPopover(originRef: HTMLElement) {

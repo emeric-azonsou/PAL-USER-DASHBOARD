@@ -14,10 +14,11 @@ import { environment } from "src/environments/environment";
 export class AuthserviceService {
   constructor(private http: HttpClient) {}
 
-  login(phoneNumber, password): Observable<any> {
-    const url = "https://api.noworri.com/api/login";
+  login(email, password): Observable<any> {
+    const url = "https://api.pals.africa/api/login";
+    // const url = "http://127.0.0.1:8000/api/login";
     const body = {
-      mobile_phone: phoneNumber,
+      email: email,
       password: password,
     };
 
@@ -26,14 +27,14 @@ export class AuthserviceService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
   }
 
   register(userData): Observable<any> {
-    const url = "https://api.noworri.com/api/register";
+    const url = "https://api.pals.africa/api/register";
 
     return this.http
       .post(url, userData, { responseType: "json" })
@@ -42,14 +43,15 @@ export class AuthserviceService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
   }
 
   registerPalUser(userData): Observable<any> {
-    const url = environment.registerPalUserUrl;
+    const url = environment.registerUserUrl;
+    // const url = 'http://127.0.0.1:8000/api/register';
 
     return this.http
       .post(url, userData, { responseType: "json" })
@@ -65,7 +67,7 @@ export class AuthserviceService {
   }
 
   uploadPhoto(file: File, uid: string) {
-    const url = `https://api.noworri.com/api/uploadpp`;
+    const url = `https://api.pals.africa/api/uploadpp`;
     const formData: FormData = new FormData();
     formData.append("photo", file);
     formData.append("uid", uid);
@@ -82,7 +84,7 @@ export class AuthserviceService {
   }
 
   mapUploadedFiles(user_id, path) {
-    const url = `https://api.noworri.com/api/matchuserupload`;
+    const url = `https://api.pals.africa/api/matchuserupload`;
     let params = new HttpParams();
     params = params.append("path", path);
     params = params.append("transaction_id", user_id);
@@ -101,7 +103,7 @@ export class AuthserviceService {
   }
 
   getUserDetails(phoneNumber): Observable<any> {
-    const url = "https://api.noworri.com/api/getuserbyphone";
+    const url = "https://api.pals.africa/api/getuserbyphone";
     let params = new HttpParams();
     params = params.append("user_phone", phoneNumber);
 
@@ -119,7 +121,7 @@ export class AuthserviceService {
   }
 
   getUserDetailsById(uid): Observable<any> {
-    const url = "https://api.noworri.com/api/getuserbyid";
+    const url = "https://api.pals.africa/api/getuserbyid";
     let params = new HttpParams();
     params = params.append("uid", uid);
 
@@ -137,7 +139,7 @@ export class AuthserviceService {
   }
 
   aupDateUserAuth(userData) {
-    const url = "https://api.noworri.com/api/register";
+    const url = "https://api.pals.africa/api/register";
     let params = new HttpParams();
     params = params.append("user_uid", userData.user_uid);
     params = params.append("email", userData.email);
@@ -156,7 +158,7 @@ export class AuthserviceService {
   }
 
   updateEmail(userData) {
-    const url = `https://api.noworri.com/api/updateemail`;
+    const url = `https://api.pals.africa/api/updateemail`;
     let params = new HttpParams();
     params = params.append("id", userData.id);
     params = params.append("email", userData.email);
@@ -173,7 +175,7 @@ export class AuthserviceService {
   }
 
   updatePassword(userData) {
-    const url = `https://api.noworri.com/api/forgotpassupdate`;
+    const url = `https://api.pals.africa/api/forgotpassupdate`;
     let params = new HttpParams();
     params = params.append("uid", userData.uid);
     params = params.append("password", userData.password);
@@ -190,7 +192,7 @@ export class AuthserviceService {
   }
 
   verifyUserPassword(userData) {
-    const url = `https://api.noworri.com/api/verifyuserpassword`;
+    const url = `https://api.pals.africa/api/verifyuserpassword`;
     return this.http.post(url, userData, { responseType: "json" }).pipe(
       map((response) => {
         return response;
@@ -203,7 +205,7 @@ export class AuthserviceService {
   }
 
   verifyEmail(userID, otp) {
-    const url = `https://api.noworri.com/api/verifyemail`;
+    const url = `https://api.pals.africa/api/verifyemail`;
     let params = new HttpParams();
     params = params.append("user_id", userID);
     params = params.append("otp", otp);
@@ -220,7 +222,7 @@ export class AuthserviceService {
   }
 
   sendEmailVerificationCode(userData) {
-    const url = `https://api.noworri.com/api/sendotptoemail`;
+    const url = `https://api.pals.africa/api/sendotptoemail`;
     let params = new HttpParams();
     params = params.append("id", userData.id);
     params = params.append("email", userData.email);
@@ -237,7 +239,7 @@ export class AuthserviceService {
   }
 
   sendSMSVerificationCode(userData) {
-    const url = `https://api.noworri.com/api/sendotptomobile`;
+    const url = `https://api.pals.africa/api/sendotptomobile`;
 
     return this.http.post(url, userData, { responseType: "json" }).pipe(
       map((response) => {
@@ -251,7 +253,7 @@ export class AuthserviceService {
   }
 
   verifyUserByOTP(userData) {
-    const url = `https://api.noworri.com/api/verifyotp`;
+    const url = `https://api.pals.africa/api/verifyotp`;
 
     return this.http.post(url, userData, { responseType: "json" }).pipe(
       map((response) => {

@@ -14,6 +14,8 @@ import { IconModule } from '@visurel/iconify-angular';
 import { Step1Component } from './step1/step1.component';
 import { Step2Component } from './step2/step2.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatButtonModule,
     MatTooltipModule,
     MatCheckboxModule,
+    MatSelectModule,
+    MatOptionModule,
     IconModule,
     MatDialogModule
   ]

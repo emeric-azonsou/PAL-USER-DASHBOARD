@@ -1,7 +1,7 @@
 import { IconModule } from '@visurel/iconify-angular';
 
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -18,6 +18,8 @@ import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { MatSelectModule } from "@angular/material/select";
     MatTableModule,
     // Vex
     VexModule,
+    FlexLayoutModule,
     CustomLayoutModule,
     RouterModule,
     MatCardModule,
@@ -42,9 +45,11 @@ import { MatSelectModule } from "@angular/material/select";
     FormsModule,
     MatSelectModule,
     IconModule,
+    MatPaginatorModule
     
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class AppModule {}

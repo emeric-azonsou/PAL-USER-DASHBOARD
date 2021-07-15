@@ -4,6 +4,9 @@ import { aioTableLabels } from './../../../../static-data/aio-table-data';
 import { Customer } from './../../apps/aio-table/interfaces/customer.model';
 import { Component, OnInit } from "@angular/core";
 import { Observable, of, ReplaySubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { USER_SESSION_KEY } from 'src/app/Models/constants';
+import { TransactionsService } from 'src/app/services/transactions.service';
 const ELEMENT_DATA: PeriodicElement[] = [
   {
     position: "BG452515",
@@ -59,7 +62,17 @@ export class HomeComponent implements OnInit {
     "Status",
   ];
   dataSource = ELEMENT_DATA;
-  constructor() {}
+  userData: any;
+  constructor(
+    private router: Router,
+    private transactionsService: TransactionsService
+  ) {
+    const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
+    this.userData = sessionData;
+    if(!sessionData){
+      router.navigate(['/auth/login']);
+    }
+  }
 
   ngOnInit(): void {
     
