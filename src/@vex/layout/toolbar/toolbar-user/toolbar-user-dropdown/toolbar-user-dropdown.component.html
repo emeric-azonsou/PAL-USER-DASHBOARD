@@ -2,9 +2,10 @@
   <div class="dropdown-header" fxLayout="row" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="start center">
       <div class="dropdown-heading-icon" fxLayout="row" fxLayoutAlign="center center">
-        <mat-icon [icIcon]="icPerson"></mat-icon>
+        <mat-icon *ngIf="!userData.photo" [icIcon]="icPerson"></mat-icon>
+        <img *ngIf="userData.photo" [src]="userPhoto" />
       </div>
-      <div class="dropdown-heading">Ibrahim Gounon</div>
+      <div class="dropdown-heading">{{ userData.first_name }} {{ userData.last_name }}</div>
     </div>
 
     <button [matMenuTriggerFor]="settingsMenu" mat-icon-button matTooltip="Settings" matTooltipPosition="before"

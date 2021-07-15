@@ -24,6 +24,8 @@ import icLock from "@iconify/icons-ic/twotone-lock";
 import icNotificationsOff from "@iconify/icons-ic/twotone-notifications-off";
 import { Icon } from "@visurel/iconify-angular";
 import { PopoverRef } from "../../../../components/popover/popover-ref";
+import { USER_SESSION_KEY } from "src/app/Models/constants";
+import { User } from "src/app/Models/models.interface";
 
 export interface OnlineStatus {
   id: "online" | "away" | "dnd" | "offline";
@@ -112,13 +114,20 @@ export class ToolbarUserDropdownComponent implements OnInit {
   icVerifiedUser = icVerifiedUser;
   icLock = icLock;
   icNotificationsOff = icNotificationsOff;
+  userData: User;
+  userPhoto: string;
 
   constructor(
     private cd: ChangeDetectorRef,
     private popoverRef: PopoverRef<ToolbarUserDropdownComponent>
-  ) {}
+  ) {
+    const sessionData = localStorage.getItem(USER_SESSION_KEY);
+    this.userData = JSON.parse(sessionData);
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userPhoto = `https://api.pals.africa/api/public/uploads/users/${this.userData.photo}`;
+  }
 
   setStatus(status: OnlineStatus) {
     this.activeStatus = status;
