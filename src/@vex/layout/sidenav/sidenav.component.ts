@@ -8,6 +8,7 @@ import { ConfigService } from '../../services/config.service';
 import { map } from 'rxjs/operators';
 import icHome from '@iconify/icons-ic/twotone-home';
 import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
+import icAssignment from '@iconify/icons-ic/twotone-assignment';
 
 
 @Component({
@@ -29,6 +30,9 @@ export class SidenavComponent implements OnInit {
   icRadioButtonUnchecked = icRadioButtonUnchecked;
   icHome= icHome;
   icAttachMoney= icAttachMoney;
+  icAssignment=icAssignment
+
+
 
   constructor(private navigationService: NavigationService,
               private layoutService: LayoutService,

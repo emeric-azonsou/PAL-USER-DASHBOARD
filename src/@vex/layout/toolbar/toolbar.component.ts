@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { DisburseCashComponent } from './../../../app/pages/dashboards/disburse-cash/disburse-cash.component';
+import { MatDialog } from '@angular/material/dialog';
 import { Component, ElementRef, HostBinding, Input, OnInit } from '@angular/core';
 import { LayoutService } from '../../services/layout.service';
 import icBookmarks from '@iconify/icons-ic/twotone-bookmarks';
@@ -56,7 +59,10 @@ export class ToolbarComponent implements OnInit {
   constructor(private layoutService: LayoutService,
               private configService: ConfigService,
               private navigationService: NavigationService,
-              private popoverService: PopoverService) { }
+              private popoverService: PopoverService,
+              private dialog: MatDialog,
+              private router:Router
+              ) { }
 
   ngOnInit() {
   }
@@ -93,4 +99,12 @@ export class ToolbarComponent implements OnInit {
   openSearch() {
     this.layoutService.openSearch();
   }
+  openDisbursePopup() {
+    this.dialog.open(DisburseCashComponent)
+  }
+
+  onViewApiPart(){
+   this.router.navigate(['/dashboards/api']);
+  }
+
 }

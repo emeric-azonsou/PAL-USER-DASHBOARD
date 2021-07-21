@@ -1,0 +1,48 @@
+.mat-card {
+    width: 45rem;
+    margin-top: 20px;
+  }
+  .mat-card2 {
+    width: 35rem;
+  }
+  
+  @media (max-width: 634px) {
+    .mat-card2 {
+      display: flex;
+      h4 {
+        position: relative;
+        bottom: 40px;
+      }
+    }
+    .apiInput {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .cardText {
+      display: flex;
+      flex-wrap: wrap;
+  
+      h4 {
+        position: relative;
+        left: 80px;
+        bottom: 50px;
+      }
+      .liveKey {
+        position: relative;
+        bottom: 34px;
+      }
+    }
+  }
+  .speci{
+    display: flex;
+    .ref{
+      margin-left: 10px;
+    }
+  }
+
+
+  .title{
+    margin-top: 30px;
+    margin-left: 38px;
+  }

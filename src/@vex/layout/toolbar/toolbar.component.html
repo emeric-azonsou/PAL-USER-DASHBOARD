@@ -1,17 +1,20 @@
-<div class="toolbar w-full px-gutter" fxLayout="row" fxLayoutAlign="start center" vexContainer>
+<div class="w-full toolbar px-gutter" fxLayout="row" fxLayoutAlign="start center" vexContainer>
   <button (click)="openSidenav()" [fxHide]="!mobileQuery" mat-icon-button type="button">
     <mat-icon [icIcon]="icMenu"></mat-icon>
   </button>
 
-  <a *ngIf="isVerticalLayout$ | async" [routerLink]="['/']" class="ltr:mr-4 rtl:ml-4 block" fxLayout="row"
+  <a *ngIf="isVerticalLayout$ | async" [routerLink]="['/']" class="block ltr:mr-4 rtl:ml-4" fxLayout="row"
     fxLayoutAlign="start center">
     <img class="w-8 select-none" src="assets/img/demo/logo.svg">
-    <h1 [fxHide]="mobileQuery" class="title ltr:pl-4 rtl:pr-4 m-0 select-none">VEX</h1>
+    <h1 [fxHide]="mobileQuery" class="m-0 select-none title ltr:pl-4 rtl:pr-4">VEX</h1>
   </a>
 
 
 
-  <button class="disburs" mat-raised-button type="button">Disburse cash
+  <button class="disburs" mat-raised-button type="button" (click)='openDisbursePopup()'>Disburse cash
+  </button>
+  <button class="apiDoc" (click)='onViewApiPart()' mat-raised-button type="button">
+    Api doc
   </button>
 
   <mat-menu #addNewMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
@@ -20,8 +23,7 @@
 
   </mat-menu>
 
-
-
+  
   <div *ngIf="(isVerticalLayout$ | async) && isNavbarInToolbar$ | async" [fxHide]="mobileQuery" class="px-gutter"
     fxFlex="none" fxLayout="row" fxLayoutAlign="start center">
     <vex-navigation-item *ngFor="let item of navigationItems" [item]="item"></vex-navigation-item>
@@ -29,34 +31,28 @@
 
   <span fxFlex></span>
 
-  <div class="-mx-1 flex items-center">
+  <div class="flex items-center -mx-1">
 
     <!-- 
     <div class="px-1">
       <vex-toolbar-notifications></vex-toolbar-notifications>
     </div> -->
-
-
-
-
-
+    <button class="add-funds" mat-raised-button type="button">Add Funds
+    </button>
     <div class="px-1">
       <vex-toolbar-user></vex-toolbar-user>
     </div>
-
-    <mat-menu #languageMenu="matMenu" overlapTrigger="false" xPosition="before" yPosition="below">
-      <button mat-menu-item>
-        <mat-icon [icIcon]="emojioneUS"></mat-icon>
-        <span>English</span>
-      </button>
-
-      <button mat-menu-item>
-        <mat-icon [icIcon]="emojioneDE"></mat-icon>
-        <span>German</span>
-      </button>
-    </mat-menu>
   </div>
 </div>
 
+
+
+
 <vex-navigation *ngIf="(isVerticalLayout$ | async) && isNavbarBelowToolbar$ | async" [fxHide]="mobileQuery">
 </vex-navigation>
+
+
+
+<!-- disbuse ca -->
+
+

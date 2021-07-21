@@ -1,31 +1,23 @@
 <div (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" [class.collapsed]="collapsed"
-  [class.open]="collapsed && collapsedOpen$ | async" class="sidenav flex flex-col">
-  <div class="sidenav-toolbar flex-none flex items-center">
-    <h6 class=" ltr:pl-4 rtl:pr-4 select-none flex-auto">TransFlexmoney <br>
+  [class.open]="collapsed && collapsedOpen$ | async" class="flex flex-col sidenav">
+  <div class="flex items-center flex-none sidenav-toolbar">
+    <h6 class="flex-auto select-none ltr:pl-4 rtl:pr-4">TransFlexmoney <br>
       <span>4563252</span>
     </h6>
   </div>
   <vex-scrollbar class="flex-auto">
     <div class="sidenav-items">
-      <div class=" grid grid-rows-2 grid-flow-col">
-        <div class="button">
-          <a href='/dashboards/home'>
-            <span>
-              <button class=" text-white  py-1 rounded">
-                <ic-icon [icon]="icHome" class="mr-1" inline="true" size="1.25em"></ic-icon>
-                Home
-              </button>
-            </span>
-          </a>
-        </div>
-        <div class="button">
-          <a href="/dashboards/transactions">
-            <button class="  text-white py-1  rounded">
-              <ic-icon [icon]=" icAttachMoney" class="mr-1" inline="true" size="1.25em"></ic-icon>
-              Top Up Transactions
-            </button>
-          </a>
-        </div>
+      <div class="flex items-center flex-none speci-nav sidenav-toolbar">
+        <a class="item"   href="/dashboards/home" fxLayout="row" matRipple>
+          <ic-icon [icon]="icHome" class="mr-1" inline="true" size="1.50em"></ic-icon>
+          <span class="item-label text-md" fxFlex="auto">Home</span>
+        </a>
+      </div>
+      <div class="flex items-center flex-none speci-nav sidenav-toolbar">
+        <a class="item"  href="/dashboards/transactions" fxLayout="row" matRipple>
+         <ic-icon [icon]="icAssignment" class="mr-1" inline="true" size="1.50rem"></ic-icon>
+          <span class="item-label text-md" fxFlex="auto"> Top Up Transactions</span>
+        </a>
       </div>
       <vex-sidenav-item *ngFor="let item of items; trackBy: trackByRoute" [item]="item" [level]="0"></vex-sidenav-item>
     </div>

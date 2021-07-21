@@ -17,9 +17,19 @@ import { RouterModule } from "@angular/router";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatSelectModule } from "@angular/material/select";
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DisburseCashComponent } from './pages/dashboards/disburse-cash/disburse-cash.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
+
+import { MatDividerModule } from '@angular/material/divider';
+import { ApiComponent } from './pages/dashboards/api/api.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +37,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     HomeComponent,
     TopUpTransactionComponent,
     CurencyBalanceComponent,
+    DisburseCashComponent,
+    ApiComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +46,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BrowserAnimationsModule,
     HttpClientModule,
     MatTableModule,
-    // Vex
     VexModule,
     FlexLayoutModule,
     CustomLayoutModule,
@@ -45,7 +56,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FormsModule,
     MatSelectModule,
     IconModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatMenuModule,
+    IconModule,
+    MatDividerModule
     
   ],
   providers: [],

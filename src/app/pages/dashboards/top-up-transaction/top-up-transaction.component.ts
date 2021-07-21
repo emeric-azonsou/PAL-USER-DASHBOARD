@@ -70,9 +70,6 @@ export class TopUpTransactionComponent implements OnInit {
     "id",
     "created_at",
     "currency",
-    "operator",
-    "phone_no",
-    "palFee",
     "amount",
     "status",
   ];
