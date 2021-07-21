@@ -21,7 +21,7 @@
                             <mat-label>Company legal name
                             </mat-label>
                             <mat-icon [icIcon]="icEdit" (click)='onEdit()' matSuffix></mat-icon>
-                            <input matInput >
+                            <input  disabled matInput >
                         </mat-form-field>
                         <mat-form-field fxFlex="auto">
                             <mat-label>Website</mat-label>
@@ -207,6 +207,32 @@ Yémen	Zambie	Zimbabwe -->
                             </mat-form-field>
                             <mat-form-field fxFlex="auto">
                                 <mat-label>Your address
+                                </mat-label>
+                                <input matInput required>
+                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                            <mat-form-field>
+                                <mat-label>ID type</mat-label>
+                                <mat-select>
+                                   
+                                    <mat-option> Driver licence </mat-option>
+                                    <mat-option> Passport</mat-option>
+                                    <mat-option> National ID card </mat-option>
+                                </mat-select>
+                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+                            </mat-form-field>
+
+
+                            <mat-form-field fxFlex="auto">
+                                <mat-label>Dirth of birth
+                                </mat-label>
+                                <input type="date" matInput required>
+                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="auto">
+                                <mat-label>Nationality 
                                 </mat-label>
                                 <input matInput required>
                                 <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>

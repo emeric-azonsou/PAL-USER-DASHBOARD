@@ -1,14 +1,14 @@
 <div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
-  <div @fadeInUp class="card overflow-hidden w-full max-w-xs">
+  <div @fadeInUp class="w-full max-w-xs overflow-hidden card">
     <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
-      <div class="fill-current text-center">
-        <!-- <img class="w-16" src="assets/img/demo/logo.svg"> -->
+      <div class="text-center fill-current">
+        <img class="w-16" src="assets\logo\logo_pal-removebg-preview.png">
       </div>
     </div>
 
-    <div class="text-center mt-4">
-      <h2 class="title m-0">Welcome back</h2>
-      <h4 class="body-2 text-secondary m-0">Sign in with your credentials below.</h4>
+    <div class="mt-4 text-center">
+      <h2 class="m-0 title">SIGN IN</h2>
+    
     </div>
 
     <div [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px">
@@ -39,7 +39,7 @@
         {{ isProcessing ? 'SIGNING IN...' : 'SIGN IN' }}
       </button>
       <mat-error *ngIf="hasError"> Invalid email/password !</mat-error>
-      <p class="text-secondary text-center">
+      <p class="text-center text-secondary">
         Don't have an account?<br />
         <a [routerLink]="['/auth/register/step1']">Click here to create one</a>
       </p>

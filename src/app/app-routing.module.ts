@@ -1,3 +1,4 @@
+import { ApiComponent } from './pages/dashboards/api/api.component';
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { CustomLayoutComponent } from "./custom-layout/custom-layout.component";
@@ -89,6 +90,10 @@ const routes: VexRoutes = [
       {
         path: "profil",
         component: ProfilComponent,
+      },
+      {
+        path:'api',
+        component:ApiComponent
       },
       {
         path: "",

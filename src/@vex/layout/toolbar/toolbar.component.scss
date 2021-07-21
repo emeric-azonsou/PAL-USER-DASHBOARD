@@ -21,7 +21,20 @@ a {
   text-decoration: none;
 }
 .disburs {
-  background: #010d4a 0% 0% no-repeat padding-box;
+  background: #2BB996 0% 0% no-repeat padding-box;
+  color: #ffffff;
+  opacity: 1;
+}
+.apiDoc{
+  background:  0% 0% no-repeat padding-box;
+  color: #010d4a;
+  border:  1px solid #aaabaf  !important;
+  opacity: 1;
+  margin-left: 10px;
+}
+
+.add-funds {
+  background-color: #010d4a ;
   color: #ffffff;
   opacity: 1;
 }
