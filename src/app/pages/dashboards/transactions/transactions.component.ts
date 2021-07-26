@@ -1,5 +1,13 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { MatTableDataSource } from "@angular/material/table";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TRANSACTION_TABLE_LABELS, USER_SESSION_KEY } from 'src/app/Models/constants';
+import { TransactionsService } from 'src/app/services/transactions.service';
 import icPhone from "@iconify/icons-ic/twotone-phone";
 import icMail from "@iconify/icons-ic/twotone-mail";
 import icMap from "@iconify/icons-ic/twotone-map";
@@ -10,14 +18,7 @@ import icAdd from "@iconify/icons-ic/twotone-add";
 import icFilterList from "@iconify/icons-ic/twotone-filter-list";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icFolder from "@iconify/icons-ic/twotone-folder";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { Subject } from "rxjs";
-import { FormControl } from "@angular/forms";
-import { TRANSACTION_TABLE_LABELS, USER_SESSION_KEY } from "src/app/Models/constants";
-import { Router } from "@angular/router";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { takeUntil } from "rxjs/operators";
+
 const ELEMENT_DATA: PeriodicElement[] = [
   {
     position: "BG452515",
@@ -61,11 +62,12 @@ export interface PeriodicElement {
   status: string;
 }
 @Component({
-  selector: "vex-top-up-transaction",
-  templateUrl: "./top-up-transaction.component.html",
-  styleUrls: ["./top-up-transaction.component.scss"],
+  selector: 'vex-transactions',
+  templateUrl: './transactions.component.html',
+  styleUrls: ['./transactions.component.scss']
 })
-export class TopUpTransactionComponent implements OnInit {
+export class TransactionsComponent implements OnInit {
+
   displayedColumns: string[] = [
     "id",
     "created_at",
@@ -131,6 +133,7 @@ export class TopUpTransactionComponent implements OnInit {
   }
 
   getStatusLabel(status: string) {
+    console.log('status', status);
     return this.statusLabels.find((label) => label.text === status);
   }
 

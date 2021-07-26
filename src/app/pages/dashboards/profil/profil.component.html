@@ -1,261 +1,287 @@
-
 <div [@stagger]="true" class="p-gutter" vexContainer>
-    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
-        <div @fadeInUp class="card" fxFlex="auto">
-            <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
-                <h2 class="m-0 title">Profile </h2>
-            </div>
-            <div>
-                <div class="top">
-                    <div class="proFilPhoto">
-                        <img src="../../../../assets/img/demo/1.jpg" alt="">
-                    </div>
-                    <div>
-                        <angular-file-uploader [config]="profilPhotoConfig">
-                        </angular-file-uploader>
-                    </div>
-                </div>
-                <div class="px-6 py-4" fxLayout="column">
-                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
-                        <mat-form-field fxFlex="auto">
-                            <mat-label>Company legal name
-                            </mat-label>
-                            <mat-icon [icIcon]="icEdit" (click)='onEdit()' matSuffix></mat-icon>
-                            <input  disabled matInput >
-                        </mat-form-field>
-                        <mat-form-field fxFlex="auto">
-                            <mat-label>Website</mat-label>
-                            <input matInput required>
-                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                        </mat-form-field>
-                    </div>
-                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
-                        <mat-form-field>
-                            <mat-label>Country of the establishment </mat-label>
-                            <mat-select>
-                                <mat-option>Algérie</mat-option>
-                                <mat-option>Allemagne</mat-option>
-                                <mat-option> Andorre</mat-option>
-                                <mat-option>Biélorussie </mat-option>
-                                <mat-option> Afghanistan</mat-option>
-                                <mat-option> Afrique du Sud</mat-option>
-                                <mat-option>Albanie </mat-option>
-                                <mat-option> Angola Anguilla</mat-option>
-                                <mat-option> Antigua-et-Barbuda</mat-option>
-                                <mat-option> Antilles Néerlandaises</mat-option>
-                                <mat-option> Arabie Saoudite Argentine</mat-option>
-                                <mat-option> Australie</mat-option>
-                                <mat-option> Arménie Aruba </mat-option>
-                                <mat-option> Autriche</mat-option>
-                                <mat-option> Azerbaïdjan </mat-option>
-                                <mat-option> Bahamas</mat-option>
-                                <mat-option> Barbade</mat-option>
-                                <mat-option> Bangladesh</mat-option>
-                                <mat-option> Bahreïn</mat-option>
-                                <mat-option> Belgique</mat-option>
-                                <mat-option> Belize</mat-option>
-                                <mat-option> Bénin</mat-option>
-                                <mat-option> Bermudes</mat-option>
-                                <mat-option> Bhoutan</mat-option>
-
-
-                                <!-- 	
-Birmanie (Myanmar)	Bolivie	Bosnie-Herzégovine
-Botswana	Brésil	Brunei
-Bulgarie	Burkina Faso	Burundi
-Cambodge	Cameroun	Canada
-Cap-vert	Chili	Chine
-Chypre	Colombie	Comores
-Corée du Nord	Corée du Sud	Costa Rica
-Côte d'Ivoire	Croatie	Cuba
-Danemark	Djibouti	Dominique
-Égypte	Émirats Arabes Unis	Équateur
-Érythrée	Espagne	Estonie
-États Fédérés de Micronésie	États-Unis	Éthiopie
-Fidji	Finlande	France
-Gabon	Gambie	Géorgie
-Géorgie du Sud et les Îles Sandwich du Sud	Ghana	Gibraltar
-Grèce	Grenade	Groenland
-Guadeloupe	Guam	Guatemala
-Guinée	Guinée-Bissau	Guinée Équatoriale
-Guyana	Guyane Française	Haïti
-Honduras	Hong-Kong	Hongrie
-Île Christmas	Île de Man	Île Norfolk
-Îles Åland	Îles Caïmanes	Îles Cocos (Keeling)
-Îles Cook	Îles Féroé	Îles Malouines
-Îles Mariannes du Nord	Îles Marshall	Îles Pitcairn
-Îles Salomon	Îles Turks et Caïques	Îles Vierges Britanniques
-Îles Vierges des États-Unis	Inde	Indonésie
-Iran	Iraq	Irlande
-Islande	Israël	Italie
-Jamaïque	Japon	Jordanie
-Kazakhstan	Kenya	Kirghizistan
-Kiribati	Koweït	Laos
-Le Vatican	Lesotho	Lettonie
-Liban	Libéria	Libye
-Liechtenstein	Lituanie	Luxembourg
-Macao	Madagascar	Malaisie
-Malawi	Maldives	Mali
-Malte	Maroc	Martinique
-Maurice	Mauritanie	Mayotte
-Mexique	Moldavie	Monaco
-Mongolie	Monténégro	Montserrat
-Mozambique	Namibie	Nauru
-Népal	Nicaragua	Niger
-Nigéria	Niué	Norvège
-Nouvelle-Calédonie	Nouvelle-Zélande	Oman
-Ouganda	Ouzbékistan	Pakistan
-Palaos	Panama	Papouasie-Nouvelle-Guinée
-Paraguay	Pays-Bas	Pérou
-Philippines	Pologne	Polynésie Française
-Porto Rico	Portugal	Qatar
-République Centrafricaine	République de Macédoine	République Démocratique du Congo
-République Dominicaine	République du Congo	République Tchèque
-Réunion	Roumanie	Royaume-Uni
-Russie	Rwanda	Saint-Kitts-et-Nevis
-Saint-Marin	Saint-Pierre-et-Miquelon	Saint-Vincent-et-les Grenadines
-Sainte-Hélène	Sainte-Lucie	Salvador
-Samoa	Samoa Américaines	Sao Tomé-et-Principe
-Sénégal	Serbie	Seychelles
-Sierra Leone	Singapour	Slovaquie
-Slovénie	Somalie	Soudan
-Sri Lanka	Suède	Suisse
-Suriname	Svalbard et Jan Mayen	Swaziland
-Syrie	Tadjikistan	Taïwan
-Tanzanie	Tchad	Terres Australes Françaises
-Thaïlande	Timor Oriental	Togo
-Tonga	Trinité-et-Tobago	Tunisie
-Turkménistan	Turquie	Tuvalu
-Ukraine	Uruguay	Vanuatu
-Venezuela	Viet Nam	Wallis et Futuna
-Yémen	Zambie	Zimbabwe -->
-
-                            </mat-select>
-                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                        </mat-form-field>
-                        <mat-form-field fxFlex="auto">
-                            <mat-label>Describe what your company does
-                            </mat-label>
-                            <input matInput required>
-                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Staff Size </mat-label>
-                            <mat-select>
-                                <mat-option>1-5 people </mat-option>
-                                <mat-option>5-50 people</mat-option>
-                                <mat-option>+50 people</mat-option>
-                            </mat-select>
-                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                        </mat-form-field>
-                    </div>
-                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
-                        <mat-form-field>
-                            <mat-label>Industry </mat-label>
-                            <mat-select>
-                                <mat-option>Agriculture</mat-option>
-                                <mat-option> Commerce</mat-option>
-                                <mat-option> Financial service</mat-option>
-                                <mat-option> Money Transfer </mat-option>
-                                <mat-option> Education</mat-option>
-                                <mat-option> Gaming</mat-option>
-                                <mat-option> Health</mat-option>
-                                <mat-option> Hospitality</mat-option>
-                                <mat-option> Logistic</mat-option>
-                                <mat-option> Travel</mat-option>
-                                <mat-option> Leisure & Entertainment </mat-option>
-                                <mat-option> Utilities</mat-option>
-                                <mat-option> Non profits </mat-option>
-                            </mat-select>
-                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                        </mat-form-field>
-                        <mat-form-field fxFlex="auto">
-                            <mat-label>Business phone</mat-label>
-                            <input matInput required>
-                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                        </mat-form-field>
-                        <mat-form-field fxFlex="auto">
-                            <mat-label>Company physical address</mat-label>
-                            <input matInput required>
-                            <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                        </mat-form-field>
-                    </div>
-                    <div fxLayout="row">
-                        <mat-label class='upload'>Upload your company registration document </mat-label>
-                    </div>
-                    <div fxLayout="row" fxLayoutAlign="start">
-                        <angular-file-uploader [config]="afuConfig">
-                        </angular-file-uploader>
-                    </div>
-                    <div class="px-6 py-4 owner" fxLayout="column">
-                        <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
-                            <h2 class="m-0 title">Owner
-                            </h2>
-                        </div>
-                        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
-                            <mat-form-field fxFlex="auto">
-                                <mat-label>Your full name
-                                </mat-label>
-                                <input matInput>
-                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                            </mat-form-field>
-                            <mat-form-field fxFlex="auto">
-                                <mat-label>Your full name
-                                </mat-label>
-                                <input matInput required>
-                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                            </mat-form-field>
-                            <mat-form-field fxFlex="auto">
-                                <mat-label>Your address
-                                </mat-label>
-                                <input matInput required>
-                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                            </mat-form-field>
-                        </div>
-                        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
-                            <mat-form-field>
-                                <mat-label>ID type</mat-label>
-                                <mat-select>
-                                   
-                                    <mat-option> Driver licence </mat-option>
-                                    <mat-option> Passport</mat-option>
-                                    <mat-option> National ID card </mat-option>
-                                </mat-select>
-                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                            </mat-form-field>
-
-
-                            <mat-form-field fxFlex="auto">
-                                <mat-label>Dirth of birth
-                                </mat-label>
-                                <input type="date" matInput required>
-                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                            </mat-form-field>
-                            <mat-form-field fxFlex="auto">
-                                <mat-label>Nationality 
-                                </mat-label>
-                                <input matInput required>
-                                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
-                            </mat-form-field>
-                        </div>
-                        <div fxLayout="row">
-                            <mat-label class='upload'>Upload your ID document </mat-label>
-                        </div>
-                        <div fxLayout="row" fxLayoutAlign="start">
-                            <angular-file-uploader [config]="afuConfig">
-                            </angular-file-uploader>
-                        </div>
-                        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
-                            <button color="primary" mat-raised-button type="button">SUBMIT</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+    <div [formGroup]="businessForm" @fadeInUp class="card" fxFlex="auto">
+      <div
+        class="px-6 py-4 border-b"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+      >
+        <h2 class="m-0 title">Profile</h2>
+      </div>
+      <div>
+        <div class="top">
+          <div class="proFilPhoto">
+            <mat-icon [icIcon]="icPerson"></mat-icon>
+            <!-- <img src="../../../../assets/img/demo/1.jpg" alt="" /> -->
+          </div>
+          <div>
+            <mat-file-upload
+              [labelText]="''"
+              [uploadButtonText]="'upload'"
+              [showUploadButton]="false"
+              [selectButtonText]="'Upload Company Logo'"
+              [acceptedTypes]="'.png, .jpg, .jpeg'"
+              (uploadClicked)="uploadCompanyLogo($event)"
+              (change)="uploadCompanyLogo($event)"
+            >
+            </mat-file-upload>
+            <!-- <angular-file-uploader [config]="profilPhotoConfig">
+            </angular-file-uploader> -->
+          </div>
         </div>
+        <div class="px-6 py-4" fxLayout="column">
+          <div
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            fxLayoutGap="16px"
+            fxLayoutGap.lt-sm="0"
+          >
+            <mat-form-field fxFlex="auto">
+              <mat-label>Company legal name </mat-label>
+              <mat-icon
+                [icIcon]="icEdit"
+                matSuffix
+              ></mat-icon>
+              <input matInput #input formControlName="business_legal_name" />
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Website</mat-label>
+              <input matInput #input formControlName="website" />
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+            </mat-form-field>
+          </div>
+          <div
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            fxLayoutGap="16px"
+            fxLayoutGap.lt-sm="0"
+          >
+            <mat-form-field appearance="fill">
+              <mat-label class="text-xs text-gray-300">Country</mat-label>
+              <mat-select formControlName="country">
+                <mat-option value="" disabled>Select</mat-option>
+                <mat-option
+                  *ngFor="let country of countries"
+                  [value]="country.code"
+                  >{{ country.name }}</mat-option
+                >
+                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+              </mat-select>
+              <mat-error>
+                <span
+                  *ngFor="
+                    let error of businessForm.get('country').errors | keyvalue
+                  "
+                >
+                  {{ validationMessages.country[error.key] }}
+                </span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Describe what your company does </mat-label>
+              <input matInput #input formControlName="description" />
+              <mat-error>
+                <span
+                  *ngFor="
+                    let error of businessForm.get('description').errors
+                      | keyvalue
+                  "
+                >
+                  {{ validationMessages.description[error.key] }}
+                </span>
+              </mat-error>
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Staff Size </mat-label>
+              <mat-select formControlName="staff_size">
+                <mat-option value="1-10">1-10 people </mat-option>
+                <mat-option value="10-50">10-50 people</mat-option>
+                <mat-option  value="50+">+50 people</mat-option>
+              </mat-select>
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+            </mat-form-field>
+          </div>
+          <div
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            fxLayoutGap="16px"
+            fxLayoutGap.lt-sm="0"
+          >
+            <mat-form-field appearance="fill">
+              <mat-label class="text-xs text-gray-300">Industry</mat-label>
+              <mat-select formControlName="industry">
+                <mat-option value="" disabled>Select</mat-option>
+                <mat-option
+                  *ngFor="let industry of industries"
+                  [value]="industry"
+                  >{{ industry }}</mat-option
+                >
+              </mat-select>
+              <mat-error>
+                <span
+                  *ngFor="
+                    let error of businessForm.get('industry').errors | keyvalue
+                  "
+                >
+                  {{ validationMessages.industry[error.key] }}
+                </span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Business phone</mat-label>
+              <input matInput required formControlName="business_phone" />
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+            </mat-form-field>
+            <mat-form-field fxFlex="auto">
+              <mat-label>Company physical address</mat-label>
+              <input matInput required formControlName="business_address" />
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row">
+            <mat-label class="upload"
+              >Upload your company registration document
+            </mat-label>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start">
+            <!-- <angular-file-uploader [config]="afuConfig">
+            </angular-file-uploader> -->
+            <mat-file-upload
+              *ngIf="isLegallyRegistered"
+              [labelText]="''"
+              [uploadButtonText]="'upload'"
+              [showUploadButton]="false"
+              [selectButtonText]="'Upload Company document'"
+              [acceptedTypes]="'.doc, .pdf'"
+              (uploadClicked)="uploadCompanyDoc($event)"
+              (change)="uploadCompanyDoc($event)"
+            >
+            </mat-file-upload>
+          </div>
+          <div class="px-6 py-4 owner" fxLayout="column">
+            <div
+              class="px-6 py-4 border-b"
+              fxLayout="row"
+              fxLayoutAlign="start center"
+            >
+              <h2 class="m-0 title">Owner</h2>
+            </div>
+            <div
+              fxLayout="row"
+              fxLayout.lt-sm="column"
+              fxLayoutGap="16px"
+              fxLayoutGap.lt-sm="0"
+            >
+              <mat-form-field fxFlex="auto">
+                <mat-label>Your Full name </mat-label>
+                <input matInput #input formControlName="owner_full_name" />
+                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+                <mat-error>
+                  <span
+                    *ngFor="
+                      let error of businessForm.get('owner_full_name').errors
+                        | keyvalue
+                    "
+                  >
+                    {{ validationMessages.owner_full_name[error.key] }}
+                  </span>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex="auto">
+                <mat-label>Your address </mat-label>
+                <input matInput required formControlName="owner_address" />
+                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+                <mat-error>
+                  <span
+                    *ngFor="
+                      let error of businessForm.get('owner_address').errors
+                        | keyvalue
+                    "
+                  >
+                    {{ validationMessages.owner_address[error.key] }}
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div
+              fxLayout="row"
+              fxLayout.lt-sm="column"
+              fxLayoutGap="16px"
+              fxLayoutGap.lt-sm="0"
+            >
+              <mat-form-field>
+                <mat-label>ID type</mat-label>
+                <mat-select formControlName="id_type">
+                  <mat-option value="Driver Licence"> Driver licence </mat-option>
+                  <mat-option value="Passport">Passport </mat-option>
+                  <mat-option value="National ID card"> National ID card </mat-option>
+                </mat-select>
+                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+              </mat-form-field>
 
-
-        
-
-
-
-
+              <mat-form-field fxFlex="auto">
+                <mat-label>Dirth of birth </mat-label>
+                <input
+                  type="date"
+                  matInput
+                  required
+                  #input
+                  formControlName="dob"
+                />
+                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+              </mat-form-field>
+              <mat-form-field fxFlex="auto">
+                <mat-label class="text-xs text-gray-300"
+                  >Nationnality</mat-label
+                >
+                <mat-select formControlName="nationality">
+                  <mat-option value="" disabled>Select</mat-option>
+                  <mat-option
+                    *ngFor="let nationality of nationalities"
+                    [value]="nationality"
+                    >{{ nationality }}
+                  </mat-option>
+                </mat-select>
+                <mat-error>
+                  <span
+                    *ngFor="
+                      let error of businessForm.get('nationality').errors
+                        | keyvalue
+                    "
+                  >
+                    {{ validationMessages.nationality[error.key] }}
+                  </span>
+                </mat-error>
+                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+              </mat-form-field>
+            </div>
+            <div fxLayout="row">
+              <mat-label class="upload">Upload your ID document </mat-label>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start">
+              <!-- <angular-file-uploader [config]="afuConfig">
+              </angular-file-uploader> -->
+              <mat-file-upload
+                [labelText]="''"
+                [uploadButtonText]="'upload'"
+                [uploadButtonType]="'button'"
+                [showUploadButton]="false"
+                [selectButtonText]="'Upload your ID *'"
+                [acceptedTypes]="'.doc, .pdf, .jpg, .jpeg, .png'"
+                (uploadClicked)="uploadID($event)"
+                (change)="uploadID($event)"
+              >
+              </mat-file-upload>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+              <button color="primary" mat-raised-button type="button" (click)="addBusiness()">
+                SUBMIT
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

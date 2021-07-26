@@ -27,8 +27,8 @@ export class TransactionsService {
       params = null;
     }
 
-    // const url =`http://127.0.0.1:8000/api/getmerchanttransactions/${userId}`
-    const url = `${environment.getTransactionsListUrl}${userId}`;
+    const url = `http://127.0.0.1:8000/api/getmerchanttransactions/${userId}`;
+    // const url = `${environment.getTransactionsListUrl}${userId}`;
     return this.http.get(url, { params: params }).pipe(
       map((transaction: any) => {
         transaction.data.map((values) => {
@@ -52,7 +52,7 @@ export class TransactionsService {
         return transaction;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -72,7 +72,7 @@ export class TransactionsService {
         return data;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -86,7 +86,7 @@ export class TransactionsService {
         return data;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -104,7 +104,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -117,7 +117,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -130,7 +130,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -139,21 +139,19 @@ export class TransactionsService {
   processBusinessPayout(data) {
     const url = `${environment.processPayoutUrl}`;
 
-    return this.http
-      .post(url, data, { responseType: "json" })
-      .pipe(
-        map((response: any) => {
-          const releaseFundsData = response.data;
-          // if (releaseFundsData) {
-          //   this.finalizeReleasePaystack(releaseFundsData);
-          // }
-          return releaseFundsData;
-        }),
-        catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
-          return observableThrowError(error);
-        })
-      );
+    return this.http.post(url, data, { responseType: "json" }).pipe(
+      map((response: any) => {
+        const releaseFundsData = response.data;
+        // if (releaseFundsData) {
+        //   this.finalizeReleasePaystack(releaseFundsData);
+        // }
+        return releaseFundsData;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
+        return observableThrowError(error);
+      })
+    );
   }
 
   initiateWithdrawal(data) {
@@ -177,7 +175,7 @@ export class TransactionsService {
           return releaseFundsData;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
@@ -199,7 +197,7 @@ export class TransactionsService {
           return releaseFundsData;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
@@ -217,7 +215,7 @@ export class TransactionsService {
           return response.data;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
@@ -226,14 +224,14 @@ export class TransactionsService {
   cancelOrder(data) {
     const url = `${environment.cancelTransactionUrl}`;
     let params = new HttpParams();
-    params = params.append('id', data.id);
-    params = params.append('canceled_by', data.canceled_by);
-    return this.http.get(url, {params}).pipe(
+    params = params.append("id", data.id);
+    params = params.append("canceled_by", data.canceled_by);
+    return this.http.get(url, { params }).pipe(
       map((response) => {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -246,7 +244,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -259,7 +257,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -278,7 +276,7 @@ export class TransactionsService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
@@ -299,7 +297,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -320,7 +318,7 @@ export class TransactionsService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
@@ -361,7 +359,7 @@ export class TransactionsService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error:", error.message);
+          console.error("Error:", error.message);
           return observableThrowError(error);
         })
       );
@@ -374,7 +372,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error:", error.message);
+        console.error("Error:", error.message);
         return observableThrowError(error);
       })
     );
@@ -387,7 +385,27 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error: ", error.message);
+        console.error("Error: ", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
+  getModulesData(credentials): Observable<any> {
+    console.log('credentials', credentials);
+    // const url = environment.getModulesDataUrl;
+    const url = 'http://127.0.0.1:8000/api/getmodulesdata';
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${credentials}`
+    });
+    return this.http.get(url, { headers: headers }).pipe(
+        map((response) => {
+          return response['data'];
+        }
+      ),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error: ", error.message);
         return observableThrowError(error);
       })
     );
@@ -402,7 +420,7 @@ export class TransactionsService {
         return response.data;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error: ", error.message);
+        console.error("Error: ", error.message);
         return observableThrowError(error);
       })
     );
@@ -421,7 +439,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -440,7 +458,7 @@ export class TransactionsService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
@@ -453,7 +471,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -467,7 +485,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -489,7 +507,7 @@ export class TransactionsService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
@@ -505,7 +523,7 @@ export class TransactionsService {
     params = params.append("bank_code", details.bank_code);
     params = params.append("currency", details.currency);
     params = params.append("recipient_code", details.recipient_code);
-    
+
     return this.http
       .post(url, null, { responseType: "json", params: params })
       .pipe(
@@ -513,30 +531,27 @@ export class TransactionsService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
   }
 
-  createTransaction(transactionDetails) {
-    const url = environment.createTransactionUrl;
-    if (!transactionDetails.deadline || !transactionDetails.revision) {
-      transactionDetails.deadline = "";
-      transactionDetails.revision = 0;
-    }
-    if (!transactionDetails.file_path) {
-      transactionDetails.file_path = "N/A";
-    }
-
+  createTransaction(transactionDetails, credentials) {
+    // const url = environment.createTransferUrl;
+    const url = 'http://127.0.0.1:8000/api/createtransfer';
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${credentials}`
+    })
     return this.http
-      .post(url, transactionDetails, { responseType: "json" })
+      .post(url, transactionDetails, { headers ,responseType: "json" })
       .pipe(
         map((response) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );
@@ -549,13 +564,13 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
   }
 
-  getUserTransactionSummary(user_id, range =  null) {
+  getUserTransactionSummary(user_id, range = null) {
     let params = new HttpParams();
     if (range) {
       params = params.append("from", range.from);
@@ -564,12 +579,12 @@ export class TransactionsService {
       params = null;
     }
     const url = `${environment.getBusinessTransactionsSummaryUrl}${user_id}`;
-    return this.http.get(url, {params: params}).pipe(
+    return this.http.get(url, { params: params }).pipe(
       map((response) => {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -582,7 +597,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log("Error", error.message);
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -607,7 +622,7 @@ export class TransactionsService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
           return observableThrowError(error);
         })
       );

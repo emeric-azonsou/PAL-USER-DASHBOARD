@@ -26,6 +26,7 @@ import { Icon } from "@visurel/iconify-angular";
 import { PopoverRef } from "../../../../components/popover/popover-ref";
 import { USER_SESSION_KEY } from "src/app/Models/constants";
 import { User } from "src/app/Models/models.interface";
+import { Router } from "@angular/router";
 
 export interface OnlineStatus {
   id: "online" | "away" | "dnd" | "offline";
@@ -48,7 +49,7 @@ export class ToolbarUserDropdownComponent implements OnInit {
       label: "Business Settings",
       description: "",
       colorClass: "text-teal",
-      route: "/dashboards/profil",
+      route: "/dashboards/profile",
     },
   ];
 
@@ -95,6 +96,7 @@ export class ToolbarUserDropdownComponent implements OnInit {
 
   constructor(
     private cd: ChangeDetectorRef,
+    private router: Router,
     private popoverRef: PopoverRef<ToolbarUserDropdownComponent>
   ) {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
@@ -112,5 +114,11 @@ export class ToolbarUserDropdownComponent implements OnInit {
 
   close() {
     this.popoverRef.close();
+  }
+
+  logout() {
+    localStorage.clear();
+    sessionStorage.clear();
+    this.router.navigate(['/login']);
   }
 }

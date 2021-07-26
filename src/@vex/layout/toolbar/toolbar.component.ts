@@ -21,6 +21,7 @@ import icArrowDropDown from '@iconify/icons-ic/twotone-arrow-drop-down';
 import { PopoverService } from '../../components/popover/popover.service';
 import { MegaMenuComponent } from '../../components/mega-menu/mega-menu.component';
 import icSearch from '@iconify/icons-ic/twotone-search';
+import { RechargeAccountComponent } from 'src/app/pages/dashboards/recharge-account/recharge-account.component';
 
 @Component({
   selector: 'vex-toolbar',
@@ -101,6 +102,10 @@ export class ToolbarComponent implements OnInit {
   }
   openDisbursePopup() {
     this.dialog.open(DisburseCashComponent)
+  }
+
+  openRechargePopup() {
+    this.dialog.open(RechargeAccountComponent)
   }
 
   onViewApiPart(){

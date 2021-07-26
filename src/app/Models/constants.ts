@@ -3,6 +3,7 @@ export const SESSION_STORAGE_KEY = "user_session_data";
 export const BUSINESS_DATA_KEY = "business_data";
 export const BUSINESS_ACCOUNT_DATA_KEY = "business_acc_data";
 export const SUMMARY_DATA_KEY = "summary_data";
+
 export const PAYOUT_TABLE_LABELS = [
     {
       text: 'Pending',

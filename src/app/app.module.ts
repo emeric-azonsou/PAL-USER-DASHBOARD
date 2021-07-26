@@ -30,6 +30,9 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { MatDividerModule } from '@angular/material/divider';
 import { ApiComponent } from './pages/dashboards/api/api.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
+import { RechargeAccountComponent } from './pages/dashboards/recharge-account/recharge-account.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,8 @@ import { ApiComponent } from './pages/dashboards/api/api.component';
     TopUpTransactionComponent,
     CurencyBalanceComponent,
     DisburseCashComponent,
+    TransactionsComponent,
+    RechargeAccountComponent,
     ApiComponent,
   ],
   imports: [
@@ -67,8 +72,8 @@ import { ApiComponent } from './pages/dashboards/api/api.component';
     MatSelectModule,
     MatMenuModule,
     IconModule,
-    MatDividerModule
-    
+    MatDividerModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

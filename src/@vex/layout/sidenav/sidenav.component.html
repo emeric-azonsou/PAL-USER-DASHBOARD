@@ -1,22 +1,35 @@
 <div (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" [class.collapsed]="collapsed"
   [class.open]="collapsed && collapsedOpen$ | async" class="flex flex-col sidenav">
   <div class="flex items-center flex-none sidenav-toolbar">
-    <h6 class="flex-auto select-none ltr:pl-4 rtl:pr-4">TransFlexmoney <br>
-      <span>4563252</span>
+    <h6 *ngIf="hasBusinessRegistered" class="flex-auto select-none ltr:pl-4 rtl:pr-4">{{ businessUserData.business_legal_name }} <br>
+      <span>{{businessUserData.id}}</span>
+    </h6>
+    <h6 *ngIf="!hasBusinessRegistered" class="flex-auto select-none ltr:pl-4 rtl:pr-4">
+      <a class="item"   href="/dashboards/profile">
+        <span>Add Business</span>
+      </a>
+      <br>
+      <p>[No Business Begistered]</p>
     </h6>
   </div>
   <vex-scrollbar class="flex-auto">
     <div class="sidenav-items">
       <div class="flex items-center flex-none speci-nav sidenav-toolbar">
-        <a class="item"   href="/dashboards/home" fxLayout="row" matRipple>
+        <a class="item"  [routerLink]="['/dashboards/home']" routerLinkActive="router-link-active" fxLayout="row" matRipple>
           <ic-icon [icon]="icHome" class="mr-1" inline="true" size="1.50em"></ic-icon>
           <span class="item-label text-md" fxFlex="auto">Home</span>
         </a>
       </div>
       <div class="flex items-center flex-none speci-nav sidenav-toolbar">
-        <a class="item"  href="/dashboards/transactions" fxLayout="row" matRipple>
+        <a class="item" [routerLink]="['/dashboards/top-up-transactions']" routerLinkActive="router-link-active" fxLayout="row" matRipple>
          <ic-icon [icon]="icAssignment" class="mr-1" inline="true" size="1.50rem"></ic-icon>
           <span class="item-label text-md" fxFlex="auto"> Top Up Transactions</span>
+        </a>
+      </div>
+      <div class="flex items-center flex-none speci-nav sidenav-toolbar">
+        <a class="item" [routerLink]="['/dashboards/transactions']" routerLinkActive="router-link-active" fxLayout="row" matRipple>
+         <ic-icon [icon]="icAttachMoney" class="mr-1" inline="true" size="1.50rem"></ic-icon>
+          <span class="item-label text-md" fxFlex="auto"> Transactions</span>
         </a>
       </div>
       <vex-sidenav-item *ngFor="let item of items; trackBy: trackByRoute" [item]="item" [level]="0"></vex-sidenav-item>

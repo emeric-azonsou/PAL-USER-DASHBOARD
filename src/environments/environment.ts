@@ -22,7 +22,12 @@ export const environment = {
   updateDeliveyUrl: `https://api-test.pals.africa/api/updatedeliveryphone`,
   getUserAccountDetailsUrl: `https://api-test.pals.africa/api/getbusinessuseraccountdetails`,
   registerPalUserUrl: `https://api-test.pals.africa/api/registerpaluser`,
-  registerUserUrl: `https://api-test.pals.africa/api/register`
+  registerUserUrl: `https://api-test.pals.africa/api/register`,
+
+  getBusinessDataUrl: `https://api-test.pals.africa/api/getuserbusinessdata/`,
+  addBusinessUrl: `https://api-test.pals.africa/api/addbusiness`,
+  getModulesDataUrl: `https://api-test.pals.africa/api/getmodulesdata`,
+  createTransferUrl: `https://api-test.pals.africa/api/createtransfer`,
 };
 
 /*

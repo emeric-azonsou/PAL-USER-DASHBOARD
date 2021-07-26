@@ -1,8 +1,13 @@
-import { CustomerCreateUpdateComponent } from "./../../apps/aio-table/customer-create-update/customer-create-update.component";
-import { Customer } from "./../../apps/aio-table/interfaces/customer.model";
-import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
+import { USER_SESSION_KEY, BUSINESS_DATA_KEY } from 'src/app/Models/constants';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { CustomerCreateUpdateComponent } from '../../apps/aio-table/customer-create-update/customer-create-update.component';
 import icMoreVert from "@iconify/icons-ic/twotone-more-vert";
 import icClose from "@iconify/icons-ic/twotone-close";
 import icPrint from "@iconify/icons-ic/twotone-print";
@@ -13,19 +18,13 @@ import icPerson from "@iconify/icons-ic/twotone-person";
 import icMyLocation from "@iconify/icons-ic/twotone-my-location";
 import icLocationCity from "@iconify/icons-ic/twotone-location-city";
 import icEditLocation from "@iconify/icons-ic/twotone-edit-location";
-import { BUSINESS_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { take, takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { Router } from "@angular/router";
 
 @Component({
-  selector: "vex-disburse-cash",
-  templateUrl: "./disburse-cash.component.html",
-  styleUrls: ["./disburse-cash.component.scss"],
+  selector: 'vex-recharge-account',
+  templateUrl: './recharge-account.component.html',
+  styleUrls: ['./recharge-account.component.scss']
 })
-export class DisburseCashComponent implements OnInit, OnDestroy {
+export class RechargeAccountComponent implements OnInit {
   countryData = {
     BN: { currency: "XOF", code: "+229" },
     CI: { currency: "XOF", code: "+225" },

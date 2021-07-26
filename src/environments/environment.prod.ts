@@ -18,5 +18,10 @@ export const environment = {
   updateDeliveyUrl: `https://api.pals.africa/api/updatedeliveryphone`,
   getUserAccountDetailsUrl: `https://api.pals.africa/api/getbusinessuseraccountdetails/`,
   registerPalUserUrl: `https://api.pals.africa/api/registerpaluser`,
-  registerUserUrl: `https://api.pals.africa/api/register`
+  registerUserUrl: `https://api.pals.africa/api/register`,
+
+  addBusinessUrl: `https://api.pals.africa/api/addbusiness`,
+  getModulesDataUrl: `https://api.pals.africa/api/getmodulesdata`,
+  getBusinessDataUrl: `https://api.pals.africa/api/getuserbusinessdata/`,
+  createTransferUrl: `https://api.pals.africa/api/createtransfer`,
 };
