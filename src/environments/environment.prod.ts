@@ -25,4 +25,5 @@ export const environment = {
   getBusinessDataUrl: `https://api.pals.africa/api/getuserbusinessdata/`,
   createTransferUrl: `https://api.pals.africa/api/createtransfer`,
   requestTopUpUrl: `https://api.pals.africa/api/requesttopup`,
+  getUserTopUpsUrl: `https://api.pals.africa/api/getusertopups/`,
 };
