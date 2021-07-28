@@ -27,11 +27,11 @@ import { Router } from "@angular/router";
 })
 export class DisburseCashComponent implements OnInit, OnDestroy {
   countryData = {
-    BN: { currency: "XOF", code: "+229" },
+    BJ: { currency: "XOF", code: "+229" },
     CI: { currency: "XOF", code: "+225" },
     GH: { currency: "GHS", code: "+233" },
     TG: { currency: "XOF", code: "+227" },
-    SG: { currency: "XOF", code: "+221" },
+    SN: { currency: "XOF", code: "+221" },
     NG: { currency: "NGN", code: "+234" },
   };
 
@@ -67,7 +67,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.transferForm = this.fb.group({
-      country: ["BN", Validators.required],
+      country: ["BJ", Validators.required],
       phone_no: [this.dailingCode, Validators.required],
       amount: ["", Validators.required],
       provider: ["orange", Validators.required],

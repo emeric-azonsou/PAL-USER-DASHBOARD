@@ -18,6 +18,7 @@ import icPerson from "@iconify/icons-ic/twotone-person";
 import icMyLocation from "@iconify/icons-ic/twotone-my-location";
 import icLocationCity from "@iconify/icons-ic/twotone-location-city";
 import icEditLocation from "@iconify/icons-ic/twotone-edit-location";
+import { BusinessService } from 'src/app/services/business.service';
 
 @Component({
   selector: 'vex-recharge-account',
@@ -26,11 +27,11 @@ import icEditLocation from "@iconify/icons-ic/twotone-edit-location";
 })
 export class RechargeAccountComponent implements OnInit {
   countryData = {
-    BN: { currency: "XOF", code: "+229" },
+    BJ: { currency: "XOF", code: "+229" },
     CI: { currency: "XOF", code: "+225" },
     GH: { currency: "GHS", code: "+233" },
     TG: { currency: "XOF", code: "+227" },
-    SG: { currency: "XOF", code: "+221" },
+    SN: { currency: "XOF", code: "+221" },
     NG: { currency: "NGN", code: "+234" },
   };
 
@@ -38,9 +39,9 @@ export class RechargeAccountComponent implements OnInit {
   transferForm: FormGroup;
   currency: string = "XOF";
   dailingCode: string = "+229";
-  transferData: any;
+  module_id: any = 102;
+  data: any;
   userData: any;
-  module_id: any;
   moduleData: Object[];
   userBusinessData: any;
   isDisbursing: boolean;
@@ -53,7 +54,8 @@ export class RechargeAccountComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public defaults: any,
     private dialogRef: MatDialogRef<CustomerCreateUpdateComponent>,
     private fb: FormBuilder,
-    private transactionsService: TransactionsService,
+    private transactionService: TransactionsService,
+    private businessService: BusinessService,
     private snackBar: MatSnackBar,
     private router: Router
   ) {
@@ -66,10 +68,9 @@ export class RechargeAccountComponent implements OnInit {
 
   ngOnInit() {
     this.transferForm = this.fb.group({
-      country: ["BN", Validators.required],
-      phone_no: [this.dailingCode, Validators.required],
+      country: ["BJ", Validators.required],
       amount: ["", Validators.required],
-      provider: ["orange", Validators.required],
+      operator: ["orange", Validators.required],
     });
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
@@ -81,16 +82,17 @@ export class RechargeAccountComponent implements OnInit {
     this.unsubscribe$.complete();
   }
 
-  createTransfer() {
+  rechargeAccount() {
     this.isDisbursing = true
-    this.transferData = {
+    this.data = {
       ...this.transferForm.value,
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
+      status: 'Pending'
     };
 
-    this.transactionsService.createTransaction(this.transferData, this.credentials)
+    this.businessService.requestTopUp(this.data, this.credentials)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.isDisbursing = false;
@@ -117,7 +119,7 @@ export class RechargeAccountComponent implements OnInit {
   }
 
   getModulesData(credentials) {
-    this.transactionsService
+    this.transactionService
       .getModulesData(credentials)
       .pipe(take(1))
       .subscribe((data) => {

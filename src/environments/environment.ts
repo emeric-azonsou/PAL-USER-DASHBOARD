@@ -28,6 +28,8 @@ export const environment = {
   addBusinessUrl: `https://api-test.pals.africa/api/addbusiness`,
   getModulesDataUrl: `https://api-test.pals.africa/api/getmodulesdata`,
   createTransferUrl: `https://api-test.pals.africa/api/createtransfer`,
+  requestTopUpUrl: `https://api-test.pals.africa/api/requesttopup`,
+  getUserTopUpsUrl: `https://api-test.pals.africa/api/getusertopups/`,
 };
 
 /*

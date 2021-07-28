@@ -1,13 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { TRANSACTION_TABLE_LABELS, USER_SESSION_KEY } from 'src/app/Models/constants';
-import { TransactionsService } from 'src/app/services/transactions.service';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import {
+  TRANSACTION_TABLE_LABELS,
+  USER_SESSION_KEY,
+} from "src/app/Models/constants";
+import { TransactionsService } from "src/app/services/transactions.service";
 import icPhone from "@iconify/icons-ic/twotone-phone";
 import icMail from "@iconify/icons-ic/twotone-mail";
 import icMap from "@iconify/icons-ic/twotone-map";
@@ -18,6 +21,7 @@ import icAdd from "@iconify/icons-ic/twotone-add";
 import icFilterList from "@iconify/icons-ic/twotone-filter-list";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icFolder from "@iconify/icons-ic/twotone-folder";
+import { PercentPipe } from "@angular/common";
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {
@@ -62,15 +66,18 @@ export interface PeriodicElement {
   status: string;
 }
 @Component({
-  selector: 'vex-transactions',
-  templateUrl: './transactions.component.html',
-  styleUrls: ['./transactions.component.scss']
+  selector: "vex-transactions",
+  templateUrl: "./transactions.component.html",
+  styleUrls: ["./transactions.component.scss"],
 })
 export class TransactionsComponent implements OnInit {
-
   displayedColumns: string[] = [
-    "id",
+    // "id",
     "created_at",
+    "country",
+    "provider",
+    "wallet",
+    "fee",
     "currency",
     "amount",
     "status",
@@ -102,14 +109,15 @@ export class TransactionsComponent implements OnInit {
   transactionsData: any;
   transactionType: any;
   hasNoTransactions: boolean;
+  palFee = 0;
   constructor(
     private router: Router,
     private transactionsService: TransactionsService
   ) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
-    if(!sessionData){
-      router.navigate(['/auth/login']);
+    if (!sessionData) {
+      router.navigate(["/auth/login"]);
     }
   }
 
@@ -120,6 +128,17 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTransactions(this.userData.user_id);
+  }
+
+  getPalFee(amount, country: string): number {
+    switch(country){
+      case 'GH':
+        return (amount * 0.5 / 100);
+      case 'BJ':
+        return (amount * 1 /100);
+      default :
+        return 0;
+    }
   }
 
   ngOnDestroy() {
@@ -133,7 +152,7 @@ export class TransactionsComponent implements OnInit {
   }
 
   getStatusLabel(status: string) {
-    console.log('status', status);
+    console.log("status", status);
     return this.statusLabels.find((label) => label.text === status);
   }
 
@@ -146,15 +165,16 @@ export class TransactionsComponent implements OnInit {
         (transactions) => {
           this.transactionsData = transactions.data.map((details) => {
             details.state = this.getStatusLabel(details.state);
+            details.palFee = this.getPalFee(details.amount, details.country);
             return details;
           });
 
-          this.hasNoTransactions = transactions.data.length === 0 ? true : false;
+          this.hasNoTransactions =
+            transactions.data.length === 0 ? true : false;
           this.dataSource = new MatTableDataSource(this.transactionsData);
-          console.log('[dataSource]', this.dataSource.data)
+          console.log("[dataSource]", this.dataSource.data);
         },
         (error) => console.log(error.message)
       );
   }
-  
 }

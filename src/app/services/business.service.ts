@@ -20,8 +20,8 @@ export class BusinessService {
 
 
   createNewBusiness(businessData) {
-    // const url = environment.addBusinessUrl;
-    const url = `http://127.0.0.1:8000/api/addbusiness`;
+    const url = environment.addBusinessUrl;
+    // const url = `http://127.0.0.1:8000/api/addbusiness`;
     const formData = new FormData();
     formData.append('business_email', businessData['business_email']);
     formData.append('business_legal_name', businessData['business_legal_name']);
@@ -55,8 +55,8 @@ export class BusinessService {
   }
 
   getBusinessDetails(user_id) {
-    const url = `http://127.0.0.1:8000/api/getuserbusiness/${user_id}`;
-    // const url = `https://api.pals.africa/api/getuserbusiness/${user_id}`;
+    // const url = `http://127.0.0.1:8000/api/getuserbusiness/${user_id}`;
+    const url = `https://api.pals.africa/api/getuserbusiness/${user_id}`;
     return this.http.get(url).pipe(
       map((response) => {
         return response['data'];
@@ -69,9 +69,15 @@ export class BusinessService {
     );
   }
 
-  rechargeAcountBalance(accountData) {
-    const url = `https://api.pals.africa/api/rechargeuseraccount`;
-    return this.http.post(url, accountData).pipe(
+  requestTopUp(accountData, credentials) {
+    const headers = new HttpHeaders({
+      'Authorization' : `Bearer ${credentials}`,
+      'Content-Type': 'application/json'
+    })
+    const url = environment.requestTopUpUrl;
+    // const url = `http://127.0.0.1:8000/api/requesttopup`;
+
+    return this.http.post(url, accountData, { headers }).pipe(
       map(response => {
         return response;
       }),
@@ -83,6 +89,23 @@ export class BusinessService {
     )
   }
 
+  getUserTopUps(user_id: string, credentials: string): Observable<any> {
+    const url = `${environment.getUserTopUpsUrl}${user_id}`;
+    // const url = `http://127.0.0.1:8000/api/getusertopups/${user_id}`;
+    const headers = new HttpHeaders({
+      'Authorization' : `Bearer ${credentials}`,
+      'Content-Type': 'application/json'
+    })    
+    return this.http.get(url, { headers }).pipe(
+      map((response: any) => {
+        return response.data;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
   createtransfer(data) {
     const url = `https://api.pals.africa/api/createtransfer`;
     return this.http.post(url, data).pipe(

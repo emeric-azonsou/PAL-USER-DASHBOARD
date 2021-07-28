@@ -14,10 +14,11 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
-import { TRANSACTION_TABLE_LABELS, USER_SESSION_KEY } from "src/app/Models/constants";
+import { BUSINESS_DATA_KEY, TRANSACTION_TABLE_LABELS, USER_SESSION_KEY } from "src/app/Models/constants";
 import { Router } from "@angular/router";
 import { TransactionsService } from "src/app/services/transactions.service";
 import { takeUntil } from "rxjs/operators";
+import { BusinessService } from "src/app/services/business.service";
 const ELEMENT_DATA: PeriodicElement[] = [
   {
     position: "BG452515",
@@ -100,12 +101,20 @@ export class TopUpTransactionComponent implements OnInit {
   transactionsData: any;
   transactionType: any;
   hasNoTransactions: boolean;
+  userBusinessData: any;
+  credentials: string;
   constructor(
     private router: Router,
-    private transactionsService: TransactionsService
+    private transactionsService: TransactionsService,
+    private businessService: BusinessService
   ) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
+
+    
+    const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
+    this.userBusinessData = JSON.parse(businessData);
+    
     if(!sessionData){
       router.navigate(['/auth/login']);
     }
@@ -117,6 +126,7 @@ export class TopUpTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
     this.loadTransactions(this.userData.user_id);
   }
 
@@ -136,19 +146,18 @@ export class TopUpTransactionComponent implements OnInit {
 
   loadTransactions(userId: string) {
     // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
-    this.transactionsService
-      .getUserTransactions(userId)
+    this.businessService
+      .getUserTopUps(userId, this.credentials)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (transactions) => {
-          this.transactionsData = transactions.data.map((details) => {
-            details.state = this.getStatusLabel(details.state);
+          this.transactionsData = transactions.map((details) => {
+            details.state = this.getStatusLabel(details.status);
             return details;
           });
 
-          this.hasNoTransactions = transactions.data.length === 0 ? true : false;
+          this.hasNoTransactions = transactions.length === 0 ? true : false;
           this.dataSource = new MatTableDataSource(this.transactionsData);
-          console.log('[dataSource]', this.dataSource.data)
         },
         (error) => console.log(error.message)
       );

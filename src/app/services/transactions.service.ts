@@ -27,8 +27,8 @@ export class TransactionsService {
       params = null;
     }
 
-    const url = `http://127.0.0.1:8000/api/getmerchanttransactions/${userId}`;
-    // const url = `${environment.getTransactionsListUrl}${userId}`;
+    // const url = `http://127.0.0.1:8000/api/getmerchanttransactions/${userId}`;
+    const url = `${environment.getTransactionsListUrl}${userId}`;
     return this.http.get(url, { params: params }).pipe(
       map((transaction: any) => {
         transaction.data.map((values) => {
@@ -50,26 +50,6 @@ export class TransactionsService {
         });
 
         return transaction;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
-        return observableThrowError(error);
-      })
-    );
-  }
-
-  getUserTransaction(transaction_id: string): Observable<any> {
-    const url = `${environment.getTransactionByIdUrl}${transaction_id}`;
-
-    return this.http.get(url).pipe(
-      map((data: TransactionsReference[]) => {
-        data.map((transaction) => {
-          if (typeof transaction.total_price === undefined) {
-            transaction.total_price = transaction.price;
-          }
-          return transaction;
-        });
-        return data;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);
@@ -393,8 +373,8 @@ export class TransactionsService {
 
   getModulesData(credentials): Observable<any> {
     console.log('credentials', credentials);
-    // const url = environment.getModulesDataUrl;
-    const url = 'http://127.0.0.1:8000/api/getmodulesdata';
+    const url = environment.getModulesDataUrl;
+    // const url = 'http://127.0.0.1:8000/api/getmodulesdata';
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${credentials}`
@@ -538,8 +518,8 @@ export class TransactionsService {
   }
 
   createTransaction(transactionDetails, credentials) {
-    // const url = environment.createTransferUrl;
-    const url = 'http://127.0.0.1:8000/api/createtransfer';
+    const url = environment.createTransferUrl;
+    // const url = 'http://127.0.0.1:8000/api/createtransfer';
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${credentials}`
