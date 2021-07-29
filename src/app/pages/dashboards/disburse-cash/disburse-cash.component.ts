@@ -41,7 +41,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   dailingCode: string = "+229";
   transferData: any;
   userData: any;
-  module_id: any;
+  module_id: any = '102';
   moduleData: Object[];
   userBusinessData: any;
   isDisbursing: boolean;
@@ -49,14 +49,25 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   credentials: string;
   hasError: boolean;
   errorMessage: string;
-
+  phoneNumberValidationPattern = /^[+][0-9]{0,15}$/;
+  validationMessages = {
+    phone_no:{
+      pattern: 'Only digits allowed starting with `+`',
+      required: "Receiver's Phone Field  is required.",
+    },
+    amount: {
+      pattern: 'Only digits allowed',
+      required: "Amount This Field  is required.",
+    }
+  };
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
-    private dialogRef: MatDialogRef<CustomerCreateUpdateComponent>,
+    private dialogRef: MatDialogRef<DisburseCashComponent>,
     private fb: FormBuilder,
     private transactionsService: TransactionsService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
   ) {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
@@ -68,9 +79,9 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.transferForm = this.fb.group({
       country: ["BJ", Validators.required],
-      phone_no: [this.dailingCode, Validators.required],
-      amount: ["", Validators.required],
-      provider: ["orange", Validators.required],
+      phone_no: [this.dailingCode, [Validators.required, Validators.pattern(this.phoneNumberValidationPattern)]],
+      amount: ["", [Validators.required, Validators.pattern(/[0-9]+$/)]],
+      provider: ["mtn", Validators.required],
     });
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
@@ -97,10 +108,11 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
         this.isDisbursing = false;
         if(response && response['status'] === true) {
           this.openSnackbar(response['message']);
+          window.location.reload();
+          
         } else {
           this.hasError = true;
           this.errorMessage = response['message'];
-          this.router.navigate(['/dashboards/transactions'])
         }
       }),
       error => {
@@ -147,5 +159,9 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     }
 
     this.dialogRef.close(customer);
+  }
+
+  close(){
+    this.dialogRef.close();
   }
 }

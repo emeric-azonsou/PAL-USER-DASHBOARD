@@ -14,7 +14,11 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { Subject } from "rxjs";
 import { FormControl } from "@angular/forms";
-import { BUSINESS_DATA_KEY, TRANSACTION_TABLE_LABELS, USER_SESSION_KEY } from "src/app/Models/constants";
+import {
+  BUSINESS_DATA_KEY,
+  TRANSACTION_TABLE_LABELS,
+  USER_SESSION_KEY,
+} from "src/app/Models/constants";
 import { Router } from "@angular/router";
 import { TransactionsService } from "src/app/services/transactions.service";
 import { takeUntil } from "rxjs/operators";
@@ -103,6 +107,7 @@ export class TopUpTransactionComponent implements OnInit {
   hasNoTransactions: boolean;
   userBusinessData: any;
   credentials: string;
+  isLoading: boolean;
   constructor(
     private router: Router,
     private transactionsService: TransactionsService,
@@ -111,12 +116,13 @@ export class TopUpTransactionComponent implements OnInit {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
 
-    
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
-    this.userBusinessData = JSON.parse(businessData);
-    
-    if(!sessionData){
-      router.navigate(['/auth/login']);
+    if (businessData !== "undefined") {
+      this.userBusinessData = JSON.parse(businessData);
+    }
+
+    if (!sessionData) {
+      router.navigate(["/auth/login"]);
     }
   }
 
@@ -126,7 +132,7 @@ export class TopUpTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
+    this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
     this.loadTransactions(this.userData.user_id);
   }
 
@@ -145,22 +151,29 @@ export class TopUpTransactionComponent implements OnInit {
   }
 
   loadTransactions(userId: string) {
+    this.isLoading = true;
     // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
-    this.businessService
-      .getUserTopUps(userId, this.credentials)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (transactions) => {
-          this.transactionsData = transactions.map((details) => {
-            details.state = this.getStatusLabel(details.status);
-            return details;
-          });
+    this.dataSource = new MatTableDataSource([]);
+    if (this.userBusinessData) {
+      this.businessService
+        .getUserTopUps(userId, this.credentials)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (transactions) => {
+            this.isLoading = false;
+            this.transactionsData = transactions.map((details) => {
+              details.state = this.getStatusLabel(details.status);
+              return details;
+            });
 
-          this.hasNoTransactions = transactions.length === 0 ? true : false;
-          this.dataSource = new MatTableDataSource(this.transactionsData);
-        },
-        (error) => console.log(error.message)
-      );
+            this.hasNoTransactions = transactions.length === 0 ? true : false;
+            this.dataSource = new MatTableDataSource(this.transactionsData);
+          },
+          (error) => {
+            this.isLoading = false;
+            console.log(error.message);
+          }
+        );
+    }
   }
-  
 }

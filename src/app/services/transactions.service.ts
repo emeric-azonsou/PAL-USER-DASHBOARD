@@ -372,7 +372,6 @@ export class TransactionsService {
   }
 
   getModulesData(credentials): Observable<any> {
-    console.log('credentials', credentials);
     const url = environment.getModulesDataUrl;
     // const url = 'http://127.0.0.1:8000/api/getmodulesdata';
     const headers = new HttpHeaders({

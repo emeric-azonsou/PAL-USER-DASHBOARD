@@ -23,15 +23,16 @@ export const environment = {
   getUserAccountDetailsUrl: `https://api-test.pals.africa/api/getbusinessuseraccountdetails`,
   registerPalUserUrl: `https://api-test.pals.africa/api/registerpaluser`,
   registerUserUrl: `https://api-test.pals.africa/api/register`,
+  loginUrl:`https://api-test.pals.africa/api/login`,
 
-  getBusinessDataUrl: `https://api-test.pals.africa/api/getuserbusinessdata/`,
+  getBusinessDataUrl: `https://api-test.pals.africa/api/getuserbusiness/`,
   addBusinessUrl: `https://api-test.pals.africa/api/addbusiness`,
   getModulesDataUrl: `https://api-test.pals.africa/api/getmodulesdata`,
   createTransferUrl: `https://api-test.pals.africa/api/createtransfer`,
   requestTopUpUrl: `https://api-test.pals.africa/api/requesttopup`,
   getUserTopUpsUrl: `https://api-test.pals.africa/api/getusertopups/`,
+  getUserBalancesUrl: `https://api-test.pals.africa/api/getbusinessuserbalances/`
 };
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

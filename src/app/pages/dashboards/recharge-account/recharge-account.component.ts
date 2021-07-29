@@ -44,15 +44,20 @@ export class RechargeAccountComponent implements OnInit {
   userData: any;
   moduleData: Object[];
   userBusinessData: any;
-  isDisbursing: boolean;
+  isProcessing: boolean;
   unsubscribe$= new Subject();
   credentials: string;
   hasError: boolean;
   errorMessage: string;
-
+  validationMessages = {
+    amount: {
+      pattern: 'Only digits allowed',
+      required: "Amount This Field  is required.",
+    }
+  };
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
-    private dialogRef: MatDialogRef<CustomerCreateUpdateComponent>,
+    private dialogRef: MatDialogRef<RechargeAccountComponent>,
     private fb: FormBuilder,
     private transactionService: TransactionsService,
     private businessService: BusinessService,
@@ -69,8 +74,8 @@ export class RechargeAccountComponent implements OnInit {
   ngOnInit() {
     this.transferForm = this.fb.group({
       country: ["BJ", Validators.required],
-      amount: ["", Validators.required],
-      operator: ["orange", Validators.required],
+      amount: ["", [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      operator: ["mtn", Validators.required],
     });
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
@@ -83,7 +88,7 @@ export class RechargeAccountComponent implements OnInit {
   }
 
   rechargeAccount() {
-    this.isDisbursing = true
+    this.isProcessing = true
     this.data = {
       ...this.transferForm.value,
       currency: this.currency,
@@ -95,9 +100,10 @@ export class RechargeAccountComponent implements OnInit {
     this.businessService.requestTopUp(this.data, this.credentials)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.isDisbursing = false;
+        this.isProcessing = false;
         if(response && response['status'] === true) {
           this.openSnackbar(response['message']);
+          this.dialogRef.close();
         } else {
           this.hasError = true;
           this.errorMessage = response['message'];
@@ -148,5 +154,9 @@ export class RechargeAccountComponent implements OnInit {
     }
 
     this.dialogRef.close(customer);
+  }
+
+  close(){
+    this.dialogRef.close();
   }
 }

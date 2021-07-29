@@ -22,6 +22,7 @@ import icFilterList from "@iconify/icons-ic/twotone-filter-list";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icFolder from "@iconify/icons-ic/twotone-folder";
 import { PercentPipe } from "@angular/common";
+import { LoadingBarService } from "@ngx-loading-bar/core";
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {
@@ -72,7 +73,7 @@ export interface PeriodicElement {
 })
 export class TransactionsComponent implements OnInit {
   displayedColumns: string[] = [
-    // "id",
+    "id",
     "created_at",
     "country",
     "provider",
@@ -110,9 +111,11 @@ export class TransactionsComponent implements OnInit {
   transactionType: any;
   hasNoTransactions: boolean;
   palFee = 0;
+  isLoading: boolean;
   constructor(
     private router: Router,
-    private transactionsService: TransactionsService
+    private transactionsService: TransactionsService,
+    private loader: LoadingBarService
   ) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
@@ -157,12 +160,16 @@ export class TransactionsComponent implements OnInit {
   }
 
   loadTransactions(userId: string) {
-    // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
-    this.transactionsService
+    this.isLoading = true
+    this.loader.start();
+     // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
+     setTimeout(() => {
+      this.transactionsService
       .getUserTransactions(userId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (transactions) => {
+          this.isLoading = false;
           this.transactionsData = transactions.data.map((details) => {
             details.state = this.getStatusLabel(details.state);
             details.palFee = this.getPalFee(details.amount, details.country);
@@ -172,9 +179,13 @@ export class TransactionsComponent implements OnInit {
           this.hasNoTransactions =
             transactions.data.length === 0 ? true : false;
           this.dataSource = new MatTableDataSource(this.transactionsData);
-          console.log("[dataSource]", this.dataSource.data);
         },
-        (error) => console.log(error.message)
+        (error) => {
+          this.isLoading = false;
+          console.error(error.message)
+        }
       );
+     }, 10000)
+    
   }
 }

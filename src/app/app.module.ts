@@ -33,6 +33,7 @@ import { ApiComponent } from './pages/dashboards/api/api.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
 import { RechargeAccountComponent } from './pages/dashboards/recharge-account/recharge-account.component';
+import { NoBusinessModalComponent } from './pages/dashboards/no-business-modal/no-business-modal.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { RechargeAccountComponent } from './pages/dashboards/recharge-account/re
     TransactionsComponent,
     RechargeAccountComponent,
     ApiComponent,
+    NoBusinessModalComponent,
   ],
   imports: [
     BrowserModule,
