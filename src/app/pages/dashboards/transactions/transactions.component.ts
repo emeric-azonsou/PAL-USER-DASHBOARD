@@ -161,9 +161,7 @@ export class TransactionsComponent implements OnInit {
 
   loadTransactions(userId: string) {
     this.isLoading = true
-    this.loader.start();
      // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
-     setTimeout(() => {
       this.transactionsService
       .getUserTransactions(userId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -185,7 +183,6 @@ export class TransactionsComponent implements OnInit {
           console.error(error.message)
         }
       );
-     }, 10000)
     
   }
 }

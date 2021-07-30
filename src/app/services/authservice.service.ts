@@ -15,7 +15,7 @@ export class AuthserviceService {
   constructor(private http: HttpClient) {}
 
   login(email, password): Observable<any> {
-    const url = "https://api.pals.africa/api/login";
+    const url = environment.loginUrl;
     // const url = "http://127.0.0.1:8000/api/login";
     const body = {
       email: email,

@@ -34,6 +34,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
 import { RechargeAccountComponent } from './pages/dashboards/recharge-account/recharge-account.component';
 import { NoBusinessModalComponent } from './pages/dashboards/no-business-modal/no-business-modal.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { NoBusinessModalComponent } from './pages/dashboards/no-business-modal/n
     IconModule,
     MatDividerModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
