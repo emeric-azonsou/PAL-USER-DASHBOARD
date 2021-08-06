@@ -54,6 +54,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     phone_no:{
       pattern: 'Only digits allowed starting with `+`',
       required: "Receiver's Phone Field  is required.",
+      min:'Please provide a correct phone number'
     },
     amount: {
       pattern: 'Only digits allowed',
@@ -79,7 +80,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.transferForm = this.fb.group({
       country: ["BJ", Validators.required],
-      phone_no: [this.dailingCode, [Validators.required, Validators.pattern(this.phoneNumberValidationPattern)]],
+      phone_no: [this.dailingCode, [Validators.required, Validators.pattern(this.phoneNumberValidationPattern), Validators.min(8)]],
       amount: ["", [Validators.required, Validators.pattern(/[0-9]+$/)]],
       provider: ["mtn", Validators.required],
     });

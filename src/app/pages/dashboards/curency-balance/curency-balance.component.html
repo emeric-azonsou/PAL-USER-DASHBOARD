@@ -6,7 +6,7 @@
                 <div class="px-6 ">
                     <div>
                         <h5 class="text-center text-sm balance">Balance</h5>
-                        <h4 class="text-center font-bold text-sm">{{balanceData?.XOF || 0}}</h4>
+                        <h4 class="text-center font-bold text-sm">{{(balanceData?.XOF  | number : '1.2-2') || '0.00'}}</h4>
                         <!-- <h5 class="text-center text-sm payout"></h5> -->
                     </div>
                 </div>
@@ -18,7 +18,7 @@
                 <div class="px-6 ">
                     <div>
                         <h5 class="text-center text-sm balance">Balance</h5>
-                        <h4 class="text-center font-bold text-sm">{{balanceData?.XAF || 0}}</h4>
+                        <h4 class="text-center font-bold text-sm">{{(balanceData?.XAF  | number : '1.2-2') || '0.00'}}</h4>
                         <!-- <h5 class="text-center text-sm payout"></h5> -->
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="px-6 ">
                     <div>
                         <h5 class="text-center text-sm balance">Balance</h5>
-                        <h4 class="text-center font-bold text-sm">{{balanceData?.GHS || 0}}</h4>
+                        <h4 class="text-center font-bold text-sm">{{(balanceData?.GHS  | number : '1.2-2') || '0.00'}}</h4>
                         <!-- <h5 class="text-center text-sm payout"></h5> -->
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="px-6 ">
                     <div>
                         <h5 class="text-center text-sm balance">Balance</h5>
-                        <h4 class="text-center font-bold text-sm">{{balanceData?.NGN || 0}}</h4>
+                        <h4 class="text-center font-bold text-sm">{{(balanceData?.NGN  | number : '1.2-2') || '0.00'}}</h4>
                         <h5 class="text-center text-sm payout"></h5>
                     </div>
                 </div>

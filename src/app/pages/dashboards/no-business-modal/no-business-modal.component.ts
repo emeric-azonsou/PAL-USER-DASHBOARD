@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import icClose from "@iconify/icons-ic/twotone-close";
 
@@ -10,14 +11,16 @@ import icClose from "@iconify/icons-ic/twotone-close";
 export class NoBusinessModalComponent implements OnInit {
   icClose = icClose;
   constructor(
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
   }
 
   redirect() {
-    this.router.navigate(['/dashboards/pofile']);
+    this.dialog.closeAll();
+    this.router.navigate(['/dashboards/profile']);
   }
 
 }

@@ -22,9 +22,12 @@
                 </mat-error>
             </mat-form-field>
 
-            <button (click)="send()" class="mt-2 authButton" mat-raised-button type="button">
-                SEND RECOVERY LINK
+            <button (click)="send()" class="mt-2 authButton" mat-raised-button type="button" [disabled]=" isSendingCode || form.invalid">
+                {{ isSendingCode === true ? 'SENDING...' : 'SEND RECOVERY CODE' }}
             </button>
+            <mat-error *ngIf="hasError">
+                {{ errorMessage }}
+            </mat-error>
         </div>
     </div>
 </div>

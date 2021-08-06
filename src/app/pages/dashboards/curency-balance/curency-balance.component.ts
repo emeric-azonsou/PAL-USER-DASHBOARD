@@ -41,9 +41,8 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
               const result = balances
                 ?.reduce((acc: any, cur: any) => {
                   return balanceDataMap[currency] = acc + Number(cur)
-                }, 0)
-                .toFixed(2);
-                return result;
+                }, 0) as number;
+                return result.toFixed(2);
             }
           );
           this.balanceData = balanceDataMap;
