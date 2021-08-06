@@ -1,5 +1,16 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import {
+  TRANSACTION_TABLE_LABELS,
+  USER_SESSION_KEY,
+} from "src/app/Models/constants";
+import { TransactionsService } from "src/app/services/transactions.service";
 import icPhone from "@iconify/icons-ic/twotone-phone";
 import icMail from "@iconify/icons-ic/twotone-mail";
 import icMap from "@iconify/icons-ic/twotone-map";
@@ -10,19 +21,9 @@ import icAdd from "@iconify/icons-ic/twotone-add";
 import icFilterList from "@iconify/icons-ic/twotone-filter-list";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icFolder from "@iconify/icons-ic/twotone-folder";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { Subject } from "rxjs";
-import { FormControl } from "@angular/forms";
-import {
-  BUSINESS_DATA_KEY,
-  TRANSACTION_TABLE_LABELS,
-  USER_SESSION_KEY,
-} from "src/app/Models/constants";
-import { Router } from "@angular/router";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { takeUntil } from "rxjs/operators";
-import { BusinessService } from "src/app/services/business.service";
+import { PercentPipe } from "@angular/common";
+import { LoadingBarService } from "@ngx-loading-bar/core";
+
 const ELEMENT_DATA: PeriodicElement[] = [
   {
     position: "BG452515",
@@ -66,14 +67,18 @@ export interface PeriodicElement {
   status: string;
 }
 @Component({
-  selector: "vex-top-up-transaction",
-  templateUrl: "./top-up-transaction.component.html",
-  styleUrls: ["./top-up-transaction.component.scss"],
+  selector: "vex-transactions",
+  templateUrl: "./transactions.component.html",
+  styleUrls: ["./transactions.component.scss"],
 })
-export class TopUpTransactionComponent implements OnInit {
+export class TransactionsComponent implements OnInit {
   displayedColumns: string[] = [
     "id",
     "created_at",
+    "country",
+    "provider",
+    "wallet",
+    "fee",
     "currency",
     "amount",
     "status",
@@ -105,22 +110,15 @@ export class TopUpTransactionComponent implements OnInit {
   transactionsData: any;
   transactionType: any;
   hasNoTransactions: boolean;
-  userBusinessData: any;
-  credentials: string;
+  palFee = 0;
   isLoading: boolean;
   constructor(
     private router: Router,
     private transactionsService: TransactionsService,
-    private businessService: BusinessService
+    private loader: LoadingBarService
   ) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
-
-    const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
-    if (businessData !== "undefined") {
-      this.userBusinessData = JSON.parse(businessData);
-    }
-
     if (!sessionData) {
       router.navigate(["/auth/login"]);
     }
@@ -132,8 +130,18 @@ export class TopUpTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
     this.loadTransactions(this.userData.user_id);
+  }
+
+  getPalFee(amount, country: string): number {
+    switch(country){
+      case 'GH':
+        return (amount * 0.5 / 100);
+      case 'BJ':
+        return (amount * 1 /100);
+      default :
+        return 0;
+    }
   }
 
   ngOnDestroy() {
@@ -147,33 +155,34 @@ export class TopUpTransactionComponent implements OnInit {
   }
 
   getStatusLabel(status: string) {
+    console.log("status", status);
     return this.statusLabels.find((label) => label.text === status);
   }
 
   loadTransactions(userId: string) {
-    this.isLoading = true;
-    // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
-    this.dataSource = new MatTableDataSource([]);
-    if (this.userBusinessData) {
-      this.businessService
-        .getUserTopUps(userId, this.credentials)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(
-          (transactions) => {
-            this.isLoading = false;
-            this.transactionsData = transactions.map((details) => {
-              details.state = this.getStatusLabel(details.status);
-              return details;
-            });
+    this.isLoading = true
+     // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
+      this.transactionsService
+      .getUserTransactions(userId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (transactions) => {
+          this.isLoading = false;
+          this.transactionsData = transactions.data.map((details) => {
+            details.state = this.getStatusLabel(details.state);
+            details.palFee = this.getPalFee(details.amount, details.country);
+            return details;
+          });
 
-            this.hasNoTransactions = transactions.length === 0 ? true : false;
-            this.dataSource = new MatTableDataSource(this.transactionsData);
-          },
-          (error) => {
-            this.isLoading = false;
-            console.log(error.message);
-          }
-        );
-    }
+          this.hasNoTransactions =
+            transactions.data.length === 0 ? true : false;
+          this.dataSource = new MatTableDataSource(this.transactionsData);
+        },
+        (error) => {
+          this.isLoading = false;
+          console.error(error.message)
+        }
+      );
+    
   }
 }

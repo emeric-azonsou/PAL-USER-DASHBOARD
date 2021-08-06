@@ -16,7 +16,7 @@ const routes: Routes = [
     component: OtpVerificationComponent,
   },
   {
-    path: "new-password",
+    path: "new-password/:user_id",
     component: NewPasswordComponent,
   },
 ];

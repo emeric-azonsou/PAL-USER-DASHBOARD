@@ -24,7 +24,7 @@
             </mat-error>
           </mat-form-field>
   
-          <mat-form-field fxFlex="grow">
+          <!-- <mat-form-field fxFlex="grow">
             <mat-label>Company legal name </mat-label>
             <input formControlName="companyName" matInput required>
             <mat-error>
@@ -32,7 +32,7 @@
                 {{ validationMessages.companyName[error.key] }}
               </span>
             </mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
   
           <mat-form-field fxFlex="grow">
             <mat-label>Country</mat-label>
@@ -47,7 +47,8 @@
             <mat-label>Country of the establishment</mat-label>
             <input formControlName="country" matInput required>
           </mat-form-field> -->
-          <mat-form-field fxFlex="grow">
+
+          <!-- <mat-form-field fxFlex="grow">
             <mat-label>Describe what your company does</mat-label>
             <input style="height: 40px;" formControlName="description" matInput required>
             <mat-error>
@@ -55,7 +56,7 @@
                 {{ validationMessages.description[error.key] }}
               </span>
             </mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
           <div fxLayout="row" fxLayoutAlign="center center">
             <mat-checkbox formControlName="terms" class="caption">I accept the <a>terms and conditions.</a></mat-checkbox>
           </div>

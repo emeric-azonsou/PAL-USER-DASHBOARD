@@ -21,12 +21,12 @@ import { BreadcrumbsModule } from "../../../../@vex/components/breadcrumbs/bread
 import { ContainerModule } from "../../../../@vex/directives/container/container.module";
 import { FormElementsRoutingModule } from "../../ui/forms/form-elements/form-elements-routing.module";
 import { AngularFileUploaderModule } from "angular-file-uploader";
+import { MatFileUploadModule } from "mat-file-upload";
 
 
 @NgModule({
   declarations: [ProfilComponent],
   imports: [
-    CommonModule,
     CommonModule,
     FormElementsRoutingModule,
     FlexLayoutModule,
@@ -47,6 +47,7 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     BreadcrumbsModule,
     ContainerModule,
     AngularFileUploaderModule,
+    MatFileUploadModule,
   ],
 })
 export class ProfilModule {}

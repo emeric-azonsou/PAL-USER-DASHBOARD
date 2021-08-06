@@ -68,9 +68,9 @@ export class Step1Component implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       phoneNumber: ['', [Validators.required, Validators.pattern(this.phoneNumberPattern)] ],
-      companyName: ['', Validators.required],
+      // companyName: ['', Validators.required],
       country: ['', Validators.required],
-      description: ['', Validators.required],
+      // description: ['', Validators.required],
       terms: ['', Validators.required],
     });
     this.getLocationData();

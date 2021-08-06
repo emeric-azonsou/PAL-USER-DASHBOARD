@@ -1,0 +1,48 @@
+form {
+    .headline {
+        font: normal normal 600 4px/26px Segoe UI;
+        font-size: medium;
+        letter-spacing: 0px;
+        color: #000000;
+        opacity: 1;
+    }
+
+    .content-part {
+        margin-top: 50px;
+        .label {
+          
+            margin-bottom: 10px;
+        }
+        label {
+            letter-spacing: 0px;
+            color: #000000;
+            opacity: 1;
+            font:Segoe UI;
+            font-weight: 200;
+        }
+        h6 {
+            letter-spacing: 0px;
+            color: #000000;
+            opacity: 1;
+            font: normal normal normal 15px/20px Segoe UI;
+            position: relative;
+            top: -5px;
+        }
+    }
+    .button {
+        .cancel-button {
+            font: Segoe UI;
+            font-weight: bold;
+            letter-spacing: 0px;
+            color: #484848;
+            opacity: 1;
+        }
+        .send-button {
+            font: Segoe UI;
+            font-weight: bold;
+            letter-spacing: 0px;
+            color: #2bb996;
+            opacity: 1;
+        }
+    }
+}

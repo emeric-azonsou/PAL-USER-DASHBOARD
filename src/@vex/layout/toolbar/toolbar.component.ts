@@ -21,6 +21,9 @@ import icArrowDropDown from '@iconify/icons-ic/twotone-arrow-drop-down';
 import { PopoverService } from '../../components/popover/popover.service';
 import { MegaMenuComponent } from '../../components/mega-menu/mega-menu.component';
 import icSearch from '@iconify/icons-ic/twotone-search';
+import { RechargeAccountComponent } from 'src/app/pages/dashboards/recharge-account/recharge-account.component';
+import { NoBusinessModalComponent } from 'src/app/pages/dashboards/no-business-modal/no-business-modal.component';
+import { BUSINESS_DATA_KEY } from 'src/app/Models/constants';
 
 @Component({
   selector: 'vex-toolbar',
@@ -55,6 +58,7 @@ export class ToolbarComponent implements OnInit {
   icReceipt = icReceipt;
   icDoneAll = icDoneAll;
   icArrowDropDown = icArrowDropDown;
+  userBusinessData: any;
 
   constructor(private layoutService: LayoutService,
               private configService: ConfigService,
@@ -62,7 +66,14 @@ export class ToolbarComponent implements OnInit {
               private popoverService: PopoverService,
               private dialog: MatDialog,
               private router:Router
-              ) { }
+              ) {
+                const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
+                console.log('businessData', businessData);
+                if(businessData !== 'undefined') {
+                  console.log('hasbusiness')
+                  this.userBusinessData = JSON.parse(businessData);
+                }
+              }
 
   ngOnInit() {
   }
@@ -100,11 +111,27 @@ export class ToolbarComponent implements OnInit {
     this.layoutService.openSearch();
   }
   openDisbursePopup() {
-    this.dialog.open(DisburseCashComponent)
+    if(this.userBusinessData) {
+      this.dialog.open(DisburseCashComponent)
+    } else {
+      this.dialog.open(NoBusinessModalComponent);
+    }
+  }
+
+  openRechargePopup() {
+    if(this.userBusinessData) {
+      this.dialog.open(RechargeAccountComponent);
+    } else {
+      this.dialog.open(NoBusinessModalComponent);
+    }
   }
 
   onViewApiPart(){
-   this.router.navigate(['/dashboards/api']);
+    if(this.userBusinessData) {
+      this.router.navigate(['/dashboards/api']);
+    } else {
+      this.dialog.open(NoBusinessModalComponent);
+    }
   }
 
 }

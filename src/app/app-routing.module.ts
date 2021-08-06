@@ -7,6 +7,7 @@ import { QuicklinkModule, QuicklinkStrategy } from "ngx-quicklink";
 import { HomeComponent } from "./pages/dashboards/home/home.component";
 import { TopUpTransactionComponent } from "./pages/dashboards/top-up-transaction/top-up-transaction.component";
 import { ProfilComponent } from "./pages/dashboards/profil/profil.component";
+import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
 
 const routes: VexRoutes = [
   {
@@ -84,11 +85,15 @@ const routes: VexRoutes = [
         component: HomeComponent,
       },
       {
-        path: "transactions",
+        path: "top-up-transactions",
         component: TopUpTransactionComponent,
       },
       {
-        path: "profil",
+        path: "transactions",
+        component: TransactionsComponent,
+      },
+      {
+        path: "profile",
         component: ProfilComponent,
       },
       {

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GeoLocationService } from "src/app/services/geo-location.service";
 import { AuthserviceService } from "src/app/services/authservice.service";
@@ -42,6 +42,7 @@ export class Step2Component implements OnInit {
     email: {
       required: "Email  is required.",
       email: "Please enter a valid email",
+      notBusinessEmail: "Please only use your business email"
     },
     passwordsDoNotMatch: 'The 2 passwords do no match'
   };
@@ -74,7 +75,7 @@ export class Step2Component implements OnInit {
     this.form = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email, this.validateBusinessEmail]],
       password: ['', [Validators.required, Validators.pattern(/^.{6,}$/)]],
       passwordConfirm: ['', Validators.required],
     },
@@ -92,6 +93,16 @@ export class Step2Component implements OnInit {
       return {
         passwordsDoNotMatch: true,
       };
+    }
+  }
+
+  validateBusinessEmail(email: FormControl) {
+    if(email.value.includes('gmail') || email.value.includes('hotmail') || email.value.includes('yahoo')) {
+      return {
+        notBusinessEmail: true,
+      }
+    } else {
+      return null
     }
   }
 

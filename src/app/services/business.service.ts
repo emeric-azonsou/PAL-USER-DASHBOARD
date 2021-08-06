@@ -8,6 +8,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,33 +20,27 @@ export class BusinessService {
 
 
   createNewBusiness(businessData) {
-    const url = 'https://api.pals.africa/api/addbusiness';
+    const url = environment.addBusinessUrl;
+    // const url = `http://127.0.0.1:8000/api/addbusiness`;
     const formData = new FormData();
     formData.append('business_email', businessData['business_email']);
     formData.append('business_legal_name', businessData['business_legal_name']);
     formData.append('business_logo', businessData['business_logo']);
-    formData.append('business_name', businessData['business_name']);
     formData.append('business_phone', businessData['business_phone']);
-    formData.append('city', businessData['city']);
     formData.append('company_document_path', businessData['company_documentUpload']);
     formData.append('country', businessData['country']);
-    formData.append('delivery_no', businessData['delivery_no']);
     formData.append('description', businessData['description']);
     formData.append('DOB', businessData['dob']);
-    formData.append('id_type', businessData['identification_document']);
-    formData.append('id_card', businessData['identification_documentUpload']);
+    formData.append('id_type', businessData['id_type']);
+    formData.append('id_proof_path', businessData['id_proof_path']);
     formData.append('industry', businessData['industry']);
-    formData.append('is_legally_registered', businessData['is_legally_registered']);
     formData.append('nationality', businessData['nationality']);
-    formData.append('business_address', businessData['owner_adresse']);
-    formData.append('owner_fname', businessData['owner_fname']);
-    formData.append('owner_lname', businessData['owner_lname']);
-    formData.append('region', businessData['region']);
+    formData.append('business_address', businessData['owner_address']);
+    formData.append('owner_full_name', businessData['owner_full_name']);
     formData.append('status', businessData['status']);
-    formData.append('trading_name', businessData['trading_name']);
     formData.append('user_id', businessData['user_id']);
-    formData.append('category', 'dfd');
-    formData.append('owner_address', 'dfd');
+    formData.append('staff_size', businessData['staff_size']);
+    formData.append('owner_address', businessData['owner_address']);
     return this.http
       .post(url, formData, { responseType: 'json', })
       .pipe(
@@ -60,10 +55,11 @@ export class BusinessService {
   }
 
   getBusinessDetails(user_id) {
-    const url = `https://api.pals.africa/api/getuserbusiness/${user_id}`;
+    // const url = `http://127.0.0.1:8000/api/getuserbusiness/${user_id}`;
+    const url = `${environment.getBusinessDataUrl}${user_id}`;
     return this.http.get(url).pipe(
       map((response) => {
-        return response;
+        return response['data'];
       }),
 
       catchError((error: HttpErrorResponse) => {
@@ -73,9 +69,15 @@ export class BusinessService {
     );
   }
 
-  rechargeAcountBalance(accountData) {
-    const url = `https://api.pals.africa/api/rechargeuseraccount`;
-    return this.http.post(url, accountData).pipe(
+  requestTopUp(accountData, credentials) {
+    const headers = new HttpHeaders({
+      'Authorization' : `Bearer ${credentials}`,
+      'Content-Type': 'application/json'
+    })
+    const url = environment.requestTopUpUrl;
+    // const url = `http://127.0.0.1:8000/api/requesttopup`;
+
+    return this.http.post(url, accountData, { headers }).pipe(
       map(response => {
         return response;
       }),
@@ -87,6 +89,23 @@ export class BusinessService {
     )
   }
 
+  getUserTopUps(user_id: string, credentials: string): Observable<any> {
+    const url = `${environment.getUserTopUpsUrl}${user_id}`;
+    // const url = `http://127.0.0.1:8000/api/getusertopups/${user_id}`;
+    const headers = new HttpHeaders({
+      'Authorization' : `Bearer ${credentials}`,
+      'Content-Type': 'application/json'
+    })    
+    return this.http.get(url, { headers }).pipe(
+      map((response: any) => {
+        return response.data;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
   createtransfer(data) {
     const url = `https://api.pals.africa/api/createtransfer`;
     return this.http.post(url, data).pipe(
@@ -102,7 +121,7 @@ export class BusinessService {
   }
 
   getUserBalances(user_id) {
-    const url = `https://api.pals.africa/api/getbusinessuserbalances/${user_id}`;
+    const url = `${environment.getUserBalancesUrl}${user_id}`;
     // const url = `http://127.0.0.1:8000/api/getbusinessuserbalances/${user_id}`;
     return this.http.get(url).pipe(
       map(response => {

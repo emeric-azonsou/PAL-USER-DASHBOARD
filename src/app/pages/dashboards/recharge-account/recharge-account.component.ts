@@ -1,8 +1,13 @@
-import { CustomerCreateUpdateComponent } from "./../../apps/aio-table/customer-create-update/customer-create-update.component";
-import { Customer } from "./../../apps/aio-table/interfaces/customer.model";
-import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
+import { USER_SESSION_KEY, BUSINESS_DATA_KEY } from 'src/app/Models/constants';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { CustomerCreateUpdateComponent } from '../../apps/aio-table/customer-create-update/customer-create-update.component';
 import icMoreVert from "@iconify/icons-ic/twotone-more-vert";
 import icClose from "@iconify/icons-ic/twotone-close";
 import icPrint from "@iconify/icons-ic/twotone-print";
@@ -13,19 +18,14 @@ import icPerson from "@iconify/icons-ic/twotone-person";
 import icMyLocation from "@iconify/icons-ic/twotone-my-location";
 import icLocationCity from "@iconify/icons-ic/twotone-location-city";
 import icEditLocation from "@iconify/icons-ic/twotone-edit-location";
-import { BUSINESS_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { take, takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { Router } from "@angular/router";
+import { BusinessService } from 'src/app/services/business.service';
 
 @Component({
-  selector: "vex-disburse-cash",
-  templateUrl: "./disburse-cash.component.html",
-  styleUrls: ["./disburse-cash.component.scss"],
+  selector: 'vex-recharge-account',
+  templateUrl: './recharge-account.component.html',
+  styleUrls: ['./recharge-account.component.scss']
 })
-export class DisburseCashComponent implements OnInit, OnDestroy {
+export class RechargeAccountComponent implements OnInit {
   countryData = {
     BJ: { currency: "XOF", code: "+229" },
     CI: { currency: "XOF", code: "+225" },
@@ -39,36 +39,30 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   transferForm: FormGroup;
   currency: string = "XOF";
   dailingCode: string = "+229";
-  transferData: any;
+  module_id: any = 102;
+  data: any;
   userData: any;
-  module_id: any = '102';
   moduleData: Object[];
   userBusinessData: any;
-  isDisbursing: boolean;
+  isProcessing: boolean;
   unsubscribe$= new Subject();
   credentials: string;
   hasError: boolean;
   errorMessage: string;
-  phoneNumberValidationPattern = /^[+][0-9]{0,15}$/;
   validationMessages = {
-    phone_no:{
-      pattern: 'Only digits allowed starting with `+`',
-      required: "Receiver's Phone Field  is required.",
-      min:'Please provide a correct phone number'
-    },
     amount: {
       pattern: 'Only digits allowed',
       required: "Amount This Field  is required.",
     }
   };
-  
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
-    private dialogRef: MatDialogRef<DisburseCashComponent>,
+    private dialogRef: MatDialogRef<RechargeAccountComponent>,
     private fb: FormBuilder,
-    private transactionsService: TransactionsService,
+    private transactionService: TransactionsService,
+    private businessService: BusinessService,
     private snackBar: MatSnackBar,
-    private router: Router,
+    private router: Router
   ) {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
@@ -80,9 +74,8 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.transferForm = this.fb.group({
       country: ["BJ", Validators.required],
-      phone_no: [this.dailingCode, [Validators.required, Validators.pattern(this.phoneNumberValidationPattern), Validators.min(8)]],
-      amount: ["", [Validators.required, Validators.pattern(/[0-9]+$/)]],
-      provider: ["mtn", Validators.required],
+      amount: ["", [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      operator: ["mtn", Validators.required],
     });
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
@@ -94,26 +87,27 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  createTransfer() {
-    this.isDisbursing = true
-    this.transferData = {
+  rechargeAccount() {
+    this.isProcessing = true
+    this.data = {
       ...this.transferForm.value,
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
+      status: 'Pending'
     };
 
-    this.transactionsService.createTransaction(this.transferData, this.credentials)
+    this.businessService.requestTopUp(this.data, this.credentials)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.isDisbursing = false;
+        this.isProcessing = false;
         if(response && response['status'] === true) {
           this.openSnackbar(response['message']);
-          window.location.reload();
-          
+          this.dialogRef.close();
         } else {
           this.hasError = true;
           this.errorMessage = response['message'];
+          this.router.navigate(['/dashboards/transactions'])
         }
       }),
       error => {
@@ -131,7 +125,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   getModulesData(credentials) {
-    this.transactionsService
+    this.transactionService
       .getModulesData(credentials)
       .pipe(take(1))
       .subscribe((data) => {

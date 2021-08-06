@@ -13,12 +13,12 @@
 
         <div [formGroup]="form" class="">
             <div class="flex flex-wrap content-center ">
-                <ng-otp-input [config]="{length:5}"></ng-otp-input>
+                <ng-otp-input (onInputChange)="onOtpChange($event)"  [config]="{length:5}"></ng-otp-input>
 
             </div>
             <div class="authButton">
-                <button (click)="send()" class="mt-8 " mat-raised-button type="button">
-                    VERIFY
+                <button (click)="verify()" class="mt-8 " mat-raised-button type="button">
+                    {{ isVerifying === true? 'VERIFYING...' : 'VERIFY'}}
                 </button>
             </div>
         </div>

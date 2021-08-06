@@ -15,7 +15,7 @@ export class AuthserviceService {
   constructor(private http: HttpClient) {}
 
   login(email, password): Observable<any> {
-    const url = "https://api.pals.africa/api/login";
+    const url = environment.loginUrl;
     // const url = "http://127.0.0.1:8000/api/login";
     const body = {
       email: email,
@@ -35,6 +35,7 @@ export class AuthserviceService {
 
   register(userData): Observable<any> {
     const url = "https://api.pals.africa/api/register";
+    // const url = "http://127.0.0.1:8000/api/register";
 
     return this.http
       .post(url, userData, { responseType: "json" })
@@ -175,9 +176,10 @@ export class AuthserviceService {
   }
 
   updatePassword(userData) {
-    const url = `https://api.pals.africa/api/forgotpassupdate`;
+    const url = environment.updatePasswordUrl;
+    // const url = `http://127.0.0.1:8000/api/forgotpassupdate`;
     let params = new HttpParams();
-    params = params.append("uid", userData.uid);
+    params = params.append("user_id", userData.user_id);
     params = params.append("password", userData.password);
 
     return this.http.post(url, null, { responseType: "json", params }).pipe(
@@ -205,7 +207,8 @@ export class AuthserviceService {
   }
 
   verifyEmail(userID, otp) {
-    const url = `https://api.pals.africa/api/verifyemail`;
+    const url = environment.verifyEmailUrl;;
+    // const url = `https://127.0.0.1:8000/api/verifyemail`;
     let params = new HttpParams();
     params = params.append("user_id", userID);
     params = params.append("otp", otp);
@@ -236,6 +239,16 @@ export class AuthserviceService {
         return observableThrowError(error);
       })
     );
+  }
+
+  sendOTPToEmail(data): Observable<any> {
+    const url = environment.sendOTPtoEmailUrl;
+    // const url = `http://127.0.0.1:8000/api/sendotptoemailforgotpassword`
+    return this.http.post(url, data).pipe(
+      map(response => {
+        return response;
+      })
+    )
   }
 
   sendSMSVerificationCode(userData) {
