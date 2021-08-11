@@ -45,7 +45,7 @@ export class EmailComponent implements OnInit, OnDestroy {
       response => {
         this.isSendingCode = false;
         if (response && response['status'] === true) {
-          this.router.navigate(["forgot-password/otp"]);
+          this.router.navigate([`forgot-password/otp/${response['user_id']}`]);
           this.openSnackbar(response['message']);
         } else {
           this.hasError = true;

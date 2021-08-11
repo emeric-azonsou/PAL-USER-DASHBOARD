@@ -13,12 +13,13 @@ import icPerson from "@iconify/icons-ic/twotone-person";
 import icMyLocation from "@iconify/icons-ic/twotone-my-location";
 import icLocationCity from "@iconify/icons-ic/twotone-location-city";
 import icEditLocation from "@iconify/icons-ic/twotone-edit-location";
-import { BUSINESS_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
+import { BUSINESS_DATA_KEY, SUMMARY_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
 import { TransactionsService } from "src/app/services/transactions.service";
 import { take, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
+import { SummaryData } from "src/app/Models/models.interface";
 
 @Component({
   selector: "vex-disburse-cash",
@@ -49,10 +50,10 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   credentials: string;
   hasError: boolean;
   errorMessage: string;
-  phoneNumberValidationPattern = /^[+][0-9]{0,15}$/;
+  phoneNumberValidationPattern = /^[0-9]{0,15}$/;
   validationMessages = {
     phone_no:{
-      pattern: 'Only digits allowed starting with `+`',
+      pattern: 'Only digits allowed starting with ',
       required: "Receiver's Phone Field  is required.",
       min:'Please provide a correct phone number'
     },
@@ -61,6 +62,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       required: "Amount This Field  is required.",
     }
   };
+  merchantSummaryData: SummaryData;
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -75,12 +77,16 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
 
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
     this.userBusinessData = JSON.parse(businessData);
+
+    const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
+    this.merchantSummaryData = summaryData;
+
   }
 
   ngOnInit() {
     this.transferForm = this.fb.group({
       country: ["BJ", Validators.required],
-      phone_no: [this.dailingCode, [Validators.required, Validators.pattern(this.phoneNumberValidationPattern), Validators.min(8)]],
+      phone_no: ['', [Validators.required, Validators.pattern(this.phoneNumberValidationPattern), Validators.min(8)]],
       amount: ["", [Validators.required, Validators.pattern(/[0-9]+$/)]],
       provider: ["mtn", Validators.required],
     });
@@ -95,6 +101,9 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   createTransfer() {
+    const fee = this.getPalFee(this.transferForm.value['amount'], this.transferForm.value['country'])
+    const amount = parseInt(this.transferForm.value['amount'], 10) + fee;
+    this.transferForm.get('amount').setValue(amount);
     this.isDisbursing = true
     this.transferData = {
       ...this.transferForm.value,
@@ -128,6 +137,26 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       duration: 3000,
       horizontalPosition: 'right'
     });
+  }
+
+  get hasExceededFeeTransfers(): boolean {
+    return this.merchantSummaryData?.totalTransactionsAmount > 6021;
+  }
+
+  getPalFee(amount, country: string): number {
+    if(this.hasExceededFeeTransfers) {
+      switch(country){
+        case 'GH':
+          return (amount * 0.5 / 100);
+        case 'BJ':
+          return (amount * 1 /100);
+        default :
+          return 0;
+      }
+    } else {
+      return 0;
+    }
+   
   }
 
   getModulesData(credentials) {

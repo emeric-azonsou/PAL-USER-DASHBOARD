@@ -206,9 +206,9 @@ export class AuthserviceService {
     );
   }
 
-  verifyEmail(userID, otp) {
+  verifyEmail(otp: string, userID: string) {
     const url = environment.verifyEmailUrl;;
-    // const url = `https://127.0.0.1:8000/api/verifyemail`;
+    // const url = `http://127.0.0.1:8000/api/verifyemail`;
     let params = new HttpParams();
     params = params.append("user_id", userID);
     params = params.append("otp", otp);

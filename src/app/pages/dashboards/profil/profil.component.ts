@@ -18,6 +18,7 @@ import { Subject } from 'rxjs';
 import { COUNTRIES, NATIONALITIES, CATEGORIES, INDUSTRIES, BUSINESS_DATA_KEY, USER_SESSION_KEY } from 'src/app/Models/constants';
 import { BusinessService } from 'src/app/services/business.service';
 import { GeoLocationService } from 'src/app/services/geo-location.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface CountryState {
   name: string;
@@ -194,7 +195,8 @@ export class ProfilComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private businessService: BusinessService,
-    private geoLocationService: GeoLocationService
+    private geoLocationService: GeoLocationService,
+    private snackBar: MatSnackBar
     ) {
       const sessionData = localStorage.getItem(USER_SESSION_KEY);
       this.userData = JSON.parse(sessionData);
@@ -276,9 +278,10 @@ export class ProfilComponent implements OnInit {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((response: any) => {
           if ((response.status = true && response.data)) {
+            this.openSnackbar(response['message']);
             localStorage.setItem(BUSINESS_DATA_KEY, JSON.stringify(response.data));
+            this.router.navigate(['/dashboards/home']);
             window.location.reload();
-              this.router.navigate(['/dashboards/home'])
           } else {
             this.errorMessage = response.message || "something went wrong";
             this.isBusinessSubmitted = false;
@@ -289,6 +292,13 @@ export class ProfilComponent implements OnInit {
   
     getBusinessLogo(File) {
       this.businessLogo = File.item(0);
+    }
+
+    openSnackbar(message) {
+      this.snackBar.open(message, 'CLOSE', {
+        duration: 3000,
+        horizontalPosition: 'right'
+      });
     }
   
     getLocationData() {

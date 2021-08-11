@@ -12,9 +12,10 @@ import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
 import { fadeInUp400ms } from "../../../../../@vex/animations/fade-in-up.animation";
 import { AuthserviceService } from "src/app/services/authservice.service";
-import { take, takeUntil } from "rxjs/operators";
+import { catchError, take, takeUntil } from "rxjs/operators";
 import { USER_SESSION_KEY } from "src/app/Models/constants";
 import { Subject, throwError } from "rxjs";
+import { UserSession } from "src/app/Models/models.interface";
 
 @Component({
   selector: "vex-login",
@@ -34,6 +35,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   hasError: boolean = false;
   isProcessing: boolean = false;
   unsubscribe$ = new Subject();
+  isInvalidvUser: boolean;
+  sessionResponse: UserSession;
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -44,12 +47,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.fb.group({
-      email: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
       password: ["", Validators.required],
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -66,32 +69,46 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.isProcessing = true
+    this.isProcessing = true;
     const email = this.form.value["email"];
     const password = this.form.value["password"];
     this.authService
       .login(email, password)
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(take(1))
       .subscribe((response) => {
-        if (response && response.currentUser) {
-          this.isProcessing = false;
+        this.isProcessing = false;
+        console.log("[isProcessing]", this.isProcessing);
+        if (!response.error || response.error !== "Unauthorized") {
+          this.sessionResponse = {
+            first_name: response.currentUser.first_name,
+            last_name: response.currentUser.last_name,
+            email: response.currentUser.email,
+            mobile_phone: response.currentUser.mobile_phone,
+            user_id: response.currentUser.user_id,
+            photo: response.currentUser.photo,
+            status: response.currentUser.status,
+            id: response.currentUser.id,
+            currency: response.currentUser.currency,
+            country_code: response.currentUser.country_code,
+            hasBusiness: response.currentUser.hasBusiness
+          };
           localStorage.setItem(
             USER_SESSION_KEY,
-            JSON.stringify(response.currentUser)
+            JSON.stringify(this.sessionResponse)
           );
           this.router.navigate(["/dashboards/home"]);
         } else {
-          this.isProcessing = false;
           this.hasError = true;
+          this.isInvalidvUser = true;
+          console.log("[isInvalidvUser else]", this.isInvalidvUser);
         }
-        console.log('isproessing', this.isProcessing);
       }),
       (error) => {
         this.isProcessing = false;
-        console.error(error);
+        console.log(error);
         this.hasError = true;
-        console.log('isprossessing', this.isProcessing);
-
+        this.isInvalidvUser = true;
+        console.log("[isInvalidvUser error]", this.isInvalidvUser);
       };
   }
 

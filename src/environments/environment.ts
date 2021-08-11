@@ -25,6 +25,7 @@ export const environment = {
   registerUserUrl: `https://api-test.pals.africa/api/register`,
   loginUrl:`https://api-test.pals.africa/api/login`,
 
+  getBusinessSummaryUrl: `https://api-test.pals.africa/api/getmerchantusersummary/`,
   getBusinessDataUrl: `https://api-test.pals.africa/api/getuserbusiness/`,
   addBusinessUrl: `https://api-test.pals.africa/api/addbusiness`,
   getModulesDataUrl: `https://api-test.pals.africa/api/getmodulesdata`,

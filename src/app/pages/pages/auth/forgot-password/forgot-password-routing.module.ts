@@ -12,11 +12,11 @@ const routes: Routes = [
     component: EmailComponent,
   },
   {
-    path: "otp",
+    path: "otp/:user_id",
     component: OtpVerificationComponent,
   },
   {
-    path: "new-password/:user_id",
+    path: "new-password",
     component: NewPasswordComponent,
   },
 ];

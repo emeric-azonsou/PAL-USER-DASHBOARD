@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import {
+  SUMMARY_DATA_KEY,
   TRANSACTION_TABLE_LABELS,
   USER_SESSION_KEY,
 } from "src/app/Models/constants";
@@ -23,6 +24,8 @@ import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icFolder from "@iconify/icons-ic/twotone-folder";
 import { PercentPipe } from "@angular/common";
 import { LoadingBarService } from "@ngx-loading-bar/core";
+import { SummaryData } from "src/app/Models/models.interface";
+import * as moment from 'moment';
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {
@@ -112,6 +115,7 @@ export class TransactionsComponent implements OnInit {
   hasNoTransactions: boolean;
   palFee = 0;
   isLoading: boolean;
+  merchantSummaryData: SummaryData;
   constructor(
     private router: Router,
     private transactionsService: TransactionsService,
@@ -119,6 +123,9 @@ export class TransactionsComponent implements OnInit {
   ) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
+    const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
+    this.merchantSummaryData = summaryData;
+
     if (!sessionData) {
       router.navigate(["/auth/login"]);
     }
@@ -132,16 +139,24 @@ export class TransactionsComponent implements OnInit {
   ngOnInit(): void {
     this.loadTransactions(this.userData.user_id);
   }
+  get hasExceededFeeTransfers(): boolean {
+    return this.merchantSummaryData?.totalTransactionsAmount > 6021;
+  }
 
   getPalFee(amount, country: string): number {
-    switch(country){
-      case 'GH':
-        return (amount * 0.5 / 100);
-      case 'BJ':
-        return (amount * 1 /100);
-      default :
-        return 0;
+    if(this.hasExceededFeeTransfers) {
+      switch(country){
+        case 'GH':
+          return (amount * 0.5 / 100);
+        case 'BJ':
+          return (amount * 1 /100);
+        default :
+          return 0;
+      }
+    } else {
+      return 0;
     }
+   
   }
 
   ngOnDestroy() {
@@ -171,6 +186,7 @@ export class TransactionsComponent implements OnInit {
           this.transactionsData = transactions.data.map((details) => {
             details.state = this.getStatusLabel(details.state);
             details.palFee = this.getPalFee(details.amount, details.country);
+            details.formatedDate = moment(details.created_at).fromNow()
             return details;
           });
 

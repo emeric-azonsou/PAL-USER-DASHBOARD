@@ -69,6 +69,21 @@ export class BusinessService {
     );
   }
 
+  getBusinessSummary(user_id) {
+    // const url = `http://127.0.0.1:8000/api/getmerchantusersummary/${user_id}`;
+    const url = `${environment.getBusinessSummaryUrl}${user_id}`;
+    return this.http.get(url).pipe(
+      map((response) => {
+        return response;
+      }),
+
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error:", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
   requestTopUp(accountData, credentials) {
     const headers = new HttpHeaders({
       'Authorization' : `Bearer ${credentials}`,

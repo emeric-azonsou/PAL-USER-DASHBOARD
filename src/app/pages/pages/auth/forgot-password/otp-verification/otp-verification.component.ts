@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Validators, FormBuilder } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import icMail from "@iconify/icons-ic/twotone-mail";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { take, takeUntil } from "rxjs/operators";
 import { USER_SESSION_KEY } from "src/app/Models/constants";
 import { AuthserviceService } from "src/app/services/authservice.service";
 @Component({
@@ -24,13 +24,18 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
   isVerifying: boolean;
   hasError: boolean;
   errorMEssage: string;
+  userID: any;
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthserviceService
+    private authService: AuthserviceService,
+    private route: ActivatedRoute
   ) {
-    const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
-    this.userData = sessionData;
+
+    route.params.pipe(take(1)).subscribe((param) => {
+      this.userID = param.user_id;
+    });
+
   }
 
   ngOnInit() {}
@@ -46,12 +51,14 @@ export class OtpVerificationComponent implements OnInit, OnDestroy {
   verify() {
     this.isVerifying = true;
     this.authService
-      .verifyEmail(this.otp, this.userData.id)
+      .verifyEmail(this.otp, this.userID)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((response) => {
         this.isVerifying = false;
         if (response && response["status"] === true) {
-          this.router.navigate([`forgot-password/new-password`, response['data'].user_id]);
+          const data = response['userData'];
+          localStorage.setItem(USER_SESSION_KEY, JSON.stringify(data));
+          this.router.navigate([`forgot-password/new-password`]);
         } else {
           this.hasError = true;
           this.errorMEssage = response['message'];
