@@ -101,8 +101,8 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   createTransfer() {
-    const fee = this.getPalFee(this.transferForm.value['amount'], this.transferForm.value['country'])
-    const amount = parseInt(this.transferForm.value['amount'], 10) + fee;
+    // const fee = this.getPalFee(this.transferForm.value['amount'], this.transferForm.value['country'])
+    const amount = parseInt(this.transferForm.value['amount'], 10);
     this.transferForm.get('amount').setValue(amount);
     this.isDisbursing = true
     this.transferData = {
@@ -110,6 +110,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
+      hasExceededFeeTransfers: true
     };
 
     this.transactionsService.createTransaction(this.transferData, this.credentials)

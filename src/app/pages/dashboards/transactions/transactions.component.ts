@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import {
+  COUNTRIES,
   SUMMARY_DATA_KEY,
   TRANSACTION_TABLE_LABELS,
   USER_SESSION_KEY,
@@ -105,6 +106,7 @@ export class TransactionsComponent implements OnInit {
   icFolder = icFolder;
 
   statusLabels = TRANSACTION_TABLE_LABELS;
+  countries = COUNTRIES
   userData: any;
   unsubscribe$ = new Subject();
 
@@ -170,7 +172,6 @@ export class TransactionsComponent implements OnInit {
   }
 
   getStatusLabel(status: string) {
-    console.log("status", status);
     return this.statusLabels.find((label) => label.text === status);
   }
 
@@ -183,22 +184,27 @@ export class TransactionsComponent implements OnInit {
       .subscribe(
         (transactions) => {
           this.isLoading = false;
-          this.transactionsData = transactions.data.map((details) => {
+          this.transactionsData = transactions.map((details) => {
             details.state = this.getStatusLabel(details.state);
             details.palFee = this.getPalFee(details.amount, details.country);
-            details.formatedDate = moment(details.created_at).fromNow()
+            details.formatedDate = moment(details.created_at).fromNow();
+            details.country = this.getCountryName(details.country)
             return details;
           });
 
           this.hasNoTransactions =
-            transactions.data.length === 0 ? true : false;
+            transactions.length === 0 ? true : false;
           this.dataSource = new MatTableDataSource(this.transactionsData);
         },
         (error) => {
           this.isLoading = false;
           console.error(error.message)
         }
-      );
-    
+      ); 
+  }
+
+  getCountryName(countryCode: string): string {
+    const countryData = this.countries.find(country => country.code === countryCode);
+    return countryData.name;
   }
 }

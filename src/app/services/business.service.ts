@@ -122,7 +122,7 @@ export class BusinessService {
     );
   }
   createtransfer(data) {
-    const url = `https://api.pals.africa/api/createtransfer`;
+    const url = environment.createTransactionUrl;
     return this.http.post(url, data).pipe(
       map(response => {
         return response;
