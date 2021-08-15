@@ -1,6 +1,6 @@
 {
-  "name": "vex",
-  "version": "11.1.0",
+  "name": "pal-dashboard",
+  "version": "1.1.8",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
