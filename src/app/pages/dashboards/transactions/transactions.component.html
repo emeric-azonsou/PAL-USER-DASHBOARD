@@ -87,7 +87,8 @@
         <!-- created_at Column -->
         <ng-container matColumnDef="created_at">
           <th mat-header-cell *matHeaderCellDef>Date & Time</th>
-          <td mat-cell *matCellDef="let element">{{ element.created_at }}</td>
+          <!-- <td [matTooltip]="element.created_at" mat-cell *matCellDef="let element">{{ element.formatedDate }}</td> -->
+          <mat-cell matTooltipPosition="after" [matTooltip]="element.formatedDate" *matCellDef="let element"> {{element.formatedDate}} </mat-cell>
           <!-- <td mat-cell *matCellDef="">25 jun 2021</td> -->
         </ng-container>
 

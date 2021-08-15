@@ -3,11 +3,12 @@ import { Validators, FormBuilder, FormGroup, ValidationErrors } from "@angular/f
 import icMail from "@iconify/icons-ic/twotone-mail";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthserviceService } from "src/app/services/authservice.service";
-import { takeUntil } from "rxjs/operators";
+import { take, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
+import { USER_SESSION_KEY } from "src/app/Models/constants";
 
 @Component({
   selector: "vex-new-password",
@@ -37,6 +38,7 @@ export class NewPasswordComponent implements OnInit {
 
   unsubscribe$ = new Subject();
   userID: any;
+  userData: any;
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -44,12 +46,15 @@ export class NewPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private cd: ChangeDetectorRef,
-  ) {}
+  ) {
+    route.params.pipe(take(1)).subscribe((param) => {
+      this.userID = param.user_id;
+    });
+    const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
+    this.userData = sessionData;
+  }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.userID = params["user_id"];
-    });
 
     this.form = this.fb.group({
       password: ["", Validators.required],
@@ -86,7 +91,7 @@ export class NewPasswordComponent implements OnInit {
 
   reset() {
     const data = {
-      user_id: this.userID,
+      user_id: this.userData.user_id,
       password: this.form.value["password"],
     };
     this.isResetting = true;

@@ -31,7 +31,7 @@ export class TransactionsService {
     const url = `${environment.getTransactionsListUrl}${userId}`;
     return this.http.get(url, { params: params }).pipe(
       map((transaction: any) => {
-        transaction.data.map((values) => {
+        const transactions = transaction.data.map((values) => {
           if (typeof values.total_price === undefined) {
             values.total_price = values.price;
           }
@@ -49,7 +49,7 @@ export class TransactionsService {
           return values;
         });
 
-        return transaction;
+        return transactions;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);

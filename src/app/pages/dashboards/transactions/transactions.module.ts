@@ -22,6 +22,7 @@ import { BreadcrumbsModule } from 'src/@vex/components/breadcrumbs/breadcrumbs.m
 import { SecondaryToolbarModule } from 'src/@vex/components/secondary-toolbar/secondary-toolbar.module';
 import { ContainerModule } from 'src/@vex/directives/container/container.module';
 import { FormElementsRoutingModule } from '../../ui/forms/form-elements/form-elements-routing.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { FormElementsRoutingModule } from '../../ui/forms/form-elements/form-ele
     ContainerModule,
     AngularFileUploaderModule,
     MatFileUploadModule,
+    MatTooltipModule
   ],
   declarations: [],
   schemas:[CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]

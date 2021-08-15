@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { USER_SESSION_KEY } from "src/app/Models/constants";
+import { SUMMARY_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
 import { BusinessService } from "src/app/services/business.service";
 
 @Component({
@@ -14,9 +14,12 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
   balanceData: any;
 
   unsubscribe$ = new Subject();
+  merchantSummaryData: any;
   constructor(private service: BusinessService) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
+    const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
+    this.merchantSummaryData = summaryData;
   }
 
   ngOnInit(): void {

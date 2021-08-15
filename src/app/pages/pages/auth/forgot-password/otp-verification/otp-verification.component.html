@@ -17,7 +17,7 @@
 
             </div>
             <div class="authButton">
-                <button (click)="verify()" class="mt-8 " mat-raised-button type="button">
+                <button (click)="verify()" [disabled]="isVerifying" class="mt-8 " mat-raised-button type="button">
                     {{ isVerifying === true? 'VERIFYING...' : 'VERIFY'}}
                 </button>
             </div>

@@ -7,6 +7,8 @@ import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import {
+  COUNTRIES,
+  SUMMARY_DATA_KEY,
   TRANSACTION_TABLE_LABELS,
   USER_SESSION_KEY,
 } from "src/app/Models/constants";
@@ -23,6 +25,8 @@ import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icFolder from "@iconify/icons-ic/twotone-folder";
 import { PercentPipe } from "@angular/common";
 import { LoadingBarService } from "@ngx-loading-bar/core";
+import { SummaryData } from "src/app/Models/models.interface";
+import * as moment from 'moment';
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {
@@ -102,6 +106,7 @@ export class TransactionsComponent implements OnInit {
   icFolder = icFolder;
 
   statusLabels = TRANSACTION_TABLE_LABELS;
+  countries = COUNTRIES
   userData: any;
   unsubscribe$ = new Subject();
 
@@ -112,6 +117,7 @@ export class TransactionsComponent implements OnInit {
   hasNoTransactions: boolean;
   palFee = 0;
   isLoading: boolean;
+  merchantSummaryData: SummaryData;
   constructor(
     private router: Router,
     private transactionsService: TransactionsService,
@@ -119,6 +125,9 @@ export class TransactionsComponent implements OnInit {
   ) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
+    const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
+    this.merchantSummaryData = summaryData;
+
     if (!sessionData) {
       router.navigate(["/auth/login"]);
     }
@@ -132,16 +141,24 @@ export class TransactionsComponent implements OnInit {
   ngOnInit(): void {
     this.loadTransactions(this.userData.user_id);
   }
+  get hasExceededFeeTransfers(): boolean {
+    return this.merchantSummaryData?.totalTransactionsAmount > 6021;
+  }
 
   getPalFee(amount, country: string): number {
-    switch(country){
-      case 'GH':
-        return (amount * 0.5 / 100);
-      case 'BJ':
-        return (amount * 1 /100);
-      default :
-        return 0;
+    if(this.hasExceededFeeTransfers) {
+      switch(country){
+        case 'GH':
+          return (amount * 0.5 / 100);
+        case 'BJ':
+          return (amount * 1 /100);
+        default :
+          return 0;
+      }
+    } else {
+      return 0;
     }
+   
   }
 
   ngOnDestroy() {
@@ -155,7 +172,6 @@ export class TransactionsComponent implements OnInit {
   }
 
   getStatusLabel(status: string) {
-    console.log("status", status);
     return this.statusLabels.find((label) => label.text === status);
   }
 
@@ -168,21 +184,27 @@ export class TransactionsComponent implements OnInit {
       .subscribe(
         (transactions) => {
           this.isLoading = false;
-          this.transactionsData = transactions.data.map((details) => {
+          this.transactionsData = transactions.map((details) => {
             details.state = this.getStatusLabel(details.state);
             details.palFee = this.getPalFee(details.amount, details.country);
+            details.formatedDate = moment(details.created_at).fromNow();
+            details.country = this.getCountryName(details.country)
             return details;
           });
 
           this.hasNoTransactions =
-            transactions.data.length === 0 ? true : false;
+            transactions.length === 0 ? true : false;
           this.dataSource = new MatTableDataSource(this.transactionsData);
         },
         (error) => {
           this.isLoading = false;
           console.error(error.message)
         }
-      );
-    
+      ); 
+  }
+
+  getCountryName(countryCode: string): string {
+    const countryData = this.countries.find(country => country.code === countryCode);
+    return countryData.name;
   }
 }

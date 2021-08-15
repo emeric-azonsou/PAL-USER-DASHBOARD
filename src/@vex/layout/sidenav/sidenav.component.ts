@@ -9,7 +9,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import icHome from '@iconify/icons-ic/twotone-home';
 import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
 import icAssignment from '@iconify/icons-ic/twotone-assignment';
-import { BUSINESS_DATA_KEY, USER_SESSION_KEY } from 'src/app/Models/constants';
+import { BUSINESS_DATA_KEY, SUMMARY_DATA_KEY, USER_SESSION_KEY } from 'src/app/Models/constants';
 import { Router } from '@angular/router';
 import { BusinessService } from 'src/app/services/business.service';
 import { Subject } from 'rxjs';
@@ -57,6 +57,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.getUserBusinessData(this.userData.user_id);
+    this.getUserBusinessSummary(this.userData.user_id);
   }
 
   ngOnDestroy() {
@@ -84,6 +85,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
       this.hasBusinessRegistered = !!this.businessUserData;
 
       localStorage.setItem(BUSINESS_DATA_KEY, JSON.stringify(this.businessUserData));
+    })
+  }
+
+  getUserBusinessSummary(userID) {
+    this.businessService.getBusinessSummary(userID)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      const response = JSON.stringify(data);
+      localStorage.setItem(SUMMARY_DATA_KEY, response);
     })
   }
 }

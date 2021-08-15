@@ -1,44 +1,86 @@
-<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
+<div
+  class="w-full h-full bg-pattern"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+>
   <div @fadeInUp class="w-full max-w-xs overflow-hidden card">
     <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
       <div class="text-center fill-current">
-        <img class="w-16" src="assets\logo\logo_pal-removebg-preview.png">
+        <img class="w-16" src="assets\logo\logo_pal-removebg-preview.png" />
       </div>
     </div>
 
     <div class="mt-4 text-center">
       <h2 class="m-0 title">SIGN IN</h2>
-    
     </div>
 
     <div [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px">
       <div fxFlex="auto" fxLayout="column">
         <mat-form-field fxFlex="grow">
           <mat-label>E-Mail</mat-label>
-          <input formControlName="email" matInput required>
-          <mat-error *ngIf="form.get('email').hasError('required')">We need an email address to log you in</mat-error>
+          <input formControlName="email" matInput required />
+          <mat-error *ngIf="form.get('email').hasError('required') || form.get('email').hasError('email')"
+            >Please enter a valid email address</mat-error
+          >
         </mat-form-field>
         <mat-form-field fxFlex="grow">
           <mat-label>Password</mat-label>
-          <input [type]="inputType" formControlName="password" matInput required>
-          <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility" type="button">
+          <input
+            [type]="inputType"
+            formControlName="password"
+            matInput
+            required
+          />
+          <button
+            (click)="toggleVisibility()"
+            mat-icon-button
+            matSuffix
+            matTooltip="Toggle Visibility"
+            type="button"
+          >
             <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
             <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
           </button>
           <mat-hint>Click the eye to toggle visibility</mat-hint>
-          <mat-error *ngIf="form.get('password').hasError('required')">We need a password to log you in</mat-error>
+          <mat-error *ngIf="form.get('password').hasError('required')"
+            >We need a password to log you in</mat-error
+          >
         </mat-form-field>
       </div>
 
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <mat-checkbox class="caption" color="primary">Remember Me</mat-checkbox>
-        <a [routerLink]="['/auth/forgot-password']" class="caption">Forgot Password?</a>
+        <a [routerLink]="['/auth/forgot-password']" class="caption"
+          >Forgot Password?</a
+        >
       </div>
 
-      <button (click)="login()" [disabled]="isProcessing" class="authButton" mat-raised-button type="button">
-        {{ isProcessing === true ? 'SIGNING IN...' : 'SIGN IN' }}
+      <!-- <button
+        (click)="login()"
+        [disabled]="isProcessing"
+        class="authButton"
+        mat-raised-button
+        type="button"
+      >
+        {{ isProcessing === true ? "SIGNING IN..." : "SIGN IN" }}
+      </button> -->
+      <button
+        *ngIf="!isProcessing"
+        (click)="login()"
+        class="authButton"
+        mat-raised-button
+        type="button"
+        [disabled]="form.invalid"
+      >
+        SIGN IN
       </button>
-      <mat-error *ngIf="hasError"> Invalid email/password !</mat-error>
+      <button mat-raised-button *ngIf="isProcessing" disabled type="button">
+        SIGNING IN...
+      </button>
+      <mat-error *ngIf="isInvalidvUser || hasError" fxLayout="row" fxLayoutAlign="center">
+        <span class="mat-button-wrapper">Invalid phone number/password</span>
+      </mat-error>
+
       <p class="text-center text-secondary">
         Don't have an account?<br />
         <a [routerLink]="['/auth/register/step1']">Click here to create one</a>

@@ -22,3 +22,51 @@ export interface User {
   user_id: string;
   web_token: string;
 }
+export interface SummaryData {
+  monthlyTransactions: any;
+  totalTransactionsAmount: number;
+  totalTransactionsCount: number;
+}
+
+export interface UserSession {
+  first_name: string;
+  last_name: string,
+  email: string;
+  mobile_phone: string;
+  user_id: string;
+  photo: string;
+  status: any;
+  id: any;
+  currency: string;
+  country_code: string;
+  hasBusiness: boolean;
+}
+export interface MerchantData {
+  DOB: string;
+  api_public_key_live: string;
+  api_public_key_test: string;
+  api_secret_key_live: string;
+  api_secret_key_test: string;
+  business_address: string;
+  business_email: string;
+  business_legal_name: string;
+  business_logo: string;
+  business_phone: string;
+  company_document_path: any;
+  country: string;
+  created_at: string;
+  description: string;
+  id: number;
+  id_proof_path: string;
+  id_type: string;
+  industry: string;
+  nationality: string;
+  owner_address: string;
+  owner_full_name: string;
+  staff_size: string;
+  status: string;
+  trading_name: string | null;
+  updated_at: string;
+  user_id: string;
+  website: string;
+}
