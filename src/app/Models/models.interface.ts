@@ -21,6 +21,7 @@ export interface User {
   updated_at: string;
   user_id: string;
   web_token: string;
+  hasBusiness: boolean;
 }
 export interface SummaryData {
   monthlyTransactions: any;

@@ -77,7 +77,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((response) => {
         this.isProcessing = false;
-        console.log("[isProcessing]", this.isProcessing);
         if (!response.error || response.error !== "Unauthorized") {
           this.sessionResponse = {
             first_name: response.currentUser.first_name,

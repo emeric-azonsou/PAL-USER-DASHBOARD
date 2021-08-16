@@ -19,6 +19,7 @@ import { COUNTRIES, NATIONALITIES, CATEGORIES, INDUSTRIES, BUSINESS_DATA_KEY, US
 import { BusinessService } from 'src/app/services/business.service';
 import { GeoLocationService } from 'src/app/services/geo-location.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MerchantData, User } from 'src/app/Models/models.interface';
 
 export interface CountryState {
   name: string;
@@ -106,7 +107,7 @@ export class ProfilComponent implements OnInit {
   phoneNumberValidationPattern = /^[0-9]{0,15}$/;
 
   allCreatBusinessData: object;
-  userData: any;
+  userData: User;
 
   validationMessages = {
     country: {
@@ -187,6 +188,11 @@ export class ProfilComponent implements OnInit {
   icEdit=icEdit;
 
   stateCtrl = new FormControl();
+  isAdding: boolean;
+  hasError: boolean;
+  updateBusinessForm: FormGroup;
+  businessData: MerchantData;
+  isUpdating: boolean;
 
  
 
@@ -200,6 +206,10 @@ export class ProfilComponent implements OnInit {
     ) {
       const sessionData = localStorage.getItem(USER_SESSION_KEY);
       this.userData = JSON.parse(sessionData);
+      const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
+      if(businessData !== 'undefined') {
+        this.businessData = JSON.parse(businessData);
+      }
     }
 
  
@@ -239,6 +249,32 @@ export class ProfilComponent implements OnInit {
         staff_size: [''],
         website:['']
       });
+
+      this.updateBusinessForm = this.formBuilder.group({
+        country: [this.businessData?.country, Validators.required],
+        business_address: [this.businessData?.business_address, Validators.required],
+        description: [this.businessData?.description, Validators.required],
+        industry: [this.businessData?.industry, Validators.required],
+        business_phone: [
+          this.businessData?.business_phone,
+          [
+            Validators.required,
+            Validators.pattern(this.phoneNumberValidationPattern),
+          ],
+        ],
+        owner_full_name: [this.businessData?.owner_full_name, Validators.required],
+        dob: [this.businessData?.DOB, Validators.required],
+        nationality: [this.businessData?.nationality, Validators.required],
+        owner_address: [this.businessData?.owner_address, Validators.required],
+        id_type: [this.businessData?.id_type, Validators.required],
+        // id_proof_path: [""],
+        company_documents: [""],
+        business_legal_name: [this.businessData?.business_legal_name],
+        company_documentUpload: [""],
+        business_logo: [""],
+        staff_size: [this.businessData?.staff_size, Validators.required],
+        website:['']
+      });
       // this.businessPhoneInputStyl();
       // this.deliveryManInputStyl();
       this.getLocationData();
@@ -262,14 +298,45 @@ export class ProfilComponent implements OnInit {
     uploadCompanyLogo(event) {
       this.companyLogoFile = event.target.files[0];
     }
-  
-    addBusiness() {
-      console.log('[fomrValue]', this.businessForm.value);
+
+    updateBusinessProfile() {
       this.isBusinessSubmitted = true;
-      const businessData = this.businessForm.value;
+      this.isUpdating = true;
+      const businessData = this.updateBusinessForm.value;
       businessData.id_proof_path = this.idDocumentFile || "";
       businessData.company_documentUpload = this.companyDocumentFile || "";
       businessData.business_logo = this.companyLogoFile
+      businessData.user_id = this.userData.user_id;
+      businessData.business_email = this.userData.email
+      businessData.business_phone = this.getProcessedphoneNumber(this.updateBusinessForm.value['business_phone']);
+      this.businessService
+        .updateBusinessData(businessData, this.businessData.id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((response: any) => {
+          this.isUpdating = false;
+          if ((response.status = true && response.data)) {
+            this.openSnackbar(response['message']);
+            localStorage.setItem(BUSINESS_DATA_KEY, JSON.stringify(response.data));
+            this.router.navigate(['/dashboards/home']);
+          } else {
+            this.errorMessage = response.message || "something went wrong";
+            this.isBusinessSubmitted = false;
+            this.hasError = true;
+          }
+        }),
+        (error) => {
+          this.isUpdating = false;
+          this.hasError = true;
+        };
+    }
+  
+    addBusiness() {
+      this.isBusinessSubmitted = true;
+      this.isAdding = true;
+      const businessData = this.businessForm.value;
+      businessData.id_proof_path = this.idDocumentFile || "";
+      businessData.company_documentUpload = this.companyDocumentFile || "";
+      businessData.business_logo = this.companyLogoFile || ""
       businessData.user_id = this.userData.user_id;
       businessData.business_email = this.userData.email
       businessData.business_phone = this.getProcessedphoneNumber(this.businessForm.value['business_phone']);
@@ -277,17 +344,21 @@ export class ProfilComponent implements OnInit {
         .createNewBusiness(businessData)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((response: any) => {
+          this.isAdding = false;
           if ((response.status = true && response.data)) {
             this.openSnackbar(response['message']);
             localStorage.setItem(BUSINESS_DATA_KEY, JSON.stringify(response.data));
             this.router.navigate(['/dashboards/home']);
-            window.location.reload();
           } else {
             this.errorMessage = response.message || "something went wrong";
             this.isBusinessSubmitted = false;
+            this.hasError = true;
           }
-        });
-      return null;
+        }),
+        (error) => {
+          this.isAdding = false;
+          this.hasError = true;
+        };
     }
   
     getBusinessLogo(File) {
