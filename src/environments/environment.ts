@@ -28,6 +28,7 @@ export const environment = {
   getBusinessSummaryUrl: `https://api-test.pals.africa/api/getmerchantusersummary/`,
   getBusinessDataUrl: `https://api-test.pals.africa/api/getuserbusiness/`,
   addBusinessUrl: `https://api-test.pals.africa/api/addbusiness`,
+  updateBusinessUrl: `https://api-test.pals.africa/api/updatebusiness/`,
   getModulesDataUrl: `https://api-test.pals.africa/api/getmodulesdata`,
   createTransferUrl: `https://api-test.pals.africa/api/createtransfer`,
   requestTopUpUrl: `https://api-test.pals.africa/api/requesttopup`,

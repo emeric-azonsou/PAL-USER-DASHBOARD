@@ -37,6 +37,7 @@ export class TransactionsService {
           }
 
           if (values.status)
+          values.status = parseInt(values.status);
             if (values.status === 0) {
               values.state = "Cancelled";
             } else if (values.status === 1) {

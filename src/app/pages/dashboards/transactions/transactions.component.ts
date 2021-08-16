@@ -141,12 +141,12 @@ export class TransactionsComponent implements OnInit {
   ngOnInit(): void {
     this.loadTransactions(this.userData.user_id);
   }
-  get hasExceededFeeTransfers(): boolean {
+  get hasExceededFreeTransfers(): boolean {
     return this.merchantSummaryData?.totalTransactionsAmount > 6021;
   }
 
   getPalFee(amount, country: string): number {
-    if(this.hasExceededFeeTransfers) {
+    if(this.hasExceededFreeTransfers) {
       switch(country){
         case 'GH':
           return (amount * 0.5 / 100);

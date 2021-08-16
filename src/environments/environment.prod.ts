@@ -22,6 +22,7 @@ export const environment = {
   loginUrl:`https://api.pals.africa/api/login`,
 
   addBusinessUrl: `https://api.pals.africa/api/addbusiness`,
+  updateBusinessUrl: `https://api.pals.africa/api/updatebusiness/`,
   getBusinessSummaryUrl: `https://api.pals.africa/api/getmerchantusersummary/`,
   getModulesDataUrl: `https://api.pals.africa/api/getmodulesdata`,
   getBusinessDataUrl: `https://api.pals.africa/api/getuserbusiness/`,

@@ -54,6 +54,41 @@ export class BusinessService {
       );
   }
 
+  updateBusinessData(businessData, id) {
+    const url = `${environment.updateBusinessUrl}${id}`;
+    // const url = `http://127.0.0.1:8000/api/updatebusiness/${id}`;
+    const formData = new FormData();
+    formData.append('business_email', businessData['business_email']);
+    formData.append('business_legal_name', businessData['business_legal_name']);
+    formData.append('business_logo', businessData['business_logo']);
+    formData.append('business_phone', businessData['business_phone']);
+    formData.append('company_document_path', businessData['company_documentUpload']);
+    formData.append('country', businessData['country']);
+    formData.append('description', businessData['description']);
+    formData.append('DOB', businessData['dob']);
+    formData.append('id_type', businessData['id_type']);
+    formData.append('id_proof_path', businessData['id_proof_path']);
+    formData.append('industry', businessData['industry']);
+    formData.append('nationality', businessData['nationality']);
+    formData.append('business_address', businessData['owner_address']);
+    formData.append('owner_full_name', businessData['owner_full_name']);
+    formData.append('status', businessData['status']);
+    formData.append('user_id', businessData['user_id']);
+    formData.append('staff_size', businessData['staff_size']);
+    formData.append('owner_address', businessData['owner_address']);
+    return this.http
+      .post(url, formData, { responseType: 'json', })
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.log('Error:', error.message);
+          return observableThrowError(error);
+        })
+      );
+  }
+
   getBusinessDetails(user_id) {
     // const url = `http://127.0.0.1:8000/api/getuserbusiness/${user_id}`;
     const url = `${environment.getBusinessDataUrl}${user_id}`;
