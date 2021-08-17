@@ -142,7 +142,7 @@ export class TransactionsComponent implements OnInit {
     this.loadTransactions(this.userData.user_id);
   }
   get hasExceededFreeTransfers(): boolean {
-    return this.merchantSummaryData?.totalTransactionsAmount > 6021;
+    return this.merchantSummaryData?.totalTransactionsAmount > 560000;
   }
 
   getPalFee(amount, country: string): number {
@@ -186,7 +186,7 @@ export class TransactionsComponent implements OnInit {
           this.isLoading = false;
           this.transactionsData = transactions.map((details) => {
             details.state = this.getStatusLabel(details.state);
-            details.palFee = this.getPalFee(details.amount, details.country);
+            // details.palFee = this.getPalFee(details.amount, details.country);
             details.formatedDate = moment(details.created_at).fromNow();
             details.country = this.getCountryName(details.country)
             return details;
