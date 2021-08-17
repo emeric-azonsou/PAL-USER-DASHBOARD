@@ -101,7 +101,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   createTransfer() {
-    // const fee = this.getPalFee(this.transferForm.value['amount'], this.transferForm.value['country'])
+    const fee = this.getPalFee(this.transferForm.value['amount'], this.transferForm.value['country']);
     const amount = parseInt(this.transferForm.value['amount'], 10);
     this.transferForm.get('amount').setValue(amount);
     this.isDisbursing = true
@@ -110,7 +110,8 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
-      hasExceededFeeTransfers: true
+      charges: fee,
+      hasExceededFeeTransfers: this.hasExceededFeeTransfers
     };
 
     this.transactionsService.createTransaction(this.transferData, this.credentials)
@@ -140,8 +141,12 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     });
   }
 
+  get maxTransactionAmount() {
+    return this.currency === 'XOF' ? 560000 : 6020
+  }
+
   get hasExceededFeeTransfers(): boolean {
-    return this.merchantSummaryData?.totalTransactionsAmount > 6021;
+    return this.merchantSummaryData?.totalTransactionsAmount > this.maxTransactionAmount;
   }
 
   getPalFee(amount, country: string): number {
@@ -166,14 +171,13 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((data) => {
         this.moduleData = data;
-        console.log(" this.moduleData", data);
       });
   }
 
   setCurrency(option) {
     this.currency = this.countryData[option.value].currency;
     this.dailingCode = this.countryData[option.value].code;
-    this.transferForm.get("phone_no")?.setValue(this.dailingCode);
+    // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
     const selectedModule = this.moduleData.find((data) => {
       return (
         data["country"] === option.value && data["currency"] === this.currency
