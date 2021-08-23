@@ -2,9 +2,9 @@
     display: flex;
     justify-content: center;
     position: relative;
-    top: 20px;
+    background-color:#2BB996;
+    padding: 50px;
   }
-  
   .devise {
     background-color: #010d4a;
     color: #ffffff;
@@ -27,4 +27,7 @@
   }
   .shadow-lg {
     width: 13rem;
+  }
+  .rounded{
+    background-color:white;
   }
