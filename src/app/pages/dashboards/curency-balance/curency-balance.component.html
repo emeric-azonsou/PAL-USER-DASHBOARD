@@ -1,49 +1,49 @@
 <div class="cardContainer">
-    <div class="grid grid-cols-4 gap-20">
+    <div class="grid grid-cols-4 gap-20 xs:grid-cols-2 md:grid-cols-4">
         <div class="...">
-            <div class=" rounded overflow-hidden shadow-md">
-                <div class="text-xs text-center mb-2 devise">XOF</div>
+            <div class="overflow-hidden rounded shadow-md ">
+                <div class="mb-2 text-xs text-center devise">XOF</div>
                 <div class="px-6 ">
                     <div>
-                        <h5 class="text-center text-sm balance">Balance</h5>
-                        <h4 class="text-center font-bold text-sm">{{(balanceData?.XOF  | number : '1.2-2') || '0.00'}}</h4>
-                        <!-- <h5 class="text-center text-sm payout"></h5> -->
+                        <h5 class="text-sm text-center balance">Balance</h5>
+                        <h4 class="text-sm font-bold text-center">{{(balanceData?.XOF  | number : '1.2-2') || '0.00'}}</h4>
+                        <!-- <h5 class="text-sm text-center payout"></h5> -->
                     </div>
                 </div>
             </div>
         </div>
         <div class="...">
-            <div class="w-50 rounded overflow-hidden shadow-md">
-                <div class="text-xs text-center mb-2 devise">XAF</div>
+            <div class="overflow-hidden rounded shadow-md w-50 " >
+                <div class="mb-2 text-xs text-center devise">XAF</div>
                 <div class="px-6 ">
                     <div>
-                        <h5 class="text-center text-sm balance">Balance</h5>
-                        <h4 class="text-center font-bold text-sm">{{(balanceData?.XAF  | number : '1.2-2') || '0.00'}}</h4>
-                        <!-- <h5 class="text-center text-sm payout"></h5> -->
+                        <h5 class="text-sm text-center balance">Balance</h5>
+                        <h4 class="text-sm font-bold text-center">{{(balanceData?.XAF  | number : '1.2-2') || '0.00'}}</h4>
+                        <!-- <h5 class="text-sm text-center payout"></h5> -->
                     </div>
                 </div>
             </div>
         </div>
         <div class="...">
-            <div class="w-50 rounded overflow-hidden shadow-md">
-                <div class="text-xs text-center mb-2 devise">GHS</div>
+            <div class="overflow-hidden rounded shadow-md w-50">
+                <div class="mb-2 text-xs text-center devise">GHS</div>
                 <div class="px-6 ">
                     <div>
-                        <h5 class="text-center text-sm balance">Balance</h5>
-                        <h4 class="text-center font-bold text-sm">{{(balanceData?.GHS  | number : '1.2-2') || '0.00'}}</h4>
-                        <!-- <h5 class="text-center text-sm payout"></h5> -->
+                        <h5 class="text-sm text-center balance">Balance</h5>
+                        <h4 class="text-sm font-bold text-center">{{(balanceData?.GHS  | number : '1.2-2') || '0.00'}}</h4>
+                        <!-- <h5 class="text-sm text-center payout"></h5> -->
                     </div>
                 </div>
             </div>
         </div>
         <div class="...">
-            <div class="w-50 rounded overflow-hidden shadow-md">
-                <div class="text-xs text-center mb-2 devise">NGN</div>
+            <div class="overflow-hidden rounded shadow-md w-50">
+                <div class="mb-2 text-xs text-center devise">NGN</div>
                 <div class="px-6 ">
                     <div>
-                        <h5 class="text-center text-sm balance">Balance</h5>
-                        <h4 class="text-center font-bold text-sm">{{(balanceData?.NGN  | number : '1.2-2') || '0.00'}}</h4>
-                        <h5 class="text-center text-sm payout"></h5>
+                        <h5 class="text-sm text-center balance">Balance</h5>
+                        <h4 class="text-sm font-bold text-center">{{(balanceData?.NGN  | number : '1.2-2') || '0.00'}}</h4>
+                        <h5 class="text-sm text-center payout"></h5>
                     </div>
                 </div>
             </div>
