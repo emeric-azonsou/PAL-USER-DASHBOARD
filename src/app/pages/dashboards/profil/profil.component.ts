@@ -46,7 +46,6 @@ export class ProfilComponent implements OnInit {
     industry: "",
     business_email: "",
     business_phone: "",
-    delivery_no: "",
   };
   businessInformation: Object;
   business_email: string;
@@ -83,7 +82,7 @@ export class ProfilComponent implements OnInit {
   };
   companyDocuments;
   idDocumentFile: File;
-  companyDocumentFile: File;
+  companyDocumentFile: FileList;
   companyLogoFile: File;
   unsubscribe$ = new Subject();
   errorMessage: string;
@@ -229,13 +228,6 @@ export class ProfilComponent implements OnInit {
             Validators.pattern(this.phoneNumberValidationPattern),
           ],
         ],
-        delivery_no: [
-          "",
-          [
-            Validators.required,
-            Validators.pattern(this.phoneNumberValidationPattern),
-          ],
-        ],
         owner_full_name: ["", Validators.required],
         dob: ["", Validators.required],
         nationality: ["", Validators.required],
@@ -280,8 +272,9 @@ export class ProfilComponent implements OnInit {
       this.getLocationData();
     }
   
-    uploadCompanyDoc(event) {
-      this.companyDocumentFile = event.target.files[0];
+    uploadCompanyDoc(files: FileList) {
+      console.log('[event.target.files]', files);
+      this.companyDocumentFile = files;
     }
   
     getProcessedphoneNumber(phoneNumber) {
@@ -331,6 +324,7 @@ export class ProfilComponent implements OnInit {
     }
   
     addBusiness() {
+      console.log('[businessForm]',  this.businessForm);
       this.isBusinessSubmitted = true;
       this.isAdding = true;
       const businessData = this.businessForm.value;
