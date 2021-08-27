@@ -1,6 +1,6 @@
 <!-- (ngSubmit)="save()" -->
 
-<form [formGroup]="transferForm">
+<form [formGroup]="topUpForm">
   <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
     <h2 class="m-0 headline" fxFlex="auto">RECHARGE YOUR ACCOUNT</h2>
     <!-- <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
@@ -51,7 +51,7 @@
           <mat-error>
             <span
               *ngFor="
-                let error of transferForm.get('amount').errors
+                let error of topUpForm.get('amount').errors
                   | keyvalue
               "
             >
@@ -67,6 +67,6 @@
       {{ errorMessage }}
     </mat-error>
     <button mat-button mat-dialog-close type="button" class="cancel-button">CANCEL</button>
-    <button color="primary" mat-button type="button" (click)="rechargeAccount()" class="send-button" [disabled]="isProcessing">{{ isProcessing === true? 'Processing...' : 'Request Top UP'}}</button>
+    <button color="primary" mat-button type="button" (click)="rechargeAccount()" class="send-button" [disabled]="isProcessing || topUpForm.invalid">{{ isProcessing === true? 'Processing...' : 'Request Top UP'}}</button>
   </mat-dialog-actions>
 </form>

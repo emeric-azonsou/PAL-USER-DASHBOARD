@@ -7,6 +7,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { USER_SESSION_KEY } from 'src/app/Models/constants';
 import { TransactionsService } from 'src/app/services/transactions.service';
+import { User } from 'src/app/Models/models.interface';
 const ELEMENT_DATA: PeriodicElement[] = [
   {
     position: "BG452515",
@@ -62,7 +63,7 @@ export class HomeComponent implements OnInit {
     "Status",
   ];
   dataSource = ELEMENT_DATA;
-  userData: any;
+  userData: User;
   constructor(
     private router: Router,
     private transactionsService: TransactionsService

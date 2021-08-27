@@ -13,13 +13,17 @@ import icPerson from "@iconify/icons-ic/twotone-person";
 import icMyLocation from "@iconify/icons-ic/twotone-my-location";
 import icLocationCity from "@iconify/icons-ic/twotone-location-city";
 import icEditLocation from "@iconify/icons-ic/twotone-edit-location";
-import { BUSINESS_DATA_KEY, SUMMARY_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
+import {
+  BUSINESS_DATA_KEY,
+  SUMMARY_DATA_KEY,
+  USER_SESSION_KEY,
+} from "src/app/Models/constants";
 import { TransactionsService } from "src/app/services/transactions.service";
 import { take, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { SummaryData } from "src/app/Models/models.interface";
+import { MerchantData, SummaryData, User } from "src/app/Models/models.interface";
 
 @Component({
   selector: "vex-disburse-cash",
@@ -41,36 +45,36 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   currency: string = "XOF";
   dailingCode: string = "+229";
   transferData: any;
-  userData: any;
-  module_id: any = '102';
+  userData: User;
+  module_id: any = "102";
   moduleData: Object[];
-  userBusinessData: any;
+  userBusinessData: MerchantData;
   isDisbursing: boolean;
-  unsubscribe$= new Subject();
+  unsubscribe$ = new Subject();
   credentials: string;
   hasError: boolean;
   errorMessage: string;
   phoneNumberValidationPattern = /^[0-9]{0,15}$/;
   validationMessages = {
-    phone_no:{
-      pattern: 'Only digits allowed starting with ',
+    phone_no: {
+      pattern: "Only digits allowed starting with ",
       required: "Receiver's Phone Field  is required.",
-      min:'Please provide a correct phone number'
+      min: "Please provide a correct phone number",
     },
     amount: {
-      pattern: 'Only digits allowed',
+      pattern: "Only digits allowed",
       required: "Amount This Field  is required.",
-    }
+    },
   };
   merchantSummaryData: SummaryData;
-  
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
     private dialogRef: MatDialogRef<DisburseCashComponent>,
     private fb: FormBuilder,
     private transactionsService: TransactionsService,
     private snackBar: MatSnackBar,
-    private router: Router,
+    private router: Router
   ) {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
@@ -80,13 +84,19 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
 
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
-
   }
 
   ngOnInit() {
     this.transferForm = this.fb.group({
       country: ["BJ", Validators.required],
-      phone_no: ['', [Validators.required, Validators.pattern(this.phoneNumberValidationPattern), Validators.min(8)]],
+      phone_no: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern(this.phoneNumberValidationPattern),
+          Validators.min(8),
+        ],
+      ],
       amount: ["", [Validators.required, Validators.pattern(/[0-9]+$/)]],
       provider: ["mtn", Validators.required],
     });
@@ -95,74 +105,80 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.getModulesData(this.credentials);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
   createTransfer() {
-    const fee = this.getPalFee(this.transferForm.value['amount'], this.transferForm.value['country']);
-    const amount = parseInt(this.transferForm.value['amount'], 10);
-    this.transferForm.get('amount').setValue(amount);
-    this.isDisbursing = true
+    const fee = this.getPalFee(
+      this.transferForm.value["amount"],
+      this.transferForm.value["country"]
+    );
+    const amount = parseInt(this.transferForm.value["amount"], 10);
+    this.transferForm.get("amount").setValue(amount);
+    this.isDisbursing = true;
     this.transferData = {
       ...this.transferForm.value,
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
       charges: fee,
-      hasExceededFeeTransfers: this.hasExceededFeeTransfers
+      hasExceededFeeTransfers: this.hasExceededFeeTransfers,
     };
 
-    this.transactionsService.createTransaction(this.transferData, this.credentials)
+    this.transactionsService
+      .createTransaction(this.transferData, this.credentials)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(response => {
+      .subscribe((response) => {
         this.isDisbursing = false;
-        if(response && response['status'] === true) {
-          this.openSnackbar(response['message']);
+        if (response && response["status"] === true) {
+          this.openSnackbar(response["message"]);
           window.location.reload();
-          
         } else {
           this.hasError = true;
-          this.errorMessage = response['message'];
+          this.errorMessage = response["message"];
         }
       }),
-      error => {
-          this.hasError = true;
-          this.errorMessage = error.message;
-          console.error(error);
-      }
+      (error) => {
+        this.hasError = true;
+        this.errorMessage = error.message;
+        console.error(error);
+      };
   }
 
   openSnackbar(message) {
-    this.snackBar.open(message, 'CLOSE', {
+    this.snackBar.open(message, "CLOSE", {
       duration: 3000,
-      horizontalPosition: 'right'
+      horizontalPosition: "right",
     });
   }
 
   get maxTransactionAmount() {
-    return this.currency === 'XOF' ? 560000 : 6020
+    return this.currency === "XOF" ? 560000 : 6020;
   }
 
   get hasExceededFeeTransfers(): boolean {
-    return this.merchantSummaryData?.totalTransactionsAmount > this.maxTransactionAmount;
+    return true;
+    // return this.merchantSummaryData?.totalTransactionsAmount > this.maxTransactionAmount;
   }
 
   getPalFee(amount, country: string): number {
-    if(this.hasExceededFeeTransfers) {
-      switch(country){
-        case 'GH':
-          return (amount * 0.5 / 100);
-        case 'BJ':
-          return (amount * 1 /100);
-        default :
+    const charges = this.userBusinessData.charges;
+    if (this.hasExceededFeeTransfers && charges === 0) {
+      switch (country) {
+        case "GH":
+          return (amount * 0.5) / 100;
+        case "BJ":
+          return (amount * 1) / 100;
+        default:
           return 0;
       }
+    } else if (this.hasExceededFeeTransfers && charges !== 0) {
+      return (amount * charges) / 100;
     } else {
       return 0;
     }
-   
   }
 
   getModulesData(credentials) {
@@ -196,7 +212,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.dialogRef.close(customer);
   }
 
-  close(){
+  close() {
     this.dialogRef.close();
   }
 }

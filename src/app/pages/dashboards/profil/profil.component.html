@@ -38,13 +38,11 @@
           >
             <mat-form-field fxFlex="auto">
               <mat-label>Company legal name </mat-label>
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               <input matInput #input formControlName="business_legal_name" />
             </mat-form-field>
             <mat-form-field fxFlex="auto">
               <mat-label>Website</mat-label>
               <input matInput #input formControlName="website" />
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
             </mat-form-field>
           </div>
           <div
@@ -62,7 +60,6 @@
                   [value]="country.code"
                   >{{ country.name }}</mat-option
                 >
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-select>
               <mat-error>
                 <span
@@ -87,7 +84,6 @@
                   {{ validationMessages.description[error.key] }}
                 </span>
               </mat-error>
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Staff Size </mat-label>
@@ -96,7 +92,6 @@
                 <mat-option value="10-50">10-50 people</mat-option>
                 <mat-option value="50+">+50 people</mat-option>
               </mat-select>
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
             </mat-form-field>
           </div>
           <div
@@ -128,7 +123,6 @@
             <mat-form-field fxFlex="auto">
               <mat-label>Business phone</mat-label>
               <input matInput required formControlName="business_phone" />
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               <mat-error>
                 <span
                   *ngFor="
@@ -142,7 +136,6 @@
             <mat-form-field fxFlex="auto">
               <mat-label>Company physical address</mat-label>
               <input matInput required formControlName="business_address" />
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
             </mat-form-field>
           </div>
           <div fxLayout="row">
@@ -185,7 +178,6 @@
               <mat-form-field fxFlex="auto">
                 <mat-label>Your Full name </mat-label>
                 <input matInput #input formControlName="owner_full_name" />
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                 <mat-error>
                   <span
                     *ngFor="
@@ -200,7 +192,6 @@
               <mat-form-field fxFlex="auto">
                 <mat-label>Your address </mat-label>
                 <input matInput required formControlName="owner_address" />
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                 <mat-error>
                   <span
                     *ngFor="
@@ -230,7 +221,6 @@
                     National ID card
                   </mat-option>
                 </mat-select>
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-form-field>
 
               <mat-form-field fxFlex="auto">
@@ -242,7 +232,6 @@
                   #input
                   formControlName="dob"
                 />
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-form-field>
               <mat-form-field fxFlex="auto">
                 <mat-label class="text-xs text-gray-300"
@@ -266,7 +255,6 @@
                     {{ validationMessages.nationality[error.key] }}
                   </span>
                 </mat-error>
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-form-field>
             </div>
             <div fxLayout="row">
@@ -359,8 +347,8 @@
                   [value]="country.code"
                   >{{ country.name }}</mat-option
                 >
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-select>
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               <mat-error>
                 <span
                   *ngFor="
@@ -412,6 +400,7 @@
                   >{{ industry }}</mat-option
                 >
               </mat-select>
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               <mat-error>
                 <span
                   *ngFor="
