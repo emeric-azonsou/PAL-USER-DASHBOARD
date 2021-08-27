@@ -1,7 +1,7 @@
 export interface User {
-  account: string;
+  account?: string;
   country_code: string;
-  created_at: string;
+  created_at?: string;
   currency: string;
   dailing_code: string;
   email: string;
@@ -16,11 +16,11 @@ export interface User {
   photo?: string;
   status: string;
   token: string;
-  token_type: string;
-  type: string;
-  updated_at: string;
+  token_type?: string;
+  type?: string;
+  updated_at?: string;
   user_id: string;
-  web_token: string;
+  web_token?: string;
   hasBusiness: boolean;
 }
 export interface SummaryData {
@@ -53,6 +53,7 @@ export interface MerchantData {
   business_legal_name: string;
   business_logo: string;
   business_phone: string;
+  charges: any;
   company_document_path: any;
   country: string;
   created_at: string;

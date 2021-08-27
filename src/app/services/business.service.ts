@@ -27,7 +27,11 @@ export class BusinessService {
     formData.append('business_legal_name', businessData['business_legal_name']);
     formData.append('business_logo', businessData['business_logo']);
     formData.append('business_phone', businessData['business_phone']);
-    formData.append('company_document_path', businessData['company_documentUpload']);
+    
+    businessData['company_documentUpload'].forEach(file => {
+      formData.append('company_document_path[]', file, file.name)
+    })
+    
     formData.append('country', businessData['country']);
     formData.append('description', businessData['description']);
     formData.append('DOB', businessData['dob']);

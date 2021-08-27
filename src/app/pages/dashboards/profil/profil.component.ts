@@ -46,7 +46,6 @@ export class ProfilComponent implements OnInit {
     industry: "",
     business_email: "",
     business_phone: "",
-    delivery_no: "",
   };
   businessInformation: Object;
   business_email: string;
@@ -83,7 +82,7 @@ export class ProfilComponent implements OnInit {
   };
   companyDocuments;
   idDocumentFile: File;
-  companyDocumentFile: File;
+  companyDocumentFile: FileList;
   companyLogoFile: File;
   unsubscribe$ = new Subject();
   errorMessage: string;
@@ -204,6 +203,7 @@ export class ProfilComponent implements OnInit {
     private geoLocationService: GeoLocationService,
     private snackBar: MatSnackBar
     ) {
+      this.getLocationData();
       const sessionData = localStorage.getItem(USER_SESSION_KEY);
       this.userData = JSON.parse(sessionData);
       const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
@@ -223,14 +223,7 @@ export class ProfilComponent implements OnInit {
         // category: ["", Validators.required],
         // business_email: ["", [Validators.required, Validators.email]],
         business_phone: [
-          "",
-          [
-            Validators.required,
-            Validators.pattern(this.phoneNumberValidationPattern),
-          ],
-        ],
-        delivery_no: [
-          "",
+          this.userData.mobile_phone,
           [
             Validators.required,
             Validators.pattern(this.phoneNumberValidationPattern),
@@ -277,11 +270,10 @@ export class ProfilComponent implements OnInit {
       });
       // this.businessPhoneInputStyl();
       // this.deliveryManInputStyl();
-      this.getLocationData();
     }
   
-    uploadCompanyDoc(event) {
-      this.companyDocumentFile = event.target.files[0];
+    uploadCompanyDoc(files: FileList) {
+      this.companyDocumentFile = files;
     }
   
     getProcessedphoneNumber(phoneNumber) {
@@ -308,7 +300,7 @@ export class ProfilComponent implements OnInit {
       businessData.business_logo = this.companyLogoFile
       businessData.user_id = this.userData.user_id;
       businessData.business_email = this.userData.email
-      businessData.business_phone = this.getProcessedphoneNumber(this.updateBusinessForm.value['business_phone']);
+      businessData.business_phone = this.updateBusinessForm.value['business_phone'];
       this.businessService
         .updateBusinessData(businessData, this.businessData.id)
         .pipe(takeUntil(this.unsubscribe$))
@@ -339,7 +331,7 @@ export class ProfilComponent implements OnInit {
       businessData.business_logo = this.companyLogoFile || ""
       businessData.user_id = this.userData.user_id;
       businessData.business_email = this.userData.email
-      businessData.business_phone = this.getProcessedphoneNumber(this.businessForm.value['business_phone']);
+      businessData.business_phone = this.businessForm.value['business_phone'];
       this.businessService
         .createNewBusiness(businessData)
         .pipe(takeUntil(this.unsubscribe$))
