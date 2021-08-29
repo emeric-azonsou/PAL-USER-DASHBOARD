@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((response) => {
         this.isProcessing = false;
-        if (!response.error || response.error !== "Unauthorized") {
+        if (response && response.currentUser) {
           this.sessionResponse = {
             first_name: response.currentUser.first_name,
             last_name: response.currentUser.last_name,
@@ -97,17 +97,15 @@ export class LoginComponent implements OnInit, OnDestroy {
           );
           this.router.navigate(["/dashboards/home"]);
         } else {
+          this.isProcessing = false;
           this.hasError = true;
           this.isInvalidvUser = true;
-          console.log("[isInvalidvUser else]", this.isInvalidvUser);
         }
       }),
       (error) => {
         this.isProcessing = false;
-        console.log(error);
         this.hasError = true;
         this.isInvalidvUser = true;
-        console.log("[isInvalidvUser error]", this.isInvalidvUser);
       };
   }
 
