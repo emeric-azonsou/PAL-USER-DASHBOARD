@@ -103,7 +103,7 @@ export class ProfilComponent implements OnInit {
   isBusinessSubmitted = false;
   nameValidationPattern = /^[a-zA-Z0-9-\s]{0,25}$/;
   cityValidationPattern = /^[a-zA-Z-'\s]{0,25}$/;
-  phoneNumberValidationPattern = /^[0-9]{0,15}$/;
+  phoneNumberValidationPattern = /^[+][0-9]{0,15}$/;
 
   allCreatBusinessData: object;
   userData: User;
