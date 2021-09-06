@@ -46,3 +46,13 @@ form {
         }
     }
 }
+
+
+@media screen and (max-width: 600px) {
+   .respon{
+       .label{
+        min-width: 20rem;
+       }
+   
+   }
+}

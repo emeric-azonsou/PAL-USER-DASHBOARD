@@ -16,6 +16,8 @@
   color: var(--toolbar-icon-color);
 }
 
+
+
 a {
   color: var(--toolbar-color);
   text-decoration: none;
@@ -38,3 +40,36 @@ a {
   color: #ffffff;
   opacity: 1;
 }
+
+
+
+// responssive
+// more 
+.dropdown:hover .dropdown-menu {
+  display: block;
+  background-color: white;
+}
+
+.respbutton{
+  .btn{
+    margin: 10px;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .noresponssive{
+  display: none;
+  }
+  .rigthside{
+    margin-left: -500px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .reponssivebutton{
+  display: none;
+  }
+ 
+}
+
