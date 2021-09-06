@@ -6,36 +6,36 @@
     width: 35rem;
   }
   
-  @media (max-width: 634px) {
+  @media (max-width:588px) {
     .mat-card2 {
-      display: flex;
+     
       h4 {
         position: relative;
-        bottom: 40px;
+        margin-top: 10px;
       }
     }
     .apiInput {
       display: flex;
-      flex-wrap: wrap;
+      flex-flow: column wrap;
       margin-top: 20px;
     }
     .cardText {
-      display: flex;
-      flex-wrap: wrap;
-  
       h4 {
         position: relative;
         left: 80px;
-        bottom: 50px;
+        margin-top: -50px;
+        bottom: -20px;
       }
       .liveKey {
         position: relative;
-        bottom: 34px;
+         top: 140px;
+         left: -200px;
+         margin-bottom: 20px;
       }
     }
   }
   .speci{
-    display: flex;
+ 
     .ref{
       margin-left: 10px;
     }
@@ -46,3 +46,7 @@
     margin-top: 30px;
     margin-left: 38px;
   }
+
+
+  
+

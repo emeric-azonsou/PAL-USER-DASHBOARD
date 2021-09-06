@@ -520,6 +520,7 @@ module.exports = {
     container: false
   },
   plugins: [
+   
     function ({addVariant, e}) {
       addVariant('ltr', ({separator, modifySelectors}) => {
         modifySelectors(({className}) => {
