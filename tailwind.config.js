@@ -520,7 +520,7 @@ module.exports = {
     container: false
   },
   plugins: [
-    require('daisyui'),
+   
     function ({addVariant, e}) {
       addVariant('ltr', ({separator, modifySelectors}) => {
         modifySelectors(({className}) => {
