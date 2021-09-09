@@ -7,6 +7,9 @@ import {
   HostBinding,
   Input,
   OnInit,
+  EventEmitter, 
+  HostListener, 
+  Output
 } from "@angular/core";
 import { LayoutService } from "../../services/layout.service";
 import icBookmarks from "@iconify/icons-ic/twotone-bookmarks";
@@ -37,6 +40,8 @@ import { BUSINESS_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
   styleUrls: ["./toolbar.component.scss"],
 })
 export class ToolbarComponent implements OnInit {
+  isOpen: boolean = false;
+  
   @Input() mobileQuery: boolean;
 
   @Input()
@@ -144,5 +149,9 @@ export class ToolbarComponent implements OnInit {
     } else {
       this.dialog.open(NoBusinessModalComponent);
     }
+  }
+
+   toggleMenu() {
+    this.isOpen = !this.isOpen;
   }
 }
