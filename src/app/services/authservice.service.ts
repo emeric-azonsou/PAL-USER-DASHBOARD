@@ -38,7 +38,7 @@ export class AuthserviceService {
   }
 
   register(userData): Observable<any> {
-    const url = "https://api.pals.africa/api/register";
+    const url = environment.registerUserUrl;
     // const url = "http://127.0.0.1:8000/api/register";
 
     return this.http
