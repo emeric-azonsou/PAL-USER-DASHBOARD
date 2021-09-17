@@ -8,7 +8,7 @@
       >
         <h2 class="m-0 title">Profile</h2>
       </div>
-      <div [formGroup]="businessForm" *ngIf="!userData.hasBusiness">
+      <div [formGroup]="businessForm" *ngIf="!userData.hasBusiness && !!businessData === false">
         <div class="top">
           <div class="proFilPhoto">
             <mat-icon [icIcon]="icPerson"></mat-icon>
@@ -274,6 +274,9 @@
                 (change)="uploadID($event)"
               >
               </mat-file-upload>
+              <mat-error *ngIf="!this.idDocumentFile">
+                Please upload your ID
+              </mat-error>
             </div>
             <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
               <button
@@ -293,7 +296,7 @@
           </div>
         </div>
       </div>
-      <div [formGroup]="updateBusinessForm" *ngIf="userData.hasBusiness">
+      <div [formGroup]="updateBusinessForm" *ngIf="userData.hasBusiness || !!businessData === true">
         <div class="top">
           <div class="proFilPhoto">
             <mat-icon [icIcon]="icPerson"></mat-icon>

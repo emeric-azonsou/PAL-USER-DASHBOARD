@@ -23,7 +23,7 @@ export class Step1Component implements OnInit {
   visible = false;
   step1data: any;
   processedPhoneNo: any;
-  prefixCountryCode: any;
+  prefixCountryCode = '+233';
   isCorrectPhoneEntry: boolean;
   locationData: any;
   countryData: {

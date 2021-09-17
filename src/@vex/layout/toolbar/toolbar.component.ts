@@ -33,6 +33,7 @@ import icSearch from "@iconify/icons-ic/twotone-search";
 import { RechargeAccountComponent } from "src/app/pages/dashboards/recharge-account/recharge-account.component";
 import { NoBusinessModalComponent } from "src/app/pages/dashboards/no-business-modal/no-business-modal.component";
 import { BUSINESS_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
+import { MerchantData } from "src/app/Models/models.interface";
 
 @Component({
   selector: "vex-toolbar",
@@ -78,6 +79,7 @@ export class ToolbarComponent implements OnInit {
   icArrowDropDown = icArrowDropDown;
   userBusinessData: any;
   userData: any;
+  businessData: MerchantData;
 
   constructor(
     private layoutService: LayoutService,
@@ -89,7 +91,10 @@ export class ToolbarComponent implements OnInit {
   ) {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
-
+    const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
+    if(businessData !== 'undefined') {
+      this.businessData = JSON.parse(businessData);
+    }
   }
 
   ngOnInit() {
@@ -128,7 +133,7 @@ export class ToolbarComponent implements OnInit {
     this.layoutService.openSearch();
   }
   openDisbursePopup() {
-    if (this.userData.hasBusiness) {
+    if (this.userData.hasBusiness || !!this.businessData) {
       this.dialog.open(DisburseCashComponent);
     } else {
       this.dialog.open(NoBusinessModalComponent);
@@ -136,7 +141,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   openRechargePopup() {
-    if (this.userData.hasBusiness) {
+    if (this.userData.hasBusiness || !!this.businessData) {
       this.dialog.open(RechargeAccountComponent);
     } else {
       this.dialog.open(NoBusinessModalComponent);
@@ -144,7 +149,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   onViewApiPart() {
-    if (this.userData.hasBusiness) {
+    if (this.userData.hasBusiness || !!this.businessData) {
       this.router.navigate(["/dashboards/api"]);
     } else {
       this.dialog.open(NoBusinessModalComponent);
