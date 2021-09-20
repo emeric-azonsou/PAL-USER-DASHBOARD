@@ -159,8 +159,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   get hasExceededFeeTransfers(): boolean {
-    return true;
-    // return this.merchantSummaryData?.totalTransactionsAmount > this.maxTransactionAmount;
+    return this.merchantSummaryData?.totalTransactionsAmount > this.maxTransactionAmount;
   }
 
   getPalFee(amount, country: string): number {
