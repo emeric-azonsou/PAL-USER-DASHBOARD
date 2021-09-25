@@ -373,7 +373,7 @@ export class ProfilComponent implements OnInit {
             BUSINESS_DATA_KEY,
             JSON.stringify(response.data)
           );
-          window.location.reload();
+          this.router.navigate(["/dashboards/home"]);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;

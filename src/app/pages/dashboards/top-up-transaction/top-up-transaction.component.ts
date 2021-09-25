@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import icPhone from "@iconify/icons-ic/twotone-phone";
 import icMail from "@iconify/icons-ic/twotone-mail";
@@ -70,15 +70,15 @@ export interface PeriodicElement {
   templateUrl: "./top-up-transaction.component.html",
   styleUrls: ["./top-up-transaction.component.scss"],
 })
-export class TopUpTransactionComponent implements OnInit {
+export class TopUpTransactionComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
-    "id",
+    // "id",
     "created_at",
     "currency",
     "amount",
     "status",
   ];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  dataSource = new MatTableDataSource();
 
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -168,6 +168,8 @@ export class TopUpTransactionComponent implements OnInit {
 
             this.hasNoTransactions = transactions.length === 0 ? true : false;
             this.dataSource = new MatTableDataSource(this.transactionsData);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
           },
           (error) => {
             this.isLoading = false;
