@@ -1,7 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from "@angular/forms";
 import { Router } from "@angular/router";
 import { GeoLocationService } from "src/app/services/geo-location.service";
 import { AuthserviceService } from "src/app/services/authservice.service";
@@ -15,10 +21,9 @@ import { MailComposeComponent } from "../../../../apps/mail/components/mail-comp
   styleUrls: ["./step2.component.scss"],
 })
 export class Step2Component implements OnInit {
-
   form: FormGroup;
 
-  inputType = 'password';
+  inputType = "password";
   visible = false;
 
   icVisibility = icVisibility;
@@ -34,7 +39,7 @@ export class Step2Component implements OnInit {
     },
     password: {
       required: "password  is required.",
-      pattern: "Minimum 6 characters required"
+      pattern: "Minimum 6 characters required",
     },
     passwordConfirm: {
       required: "password  is required.",
@@ -42,26 +47,32 @@ export class Step2Component implements OnInit {
     email: {
       required: "Email  is required.",
       email: "Please enter a valid email",
-      notBusinessEmail: "Please only use your business email"
+      notBusinessEmail: "Please only use your business email",
     },
-    passwordsDoNotMatch: 'The 2 passwords do no match'
+    passwordsDoNotMatch: "The 2 passwords do no match",
   };
   processedPhoneNo: any;
   prefixCountryCode: any;
   isCorrectPhoneEntry: boolean;
   locationData: any;
-  countryData: { preferredCountries: string[]; localizedCountries: { ng: string; gh: string; }; onlyCountries: string[]; };
+  countryData: {
+    preferredCountries: string[];
+    localizedCountries: { ng: string; gh: string };
+    onlyCountries: string[];
+  };
   waitingDisplayInput: boolean;
   step1data: any;
   isLoadingButton: boolean;
   isButtonActive: boolean;
   errorMessage: string;
+  emailErrorMEssage: string;
+  mobilephoneErrorMessage: string;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
-    private authService: AuthserviceService,
+    private authService: AuthserviceService
   ) {
     const step1Data = sessionStorage.getItem("step1RegData");
     if (!!step1Data) {
@@ -72,16 +83,21 @@ export class Step2Component implements OnInit {
   }
 
   ngOnInit() {
-    this.form = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email, this.validateBusinessEmail]],
-      password: ['', [Validators.required, Validators.pattern(/^.{6,}$/)]],
-      passwordConfirm: ['', Validators.required],
-    },
-    {
-      validator: this.validatePasswords
-    });
+    this.form = this.fb.group(
+      {
+        firstName: ["", Validators.required],
+        lastName: ["", Validators.required],
+        email: [
+          "",
+          [Validators.required, Validators.email, this.validateBusinessEmail],
+        ],
+        password: ["", [Validators.required, Validators.pattern(/^.{6,}$/)]],
+        passwordConfirm: ["", Validators.required],
+      },
+      {
+        validator: this.validatePasswords,
+      }
+    );
   }
 
   validatePasswords(form: FormGroup): ValidationErrors {
@@ -97,12 +113,16 @@ export class Step2Component implements OnInit {
   }
 
   validateBusinessEmail(email: FormControl) {
-    if(email.value.includes('gmail') || email.value.includes('hotmail') || email.value.includes('yahoo')) {
+    if (
+      email.value.includes("gmail") ||
+      email.value.includes("hotmail") ||
+      email.value.includes("yahoo")
+    ) {
       return {
         notBusinessEmail: true,
-      }
+      };
     } else {
-      return null
+      return null;
     }
   }
 
@@ -112,13 +132,13 @@ export class Step2Component implements OnInit {
       first_name: this.form.value["firstName"],
       last_name: this.form.value["lastName"],
       email: this.form.value["email"],
-      password: this.form.value['password'],
+      password: this.form.value["password"],
     };
     this.authService
       .registerPalUser(userData)
       .pipe(take(1))
-      .subscribe((response:any) => {
-        if(response?.user_id) {
+      .subscribe((response: any) => {
+        if (response?.user_id) {
           this.isLoadingButton = false;
           this.isButtonActive = true;
           this.router.navigate(["/auth/login"]);
@@ -127,24 +147,37 @@ export class Step2Component implements OnInit {
           //   this.openCompose();
           // }, 3000);
         } else {
-          this.errorMessage = 'Something went wrong please try again';
-          this.isLoadingButton = false;
-          this.isButtonActive = true;
+          if (response.email) {
+            this.emailErrorMEssage = "This email is already used";
+            this.isLoadingButton = false;
+            this.isButtonActive = true;
+          }  else {
+            this.errorMessage = "Something went wrong please try again";
+            this.isLoadingButton = false;
+            this.isButtonActive = true;
+          }
+          if (response.mobile_phone) {
+            this.mobilephoneErrorMessage = "This mobile phone is already used";
+            this.isLoadingButton = false;
+            this.isButtonActive = true;
+          } else {
+            this.errorMessage = "Something went wrong please try again";
+            this.isLoadingButton = false;
+            this.isButtonActive = true;
+          }
         }
       });
   }
 
-
   toggleVisibility() {
     if (this.visible) {
-      this.inputType = 'password';
+      this.inputType = "password";
       this.visible = false;
       this.cd.markForCheck();
     } else {
-      this.inputType = 'text';
+      this.inputType = "text";
       this.visible = true;
       this.cd.markForCheck();
     }
   }
-
 }

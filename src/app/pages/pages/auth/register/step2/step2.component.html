@@ -73,6 +73,18 @@
                   <mat-hint>Please repeat your password from above</mat-hint>
               </mat-form-field>
           </div>
+          <div>
+            <mat-error *ngIf="errorMessage">
+                {{ errorMessage }}
+            </mat-error>
+
+            <mat-error *ngIf="emailErrorMEssage">
+                {{ emailErrorMEssage }}
+            </mat-error>
+            <mat-error *ngIf="mobilephoneErrorMessage">
+                {{ mobilephoneErrorMessage }}
+            </mat-error>
+          </div>
           <button (click)="register()" [disabled]="form.invalid" class="authButton" mat-raised-button type="button">
             CREATE ACCOUNT          </button>
           <p class="text-center text-secondary">

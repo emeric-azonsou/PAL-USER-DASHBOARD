@@ -7,8 +7,9 @@
         fxLayoutAlign="start center"
       >
         <h2 class="m-0 title">Profile</h2>
+        <mat-spinner *ngIf="!!businessForm === false" color="primary"> </mat-spinner>
       </div>
-      <div [formGroup]="businessForm" *ngIf="!userData.hasBusiness">
+      <div [formGroup]="businessForm" *ngIf="!userData.hasBusiness && !!businessData === false">
         <div class="top">
           <div class="proFilPhoto">
             <mat-icon [icIcon]="icPerson"></mat-icon>
@@ -136,11 +137,20 @@
             <mat-form-field fxFlex="auto">
               <mat-label>Company physical address</mat-label>
               <input matInput required formControlName="business_address" />
+              <mat-error>
+                <span
+                  *ngFor="
+                    let error of businessForm.get('business_address').errors | keyvalue
+                  "
+                >
+                  {{ validationMessages.business_address[error.key] }}
+                </span>
+              </mat-error>
             </mat-form-field>
           </div>
           <div fxLayout="row">
             <mat-label class="upload"
-              >Upload your company registration document
+              >Upload your company registration documents (Multiple files selection allowed)
             </mat-label>
           </div>
           <div fxLayout="row" fxLayoutAlign="start">
@@ -274,6 +284,9 @@
                 (change)="uploadID($event)"
               >
               </mat-file-upload>
+              <mat-error *ngIf="!this.idDocumentFile">
+                Please upload your ID
+              </mat-error>
             </div>
             <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
               <button
@@ -293,7 +306,7 @@
           </div>
         </div>
       </div>
-      <div [formGroup]="updateBusinessForm" *ngIf="userData.hasBusiness">
+      <div [formGroup]="updateBusinessForm" *ngIf="userData.hasBusiness || !!businessData === true">
         <div class="top">
           <div class="proFilPhoto">
             <mat-icon [icIcon]="icPerson"></mat-icon>
@@ -433,7 +446,7 @@
           </div>
           <div fxLayout="row">
             <mat-label class="upload"
-              >Upload your company registration document
+              >Upload your company registration documents (Multiple files selection allowed)
             </mat-label>
           </div>
           <div fxLayout="row" fxLayoutAlign="start">

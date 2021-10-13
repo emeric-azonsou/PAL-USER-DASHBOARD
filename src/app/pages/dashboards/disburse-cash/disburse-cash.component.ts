@@ -44,6 +44,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   transferForm: FormGroup;
   currency: string = "XOF";
   dailingCode: string = "+229";
+  maxLength: number = 8
   transferData: any;
   userData: User;
   module_id: any = "102";
@@ -159,8 +160,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   get hasExceededFeeTransfers(): boolean {
-    return true;
-    // return this.merchantSummaryData?.totalTransactionsAmount > this.maxTransactionAmount;
+    return this.merchantSummaryData?.totalTransactionsAmount > this.maxTransactionAmount;
   }
 
   getPalFee(amount, country: string): number {
@@ -190,9 +190,18 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       });
   }
 
+  getMaxLength(country) {
+    if(country === 'BJ') {
+      return 8;
+    } else {
+      return 10;
+    }
+  }
+
   setCurrency(option) {
     this.currency = this.countryData[option.value].currency;
     this.dailingCode = this.countryData[option.value].code;
+    this.maxLength = this.getMaxLength(option.value);
     // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
     const selectedModule = this.moduleData.find((data) => {
       return (

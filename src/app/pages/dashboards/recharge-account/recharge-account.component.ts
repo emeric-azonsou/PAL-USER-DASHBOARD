@@ -104,6 +104,7 @@ export class RechargeAccountComponent implements OnInit {
         if(response && response['status'] === true) {
           this.openSnackbar(response['message']);
           this.dialogRef.close();
+          window.location.reload();
         } else {
           this.hasError = true;
           this.errorMessage = response['message'];
