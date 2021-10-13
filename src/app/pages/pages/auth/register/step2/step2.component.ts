@@ -65,6 +65,8 @@ export class Step2Component implements OnInit {
   isLoadingButton: boolean;
   isButtonActive: boolean;
   errorMessage: string;
+  emailErrorMEssage: string;
+  mobilephoneErrorMessage: string;
 
   constructor(
     private router: Router,
@@ -146,11 +148,16 @@ export class Step2Component implements OnInit {
           // }, 3000);
         } else {
           if (response.email) {
-            this.errorMessage = "This email is already used";
+            this.emailErrorMEssage = "This email is already used";
             this.isLoadingButton = false;
             this.isButtonActive = true;
-          } else if (response.mobile_phone) {
-            this.errorMessage = "This mobile phone is already used";
+          }  else {
+            this.errorMessage = "Something went wrong please try again";
+            this.isLoadingButton = false;
+            this.isButtonActive = true;
+          }
+          if (response.mobile_phone) {
+            this.mobilephoneErrorMessage = "This mobile phone is already used";
             this.isLoadingButton = false;
             this.isButtonActive = true;
           } else {

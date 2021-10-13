@@ -7,6 +7,7 @@
         fxLayoutAlign="start center"
       >
         <h2 class="m-0 title">Profile</h2>
+        <mat-spinner *ngIf="!!businessForm === false" color="primary"> </mat-spinner>
       </div>
       <div [formGroup]="businessForm" *ngIf="!userData.hasBusiness && !!businessData === false">
         <div class="top">
@@ -136,6 +137,15 @@
             <mat-form-field fxFlex="auto">
               <mat-label>Company physical address</mat-label>
               <input matInput required formControlName="business_address" />
+              <mat-error>
+                <span
+                  *ngFor="
+                    let error of businessForm.get('business_address').errors | keyvalue
+                  "
+                >
+                  {{ validationMessages.business_address[error.key] }}
+                </span>
+              </mat-error>
             </mat-form-field>
           </div>
           <div fxLayout="row">

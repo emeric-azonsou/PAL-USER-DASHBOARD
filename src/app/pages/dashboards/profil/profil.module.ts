@@ -23,6 +23,7 @@ import { FormElementsRoutingModule } from "../../ui/forms/form-elements/form-ele
 import { AngularFileUploaderModule } from "angular-file-uploader";
 import { MatFileUploadModule } from "mat-file-upload";
 import { MaterialFileInputModule } from "ngx-material-file-input";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { MaterialFileInputModule } from "ngx-material-file-input";
     ContainerModule,
     AngularFileUploaderModule,
     MatFileUploadModule,
-    MaterialFileInputModule
+    MaterialFileInputModule,
+    MatProgressSpinnerModule
   ],
 })
 export class ProfilModule {}

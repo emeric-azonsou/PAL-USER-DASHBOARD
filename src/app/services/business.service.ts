@@ -45,6 +45,7 @@ export class BusinessService {
     formData.append('user_id', businessData['user_id']);
     formData.append('staff_size', businessData['staff_size']);
     formData.append('owner_address', businessData['owner_address']);
+    formData.append('website', businessData['website']);
     return this.http
       .post(url, formData, { responseType: 'json', })
       .pipe(
@@ -80,6 +81,7 @@ export class BusinessService {
     formData.append('user_id', businessData['user_id']);
     formData.append('staff_size', businessData['staff_size']);
     formData.append('owner_address', businessData['owner_address']);
+    formData.append('website', businessData['website']);
     return this.http
       .post(url, formData, { responseType: 'json', })
       .pipe(
@@ -152,7 +154,7 @@ export class BusinessService {
     })    
     return this.http.get(url, { headers }).pipe(
       map((response: any) => {
-        return response.data;
+        return response;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);
@@ -160,6 +162,7 @@ export class BusinessService {
       })
     );
   }
+
   createtransfer(data) {
     const url = environment.createTransactionUrl;
     return this.http.post(url, data).pipe(

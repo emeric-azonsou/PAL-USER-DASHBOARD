@@ -124,6 +124,7 @@ export class TopUpTransactionComponent implements OnInit, AfterViewInit {
     if (!sessionData) {
       router.navigate(["/auth/login"]);
     }
+    this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
   }
 
   applyFilter(event: Event) {
@@ -132,7 +133,6 @@ export class TopUpTransactionComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
     this.loadTransactions(this.userData.user_id);
   }
 
@@ -152,30 +152,36 @@ export class TopUpTransactionComponent implements OnInit, AfterViewInit {
 
   loadTransactions(userId: string) {
     this.isLoading = true;
-    // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
+    // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_id
     this.dataSource = new MatTableDataSource([]);
-    if (this.userBusinessData) {
       this.businessService
         .getUserTopUps(userId, this.credentials)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           (transactions) => {
+            console.log("[dataSource1]", this.dataSource);
             this.isLoading = false;
-            this.transactionsData = transactions.map((details) => {
-              details.state = this.getStatusLabel(details.status);
-              return details;
-            });
+            if (transactions.data) {
+              this.transactionsData = transactions.data.map((details) => {
+                details.state = this.getStatusLabel(details.status);
+                return details;
+              });
 
-            this.hasNoTransactions = transactions.length === 0 ? true : false;
-            this.dataSource = new MatTableDataSource(this.transactionsData);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
+              this.hasNoTransactions =
+                transactions.data.length === 0 ? true : false;
+              this.dataSource = new MatTableDataSource(this.transactionsData);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+            } else {
+              this.hasNoTransactions = true;
+              const data = [];
+              this.dataSource = new MatTableDataSource(data);
+            }
           },
           (error) => {
             this.isLoading = false;
             console.log(error.message);
           }
         );
-    }
   }
 }

@@ -251,38 +251,37 @@ export class ProfilComponent implements OnInit {
       website: [""],
     });
 
-    this.updateBusinessForm = this.formBuilder.group(
-      {
-        country: [this.businessData?.country, Validators.required],
-        business_address: [
-          this.businessData?.business_address,
+    this.updateBusinessForm = this.formBuilder.group({
+      country: [this.businessData?.country, Validators.required],
+      business_address: [
+        this.businessData?.business_address,
+        Validators.required,
+      ],
+      description: [this.businessData?.description, Validators.required],
+      industry: [this.businessData?.industry, Validators.required],
+      business_phone: [
+        this.businessData?.business_phone,
+        [
           Validators.required,
+          Validators.pattern(this.phoneNumberValidationPattern),
         ],
-        description: [this.businessData?.description, Validators.required],
-        industry: [this.businessData?.industry, Validators.required],
-        business_phone: [
-          this.businessData?.business_phone,
-          [
-            Validators.required,
-            Validators.pattern(this.phoneNumberValidationPattern),
-          ],
-        ],
-        owner_full_name: [
-          this.businessData?.owner_full_name,
-          Validators.required,
-        ],
-        dob: [this.businessData?.DOB, Validators.required],
-        nationality: [this.businessData?.nationality, Validators.required],
-        owner_address: [this.businessData?.owner_address, Validators.required],
-        id_type: [this.businessData?.id_type, Validators.required],
-        // id_proof_path: [""],
-        company_documents: [""],
-        business_legal_name: [this.businessData?.business_legal_name],
-        company_documentUpload: [""],
-        business_logo: [""],
-        staff_size: [this.businessData?.staff_size, Validators.required],
-        website: [""],
-      });
+      ],
+      owner_full_name: [
+        this.businessData?.owner_full_name,
+        Validators.required,
+      ],
+      dob: [this.businessData?.DOB, Validators.required],
+      nationality: [this.businessData?.nationality, Validators.required],
+      owner_address: [this.businessData?.owner_address, Validators.required],
+      id_type: [this.businessData?.id_type, Validators.required],
+      // id_proof_path: [""],
+      company_documents: [""],
+      business_legal_name: [this.businessData?.business_legal_name],
+      company_documentUpload: [""],
+      business_logo: [""],
+      staff_size: [this.businessData?.staff_size, Validators.required],
+      website: [""],
+    });
     // this.businessPhoneInputStyl();
     // this.deliveryManInputStyl();
   }
@@ -326,6 +325,7 @@ export class ProfilComponent implements OnInit {
     businessData.business_logo = this.companyLogoFile;
     businessData.user_id = this.userData.user_id;
     businessData.business_email = this.userData.email;
+    businessData.website = this.businessForm.value["website"];
     businessData.business_phone =
       this.updateBusinessForm.value["business_phone"];
     this.businessService
@@ -339,7 +339,9 @@ export class ProfilComponent implements OnInit {
             BUSINESS_DATA_KEY,
             JSON.stringify(response.data)
           );
-          this.router.navigate(["/dashboards/home"]);
+          const parsedUrl = new URL(window.location.href);
+          const baseUrl = parsedUrl.origin;
+          window.location.replace(`${baseUrl}/dashboards/home`);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;
@@ -362,6 +364,7 @@ export class ProfilComponent implements OnInit {
     businessData.user_id = this.userData.user_id;
     businessData.business_email = this.userData.email;
     businessData.business_phone = this.businessForm.value["business_phone"];
+    businessData.website = this.businessForm.value["website"];
     this.businessService
       .createNewBusiness(businessData)
       .pipe(takeUntil(this.unsubscribe$))
@@ -373,7 +376,10 @@ export class ProfilComponent implements OnInit {
             BUSINESS_DATA_KEY,
             JSON.stringify(response.data)
           );
-          this.router.navigate(["/dashboards/home"]);
+          const parsedUrl = new URL(window.location.href);
+          const baseUrl = parsedUrl.origin;
+          console.log("[current host]", baseUrl);
+          window.location.replace(`${baseUrl}/dashboards/home`);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;
