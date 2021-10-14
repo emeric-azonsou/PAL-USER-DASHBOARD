@@ -22,6 +22,8 @@ import { ContainerModule } from "../../../../@vex/directives/container/container
 import { FormElementsRoutingModule } from "../../ui/forms/form-elements/form-elements-routing.module";
 import { AngularFileUploaderModule } from "angular-file-uploader";
 import { MatFileUploadModule } from "mat-file-upload";
+import { MaterialFileInputModule } from "ngx-material-file-input";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -48,6 +50,8 @@ import { MatFileUploadModule } from "mat-file-upload";
     ContainerModule,
     AngularFileUploaderModule,
     MatFileUploadModule,
+    MaterialFileInputModule,
+    MatProgressSpinnerModule
   ],
 })
 export class ProfilModule {}

@@ -7,14 +7,38 @@
     <img class="w-8 select-none" src="assets/img/demo/logo.svg">
     <h1 [fxHide]="mobileQuery" class="m-0 select-none title ltr:pl-4 rtl:pr-4">VEX</h1>
   </a>
-  <div class="grid grid-cols-2 gap-4 ">
+
+
+
+  <!-- for responssive -->
+
+  <div class="p-10 reponssivebutton">
+    <div class="dropdown inline-block relative">
+      <button (click)='toggleMenu()' class="bg text-gray-700 font-semibold  moreplus py-2 px-4 rounded inline-flex items-center">
+        <span class="mr-1" >More +</span>
+        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+      </button>
+      <ul class="dropdown-menu absolute  text-gray-700 pt-1 respbutton " *ngIf='isOpen'>
+        <div class="btn">
+          <button class="disburs" mat-raised-button type="button" (click)='openDisbursePopup()'>Disburse cash
+          </button>
+        </div>
+        <div class="btn">
+          <button class="apiDoc" (click)='onViewApiPart()' mat-raised-button type="button">
+            API
+          </button>
+        </div>
+      </ul>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 gap-4 noresponssive ">
     <div>
       <button class="disburs" mat-raised-button type="button" (click)='openDisbursePopup()'>Disburse cash
       </button>
     </div>
     <div>
       <button class="apiDoc" (click)='onViewApiPart()' mat-raised-button type="button">
-        Api doc
+        API
       </button>
     </div>
   </div>
@@ -30,7 +54,7 @@
 
   <span fxFlex></span>
 
-  <div class="flex items-center -mx-1">
+  <div class="flex items-center -mx-1  rigthside">
     <!-- 
     <div class="px-1">
       <vex-toolbar-notifications></vex-toolbar-notifications>

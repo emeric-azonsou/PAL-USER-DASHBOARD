@@ -16,6 +16,8 @@
   color: var(--toolbar-icon-color);
 }
 
+
+
 a {
   color: var(--toolbar-color);
   text-decoration: none;
@@ -38,3 +40,51 @@ a {
   color: #ffffff;
   opacity: 1;
 }
+
+
+
+// responssive
+// more 
+
+.reponssivebutton{
+  .respbutton{
+    display: block;
+    background-color: white;
+  }
+  button{
+    margin: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .noresponssive{
+  display: none;
+  }
+  .rigthside{
+    margin-left: -500px;
+  }
+  .moreplus{
+    position: relative;
+     right: 50px;
+   }
+}
+
+@media screen and (min-width: 768px) {
+  .moreplus{
+    position: relative;
+     right: 50px;
+   }
+  .reponssivebutton{
+  display: none;
+  }
+ 
+}
+
+@media screen and (max-width: 355px) {
+.moreplus{
+ position: relative;
+  right: 50px;
+}
+ 
+}
+

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { SUMMARY_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
+import { User } from "src/app/Models/models.interface";
 import { BusinessService } from "src/app/services/business.service";
 
 @Component({
@@ -10,7 +11,7 @@ import { BusinessService } from "src/app/services/business.service";
   styleUrls: ["./curency-balance.component.scss"],
 })
 export class CurencyBalanceComponent implements OnInit, OnDestroy {
-  userData: any;
+  userData: User;
   balanceData: any;
 
   unsubscribe$ = new Subject();

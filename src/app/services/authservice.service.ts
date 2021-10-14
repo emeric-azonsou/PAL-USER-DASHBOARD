@@ -4,7 +4,7 @@ import {
   HttpErrorResponse,
   HttpParams,
 } from "@angular/common/http";
-import { Observable, throwError as observableThrowError } from "rxjs";
+import { Observable, throwError as observableThrowError, throwError } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 
@@ -23,18 +23,22 @@ export class AuthserviceService {
     };
 
     return this.http.post(url, body).pipe(
-      map((response) => {
+      map((response: Response) => {
+        console.log('[response]', response);
         return response;
       }),
-      catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
-        return observableThrowError(error);
+      catchError((error: any) => {
+        console.error("Error", error);
+        if(error.status === 401) {
+            return [{status: false, message: error.error}];
+        }
+        return error;
       })
     );
   }
 
   register(userData): Observable<any> {
-    const url = "https://api.pals.africa/api/register";
+    const url = environment.registerUserUrl;
     // const url = "http://127.0.0.1:8000/api/register";
 
     return this.http

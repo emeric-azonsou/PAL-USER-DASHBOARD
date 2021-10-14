@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import icCopy from '@iconify/icons-ic/twotone-content-copy';
 import { BUSINESS_DATA_KEY } from 'src/app/Models/constants';
+import { MerchantData } from 'src/app/Models/models.interface';
 @Component({
   selector: 'vex-api',
   templateUrl: './api.component.html',
@@ -8,7 +9,7 @@ import { BUSINESS_DATA_KEY } from 'src/app/Models/constants';
 })
 export class ApiComponent implements OnInit {
   icCopy=icCopy;
-  userBusinessData: any;
+  userBusinessData: MerchantData;
 
   constructor() { 
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);

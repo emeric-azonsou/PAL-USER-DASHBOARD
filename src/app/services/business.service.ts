@@ -27,7 +27,11 @@ export class BusinessService {
     formData.append('business_legal_name', businessData['business_legal_name']);
     formData.append('business_logo', businessData['business_logo']);
     formData.append('business_phone', businessData['business_phone']);
-    formData.append('company_document_path', businessData['company_documentUpload']);
+    if(businessData['company_documentUpload']?.length) {
+      businessData['company_documentUpload'].forEach(file => {
+        formData.append('company_document_path[]', file, file.name)
+      });
+    }
     formData.append('country', businessData['country']);
     formData.append('description', businessData['description']);
     formData.append('DOB', businessData['dob']);
@@ -41,6 +45,7 @@ export class BusinessService {
     formData.append('user_id', businessData['user_id']);
     formData.append('staff_size', businessData['staff_size']);
     formData.append('owner_address', businessData['owner_address']);
+    formData.append('website', businessData['website']);
     return this.http
       .post(url, formData, { responseType: 'json', })
       .pipe(
@@ -76,6 +81,7 @@ export class BusinessService {
     formData.append('user_id', businessData['user_id']);
     formData.append('staff_size', businessData['staff_size']);
     formData.append('owner_address', businessData['owner_address']);
+    formData.append('website', businessData['website']);
     return this.http
       .post(url, formData, { responseType: 'json', })
       .pipe(
@@ -148,7 +154,7 @@ export class BusinessService {
     })    
     return this.http.get(url, { headers }).pipe(
       map((response: any) => {
-        return response.data;
+        return response;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);
@@ -156,6 +162,7 @@ export class BusinessService {
       })
     );
   }
+
   createtransfer(data) {
     const url = environment.createTransactionUrl;
     return this.http.post(url, data).pipe(

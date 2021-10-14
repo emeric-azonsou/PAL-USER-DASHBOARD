@@ -6,13 +6,28 @@
     <!-- <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
         <mat-icon [icIcon]="icMoreVert"></mat-icon>
       </button> -->
-    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+    <button
+      class="text-secondary"
+      mat-dialog-close
+      mat-icon-button
+      type="button"
+    >
       <mat-icon [icIcon]="icClose"></mat-icon>
     </button>
   </div>
   <mat-divider class="-mx-6 text-border"></mat-divider>
-  <mat-dialog-content fxLayout="column"   class="content-part">
-    <div class="grid grid-flow-col grid-cols-2 grid-rows-2 gap-8">
+  <mat-dialog-content fxLayout="column" class="content-part">
+    <div
+      class="
+        grid
+        respon
+        grid-flow-col
+        xs:grid-cols-4 xs:grid-rows-4
+        sm:grid-rows-2 sm:grid-cols-2
+        md:grid-cols-2 md:grid-rows-2
+        gap-8
+      "
+    >
       <div>
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
@@ -21,7 +36,10 @@
         </div>
         <mat-form-field appearance="fill">
           <!-- <mat-label>Select Country You're disbursing to</mat-label> -->
-          <mat-select (selectionChange)="setCurrency($event)" formControlName="country">
+          <mat-select
+            (selectionChange)="setCurrency($event)"
+            formControlName="country"
+          >
             <!-- <mat-option value="GH">GHANA</mat-option> -->
             <mat-option value="BJ">BENIN</mat-option>
             <!-- <mat-option value="SN">SENEGAL</mat-option> -->
@@ -30,15 +48,22 @@
       </div>
       <div>
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
-          <div class="label"><label for="" class="label">Enter the Mobile wallet number</label></div>
+          <div class="label">
+            <label for="" class="label">Enter the Mobile wallet number</label>
+          </div>
         </div>
         <mat-form-field appearance="fill">
-          <input matInput formControlName="phone_no" #input placeholder="96040522">
+          <input
+            matInput
+            formControlName="phone_no"
+            #input
+            placeholder="96040522"
+            maxlength="{{ maxLength }}"
+          />
           <mat-error>
             <span
               *ngFor="
-                let error of transferForm.get('phone_no').errors
-                  | keyvalue
+                let error of transferForm.get('phone_no').errors | keyvalue
               "
             >
               {{ validationMessages.phone_no[error.key] }}
@@ -48,7 +73,9 @@
       </div>
       <div>
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
-          <div class="label"><label for="">Select the Mobile network</label></div>
+          <div class="label">
+            <label for="">Select the Mobile network</label>
+          </div>
         </div>
         <mat-form-field appearance="fill">
           <!-- <mat-label>Select me</mat-label> -->
@@ -60,18 +87,19 @@
       </div>
       <div>
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
-          <div class="label"><label for="" class="label">How much are you disbursing?</label></div>
+          <div class="label">
+            <label for="" class="label">How much are you disbursing?</label>
+          </div>
         </div>
         <mat-form-field appearance="outline">
           <!-- <mat-label>Outline form field</mat-label> -->
-          <input matInput formControlName="amount" placeholder="" >
-          <mat-icon matSuffix><h6>{{ currency }}</h6></mat-icon>
+          <input matInput formControlName="amount" placeholder="" />
+          <mat-icon matSuffix
+            ><h6>{{ currency }}</h6></mat-icon
+          >
           <mat-error>
             <span
-              *ngFor="
-                let error of transferForm.get('amount').errors
-                  | keyvalue
-              "
+              *ngFor="let error of transferForm.get('amount').errors | keyvalue"
             >
               {{ validationMessages.amount[error.key] }}
             </span>
@@ -80,11 +108,30 @@
       </div>
     </div>
   </mat-dialog-content>
-  <mat-dialog-actions align="end" class="button" >
+
+  <mat-dialog-actions align="end" class="button">
     <mat-error *ngIf="hasError || transferForm.invalid">
-      {{ errorMessage || 'All * fields are required' }}
+      {{ errorMessage || "All * fields are required" }}
     </mat-error>
-    <button mat-button mat-dialog-close type="button" class="cancel-button">CANCEL</button>
-    <button color="primary" [disabled]="isDisbursing || transferForm.invalid" mat-button type="button" (click)="createTransfer()" class="send-button">{{ isDisbursing === true ? 'Processing...' : 'SEND CASH'}}</button>
+
+    <div  class="grid grid-flow-col grid-cols-2 grid-rows-1 "   >
+      <div>
+        <button mat-button mat-dialog-close type="button" class="cancel-button">
+          CANCEL
+        </button>
+      </div>
+      <div>
+        <button
+          color="primary"
+          [disabled]="isDisbursing || transferForm.invalid"
+          mat-button
+          type="button"
+          (click)="createTransfer()"
+          class="send-button"
+        >
+          {{ isDisbursing === true ? "Processing..." : "SEND CASH" }}
+        </button>
+      </div>
+    </div>
   </mat-dialog-actions>
 </form>

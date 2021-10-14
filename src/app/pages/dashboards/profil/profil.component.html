@@ -1,17 +1,19 @@
 <div [@stagger]="true" class="p-gutter" vexContainer>
   <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
-    <div  @fadeInUp class="card" fxFlex="auto">
+    <div @fadeInUp class="card" fxFlex="auto">
       <div
         class="px-6 py-4 border-b"
         fxLayout="row"
         fxLayoutAlign="start center"
       >
         <h2 class="m-0 title">Profile</h2>
+        <mat-spinner *ngIf="!!businessForm === false" color="primary"> </mat-spinner>
       </div>
-      <div [formGroup]="businessForm" *ngIf="!userData.hasBusiness">
+      <div [formGroup]="businessForm" *ngIf="!userData.hasBusiness && !!businessData === false">
         <div class="top">
           <div class="proFilPhoto">
-            <mat-icon [icIcon]="icPerson"></mat-icon>
+            <!-- <mat-icon [icIcon]="icPerson"></mat-icon> -->
+            <!-- <mat-icon>perm_identity</mat-icon> -->
             <!-- <img src="../../../../assets/img/demo/1.jpg" alt="" /> -->
           </div>
           <div>
@@ -38,16 +40,11 @@
           >
             <mat-form-field fxFlex="auto">
               <mat-label>Company legal name </mat-label>
-              <mat-icon
-                [icIcon]="icEdit"
-                matSuffix
-              ></mat-icon>
               <input matInput #input formControlName="business_legal_name" />
             </mat-form-field>
             <mat-form-field fxFlex="auto">
               <mat-label>Website</mat-label>
               <input matInput #input formControlName="website" />
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
             </mat-form-field>
           </div>
           <div
@@ -65,7 +62,6 @@
                   [value]="country.code"
                   >{{ country.name }}</mat-option
                 >
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-select>
               <mat-error>
                 <span
@@ -90,16 +86,14 @@
                   {{ validationMessages.description[error.key] }}
                 </span>
               </mat-error>
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Staff Size </mat-label>
               <mat-select formControlName="staff_size">
                 <mat-option value="1-10">1-10 people </mat-option>
                 <mat-option value="10-50">10-50 people</mat-option>
-                <mat-option  value="50+">+50 people</mat-option>
+                <mat-option value="50+">+50 people</mat-option>
               </mat-select>
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
             </mat-form-field>
           </div>
           <div
@@ -131,32 +125,52 @@
             <mat-form-field fxFlex="auto">
               <mat-label>Business phone</mat-label>
               <input matInput required formControlName="business_phone" />
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+              <mat-error>
+                <span
+                  *ngFor="
+                    let error of businessForm.get('business_phone').errors | keyvalue
+                  "
+                >
+                  {{ validationMessages.business_phone[error.key] }}
+                </span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field fxFlex="auto">
               <mat-label>Company physical address</mat-label>
               <input matInput required formControlName="business_address" />
-              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+              <mat-error>
+                <span
+                  *ngFor="
+                    let error of businessForm.get('business_address').errors | keyvalue
+                  "
+                >
+                  {{ validationMessages.business_address[error.key] }}
+                </span>
+              </mat-error>
             </mat-form-field>
           </div>
           <div fxLayout="row">
             <mat-label class="upload"
-              >Upload your company registration document
+              >Upload your company registration documents (Multiple files selection allowed)
             </mat-label>
           </div>
           <div fxLayout="row" fxLayoutAlign="start">
             <!-- <angular-file-uploader [config]="afuConfig">
             </angular-file-uploader> -->
             <mat-file-upload
+              [allowMultipleFiles]="true"
               [labelText]="''"
               [uploadButtonText]="'upload'"
               [showUploadButton]="false"
               [selectButtonText]="'Upload Company document'"
-              [acceptedTypes]="'.doc, .pdf'"
               (uploadClicked)="uploadCompanyDoc($event)"
-              (change)="uploadCompanyDoc($event)"
+              (selectedFilesChanged)="uploadCompanyDoc($event)"
             >
             </mat-file-upload>
+            <!-- <mat-form-field>
+              <ngx-mat-file-input formControlName="company_documents" placeholder="company documents" multiple></ngx-mat-file-input>
+              <mat-icon matSuffix>folder</mat-icon>
+            </mat-form-field> -->
           </div>
           <div class="px-6 py-4 owner" fxLayout="column">
             <div
@@ -175,7 +189,6 @@
               <mat-form-field fxFlex="auto">
                 <mat-label>Your Full name </mat-label>
                 <input matInput #input formControlName="owner_full_name" />
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                 <mat-error>
                   <span
                     *ngFor="
@@ -190,7 +203,6 @@
               <mat-form-field fxFlex="auto">
                 <mat-label>Your address </mat-label>
                 <input matInput required formControlName="owner_address" />
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
                 <mat-error>
                   <span
                     *ngFor="
@@ -212,11 +224,14 @@
               <mat-form-field>
                 <mat-label>ID type</mat-label>
                 <mat-select formControlName="id_type">
-                  <mat-option value="Driver Licence"> Driver licence </mat-option>
+                  <mat-option value="Driver Licence">
+                    Driver licence
+                  </mat-option>
                   <mat-option value="Passport">Passport </mat-option>
-                  <mat-option value="National ID card"> National ID card </mat-option>
+                  <mat-option value="National ID card">
+                    National ID card
+                  </mat-option>
                 </mat-select>
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-form-field>
 
               <mat-form-field fxFlex="auto">
@@ -228,7 +243,6 @@
                   #input
                   formControlName="dob"
                 />
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-form-field>
               <mat-form-field fxFlex="auto">
                 <mat-label class="text-xs text-gray-300"
@@ -252,7 +266,6 @@
                     {{ validationMessages.nationality[error.key] }}
                   </span>
                 </mat-error>
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-form-field>
             </div>
             <div fxLayout="row">
@@ -272,10 +285,19 @@
                 (change)="uploadID($event)"
               >
               </mat-file-upload>
+              <mat-error *ngIf="!this.idDocumentFile">
+                Please upload your ID
+              </mat-error>
             </div>
             <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
-              <button color="primary" mat-raised-button type="button" [disabled]="isAdding" (click)="addBusiness()">
-                {{ isAdding === true ? 'SUBMITTING...' : 'SUBMIT' }}
+              <button
+                color="primary"
+                mat-raised-button
+                type="button"
+                [disabled]="isAdding || businessForm.invalid"
+                (click)="addBusiness()"
+              >
+                {{ isAdding === true ? "SUBMITTING..." : "SUBMIT" }}
               </button>
 
               <mat-error *ngIf="hasError">
@@ -285,7 +307,7 @@
           </div>
         </div>
       </div>
-      <div [formGroup]="updateBusinessForm" *ngIf="userData.hasBusiness">
+      <div [formGroup]="updateBusinessForm" *ngIf="userData.hasBusiness || !!businessData === true">
         <div class="top">
           <div class="proFilPhoto">
             <mat-icon [icIcon]="icPerson"></mat-icon>
@@ -315,10 +337,7 @@
           >
             <mat-form-field fxFlex="auto">
               <mat-label>Company legal name </mat-label>
-              <mat-icon
-                [icIcon]="icEdit"
-                matSuffix
-              ></mat-icon>
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               <input matInput #input formControlName="business_legal_name" />
             </mat-form-field>
             <mat-form-field fxFlex="auto">
@@ -342,8 +361,8 @@
                   [value]="country.code"
                   >{{ country.name }}</mat-option
                 >
-                <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-select>
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               <mat-error>
                 <span
                   *ngFor="
@@ -374,7 +393,7 @@
               <mat-select formControlName="staff_size">
                 <mat-option value="1-10">1-10 people </mat-option>
                 <mat-option value="10-50">10-50 people</mat-option>
-                <mat-option  value="50+">+50 people</mat-option>
+                <mat-option value="50+">+50 people</mat-option>
               </mat-select>
               <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
             </mat-form-field>
@@ -395,6 +414,7 @@
                   >{{ industry }}</mat-option
                 >
               </mat-select>
+              <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               <mat-error>
                 <span
                   *ngFor="
@@ -409,6 +429,15 @@
               <mat-label>Business phone</mat-label>
               <input matInput required formControlName="business_phone" />
               <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
+              <mat-error>
+                <span
+                  *ngFor="
+                    let error of businessForm.get('business_phone').errors | keyvalue
+                  "
+                >
+                  {{ validationMessages.business_phone[error.key] }}
+                </span>
+              </mat-error>
             </mat-form-field>
             <mat-form-field fxFlex="auto">
               <mat-label>Company physical address</mat-label>
@@ -418,7 +447,7 @@
           </div>
           <div fxLayout="row">
             <mat-label class="upload"
-              >Upload your company registration document
+              >Upload your company registration documents (Multiple files selection allowed)
             </mat-label>
           </div>
           <div fxLayout="row" fxLayoutAlign="start">
@@ -489,9 +518,13 @@
               <mat-form-field>
                 <mat-label>ID type</mat-label>
                 <mat-select readOnly formControlName="id_type">
-                  <mat-option value="Driver Licence"> Driver licence </mat-option>
+                  <mat-option value="Driver Licence">
+                    Driver licence
+                  </mat-option>
                   <mat-option value="Passport">Passport </mat-option>
-                  <mat-option value="National ID card"> National ID card </mat-option>
+                  <mat-option value="National ID card">
+                    National ID card
+                  </mat-option>
                 </mat-select>
                 <mat-icon [icIcon]="icEdit" matSuffix></mat-icon>
               </mat-form-field>
@@ -551,8 +584,14 @@
               </mat-file-upload>
             </div>
             <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
-              <button color="primary" mat-raised-button type="button" [disabled]="isUpdating" (click)="updateBusinessProfile()">
-                {{ isUpdating === true ? 'UPDATING...' : 'UPDATE' }}
+              <button
+                color="primary"
+                mat-raised-button
+                type="button"
+                [disabled]="isUpdating"
+                (click)="updateBusinessProfile()"
+              >
+                {{ isUpdating === true ? "UPDATING..." : "UPDATE" }}
               </button>
 
               <mat-error *ngIf="hasError">

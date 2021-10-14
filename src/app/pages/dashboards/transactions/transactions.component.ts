@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -75,7 +75,7 @@ export interface PeriodicElement {
   templateUrl: "./transactions.component.html",
   styleUrls: ["./transactions.component.scss"],
 })
-export class TransactionsComponent implements OnInit {
+export class TransactionsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     "id",
     "created_at",
@@ -87,7 +87,7 @@ export class TransactionsComponent implements OnInit {
     "amount",
     "status",
   ];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  dataSource = new MatTableDataSource();
 
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -195,6 +195,8 @@ export class TransactionsComponent implements OnInit {
           this.hasNoTransactions =
             transactions.length === 0 ? true : false;
           this.dataSource = new MatTableDataSource(this.transactionsData);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
         },
         (error) => {
           this.isLoading = false;

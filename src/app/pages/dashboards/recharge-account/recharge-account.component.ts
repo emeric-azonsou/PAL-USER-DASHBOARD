@@ -36,7 +36,7 @@ export class RechargeAccountComponent implements OnInit {
   };
 
   icClose = icClose;
-  transferForm: FormGroup;
+  topUpForm: FormGroup;
   currency: string = "XOF";
   dailingCode: string = "+229";
   module_id: any = 102;
@@ -72,7 +72,7 @@ export class RechargeAccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.transferForm = this.fb.group({
+    this.topUpForm = this.fb.group({
       country: ["BJ", Validators.required],
       amount: ["", [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       operator: ["mtn", Validators.required],
@@ -90,7 +90,7 @@ export class RechargeAccountComponent implements OnInit {
   rechargeAccount() {
     this.isProcessing = true
     this.data = {
-      ...this.transferForm.value,
+      ...this.topUpForm.value,
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
@@ -104,6 +104,7 @@ export class RechargeAccountComponent implements OnInit {
         if(response && response['status'] === true) {
           this.openSnackbar(response['message']);
           this.dialogRef.close();
+          window.location.reload();
         } else {
           this.hasError = true;
           this.errorMessage = response['message'];
@@ -130,14 +131,11 @@ export class RechargeAccountComponent implements OnInit {
       .pipe(take(1))
       .subscribe((data) => {
         this.moduleData = data;
-        console.log(" this.moduleData", data);
       });
   }
 
   setCurrency(option) {
     this.currency = this.countryData[option.value].currency;
-    this.dailingCode = this.countryData[option.value].code;
-    this.transferForm.get("phone_no")?.setValue(this.dailingCode);
     const selectedModule = this.moduleData.find((data) => {
       return (
         data["country"] === option.value && data["currency"] === this.currency
@@ -147,7 +145,7 @@ export class RechargeAccountComponent implements OnInit {
   }
 
   createCustomer() {
-    const customer = this.transferForm.value;
+    const customer = this.topUpForm.value;
 
     if (!customer.imageSrc) {
       customer.imageSrc = "assets/img/avatars/1.jpg";
