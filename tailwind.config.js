@@ -164,7 +164,7 @@ module.exports = {
       5: 'var(--elevation-z5)',
       6: 'var(--elevation-z6)',
       7: 'var(--elevation-z7)',
-      8: 'var(--elevation-z8)',
+      // 8: 'var(--elevation-z8)',
       9: 'var(--elevation-z9)',
       10: 'var(--elevation-z10)',
       11: 'var(--elevation-z11)',
