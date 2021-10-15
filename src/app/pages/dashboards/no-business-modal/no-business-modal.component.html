@@ -2,7 +2,12 @@
 
 <form>
   <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
-    <h2 class="m-0 headline" fxFlex="auto">NO BUSINESS CREATED</h2>
+    <h2 class="m-0 headline" fxFlex="auto">
+      <!-- <span>
+        <mat-icon>work_outline</mat-icon>
+      </span> -->
+      NO BUSINESS CREATED
+    </h2>
     <!-- <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
         <mat-icon [icIcon]="icMoreVert"></mat-icon>
       </button> -->
@@ -11,10 +16,10 @@
     </button>
   </div>
   <mat-divider class="-mx-6 text-border"></mat-divider>
-  <mat-dialog-content fxLayout="column"   class="content-part">
+  <mat-dialog-content fxLayout="column" class="content-part">
     <h4> Please add a business to be able to access all PAL's functionalities</h4>
   </mat-dialog-content>
-  <mat-dialog-actions align="end" class="button" >
+  <mat-dialog-actions align="end" class="button">
     <button mat-button mat-dialog-close type="button" class="cancel-button">CANCEL</button>
     <button color="primary" mat-button type="button" (click)="redirect()" class="send-button">Add Business</button>
   </mat-dialog-actions>
