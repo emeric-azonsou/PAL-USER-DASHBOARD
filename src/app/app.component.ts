@@ -9,7 +9,7 @@ import icAssigment from "@iconify/icons-ic/twotone-assignment";
 import icDateRange from "@iconify/icons-ic/twotone-date-range";
 
 import { LayoutService } from "../@vex/services/layout.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { filter, map } from "rxjs/operators";
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import { SplashScreenService } from "../@vex/services/splash-screen.service";
@@ -17,6 +17,7 @@ import { Style, StyleService } from "../@vex/services/style.service";
 import icChromeReaderMode from "@iconify/icons-ic/twotone-chrome-reader-mode";
 import { ConfigName } from "../@vex/interfaces/config-name.model";
 import icMail from "@iconify/icons-ic/twotone-mail";
+import { USER_SESSION_KEY } from "./Models/constants";
 
 @Component({
   selector: "vex-root",
@@ -35,11 +36,16 @@ export class AppComponent {
     @Inject(LOCALE_ID) private localeId: string,
     private layoutService: LayoutService,
     private route: ActivatedRoute,
+    private router: Router,
     private navigationService: NavigationService,
     private splashScreenService: SplashScreenService
   ) {
     Settings.defaultLocale = this.localeId;
-
+    const sessionData = localStorage.getItem(USER_SESSION_KEY);
+    if(!sessionData) {
+      router.navigate(['/auth/login'])
+    }
+    
     if (this.platform.BLINK) {
       this.renderer.addClass(this.document.body, "is-blink");
     }

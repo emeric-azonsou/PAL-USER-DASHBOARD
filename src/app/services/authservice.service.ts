@@ -24,7 +24,6 @@ export class AuthserviceService {
 
     return this.http.post(url, body).pipe(
       map((response: Response) => {
-        console.log('[response]', response);
         return response;
       }),
       catchError((error: any) => {

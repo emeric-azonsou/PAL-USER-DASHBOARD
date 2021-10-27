@@ -249,6 +249,7 @@ export class ProfilComponent implements OnInit {
       business_logo: [""],
       staff_size: [""],
       website: [""],
+      callback_url: [""]
     });
 
     this.updateBusinessForm = this.formBuilder.group({
@@ -280,7 +281,8 @@ export class ProfilComponent implements OnInit {
       company_documentUpload: [""],
       business_logo: [""],
       staff_size: [this.businessData?.staff_size, Validators.required],
-      website: [""],
+      website: [this.businessData?.website],
+      callback_url: [this.businessData?.callback_url || ""]
     });
     // this.businessPhoneInputStyl();
     // this.deliveryManInputStyl();
@@ -378,7 +380,6 @@ export class ProfilComponent implements OnInit {
           );
           const parsedUrl = new URL(window.location.href);
           const baseUrl = parsedUrl.origin;
-          console.log("[current host]", baseUrl);
           window.location.replace(`${baseUrl}/dashboards/home`);
         } else {
           this.errorMessage = response.message || "something went wrong";
