@@ -71,4 +71,5 @@ export interface MerchantData {
   updated_at: string;
   user_id: string;
   website: string;
+  callback_url: string;
 }

@@ -82,6 +82,25 @@ export class BusinessService {
     formData.append('staff_size', businessData['staff_size']);
     formData.append('owner_address', businessData['owner_address']);
     formData.append('website', businessData['website']);
+    formData.append('callback_url', businessData['callback_url']);
+    return this.http
+      .post(url, formData, { responseType: 'json', })
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.log('Error:', error.message);
+          return observableThrowError(error);
+        })
+      );
+  }
+
+  updateBusinessCallbackURL(businessData, id) {
+    const url = `${environment.updateBusinessUrl}${id}`;
+    // const url = `http://127.0.0.1:8000/api/updatebusiness/${id}`;
+    const formData = new FormData();
+    formData.append('callback_url', businessData['callback']);
     return this.http
       .post(url, formData, { responseType: 'json', })
       .pipe(

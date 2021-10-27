@@ -1,100 +1,208 @@
 <div class="secondary-toolbar-placeholder">
-    <div class="flex flex-col justify-between w-full sm:flex-row">
-      <div>
-        <h1 class="mt-0 mb-1 title">API integration</h1>
-        <vex-breadcrumbs [crumbs]="['Dashboard','Api Integration']"></vex-breadcrumbs>
+  <div class="flex flex-col justify-between w-full sm:flex-row">
+    <div>
+      <h1 class="mt-0 mb-1 title">API integration</h1>
+      <vex-breadcrumbs
+        [crumbs]="['Dashboard', 'Api Integration']"
+      ></vex-breadcrumbs>
+    </div>
+  </div>
+</div>
+<mat-card class="ml-10 mat-card">
+  <div class="mx-4">
+    <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-2 apiInput">
+      <div class="speci">
+        <div>
+          <a
+            mat-raised-button
+            color="primary"
+            class="text-sm"
+            href="https://api.pals.africa/docs"
+            target="_blank"
+          >
+            <!-- <button > -->
+            View Api Docs
+            <!-- </button> -->
+          </a>
+        </div>
       </div>
     </div>
   </div>
-  <mat-card class="ml-10 mat-card">
-    <div class="mx-4">
-      <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-2 apiInput">
-        <div class="speci">
-          <div>
-            <a  mat-raised-button color="primary" class="text-sm" href="https://api.pals.africa/docs" target="_blank" >
-              <!-- <button > -->
-                View Api Docs
-              <!-- </button> -->
-            </a>
-          </div>
-        
-        </div>
+  <mat-card class="mt-8 border-black mat-card2">
+    <h4 class="text-xs text-gray-300">API Keys</h4>
+
+    <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-8 cardText">
+      <div>
+        <h4 class="text-xs text-gray-300">Live Secret Key</h4>
+      </div>
+      <div>
+        <h4 class="text-xs text-gray-300 liveKey">Live Public Key</h4>
       </div>
     </div>
-    <mat-card class="mt-8 border-black mat-card2">
-      <h4 class="text-xs text-gray-300 ">API Keys</h4>
-  
-      <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-8 cardText">
-        <div>
-          <h4 class="text-xs text-gray-300">Live Secret Key</h4>
-        </div>
-        <div>
-          <h4 class="text-xs text-gray-300 liveKey ">Live  Public Key</h4>
-        </div>
-      </div>
-  
-      <div class="grid grid-flow-col grid-cols-2 grid-rows-1   gap-1 mt-2 apiInput">
-        <div>
-          <mat-form-field appearance="fill">
-            <input matInput #api_secret_key_live [value]="userBusinessData?.api_secret_key_live" readonly />
-            <button mat-icon-button matSuffix matTooltip="Copy" (click)="copyInputMessage(api_secret_key_live)">
-                <ic-icon [icon]="icCopy"></ic-icon>
-            </button>
-          </mat-form-field>
-        </div>
-  
-        <div>
-            <div>
-                <mat-form-field appearance="fill">
-                  <input matInput #api_public_key_live  [value]="userBusinessData?.api_public_key_live"  readonly />
-                  <button mat-icon-button matSuffix matTooltip="Copy" (click)="copyInputMessage(api_public_key_live)">
-                    <ic-icon [icon]="icCopy"></ic-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-        </div>
-      </div>
 
-      <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-8 cardText">
-        <div>
-          <h4 class="text-xs text-gray-300">Test Secret Key</h4>
-        </div>
-        <div>
-          <h4 class="text-xs text-gray-300 liveKey">Test Public Key</h4>
-        </div>
-      </div>
-  
-      <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-2 apiInput">
-        <div>
-          <mat-form-field appearance="fill">
-            <input matInput #api_secret_key_test [value]="userBusinessData?.api_secret_key_test" readonly />
-            <button mat-icon-button matSuffix matTooltip="Copy" (click)="copyInputMessage(api_secret_key_test)">
-                <ic-icon [icon]="icCopy"></ic-icon>
-            </button>
-          </mat-form-field>
-        </div>
-  
-        <div>
-            <div>
-                <mat-form-field appearance="fill">
-                  <input #api_public_key_test matInput [value]="userBusinessData?.api_public_key_test"  readonly />
-                  <button mat-icon-button matSuffix matTooltip="Copy" (click)="copyInputMessage(api_public_key_test)">
-                    <ic-icon [icon]="icCopy"></ic-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-        </div>
-      </div>
-    </mat-card>
-    <mat-card class="mt-8 border-black mat-card2">
+    <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-2 apiInput">
       <div>
         <mat-form-field appearance="fill">
-          <mat-label class="text-xs text-gray-300">User Id</mat-label>
-          <input matInput [value]="userBusinessData?.user_id" readonly />
-          <button mat-icon-button matSuffix matTooltip="Copy" >
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            #api_secret_key_live
+            [value]="userBusinessData?.api_secret_key_live"
+            readonly
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-lavel]="'hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <ic-icon [icon]="hide ? icHidden : icVisible"></ic-icon>
+          </button>
+          <button
+            *ngIf="!hide"
+            mat-icon-button
+            matSuffix
+            placement="top"
+            ngbPopover="Copied!"
+            (click)="copyInputMessage(api_secret_key_live)"
+          >
             <ic-icon [icon]="icCopy"></ic-icon>
           </button>
         </mat-form-field>
       </div>
-    </mat-card>
+
+      <div>
+        <div>
+          <mat-form-field appearance="fill">
+            <input
+              matInput
+              #api_public_key_live
+              [value]="userBusinessData?.api_public_key_live"
+              readonly
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              matTooltip="Copy"
+              (click)="copyInputMessage(api_public_key_live)"
+            >
+              <ic-icon [icon]="icCopy"></ic-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-8 cardText">
+      <div>
+        <h4 class="text-xs text-gray-300">Test Secret Key</h4>
+      </div>
+      <div>
+        <h4 class="text-xs text-gray-300 liveKey">Test Public Key</h4>
+      </div>
+    </div>
+
+    <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-2 apiInput">
+      <div>
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            #api_secret_key_test
+            [value]="userBusinessData?.api_secret_key_test"
+            readonly
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            matTooltip="Copy"
+            (click)="copyInputMessage(api_secret_key_test)"
+          >
+            <ic-icon [icon]="icCopy"></ic-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <div>
+          <mat-form-field appearance="fill">
+            <input
+              #api_public_key_test
+              matInput
+              [value]="userBusinessData?.api_public_key_test"
+              readonly
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              matTooltip="Copy"
+              (click)="copyInputMessage(api_public_key_test)"
+            >
+              <ic-icon [icon]="icCopy"></ic-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
   </mat-card>
+  <mat-card class="mt-8 border-black mat-card2">
+    <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-8 cardText">
+      <div>
+        <h4 class="text-xs text-gray-300">User ID</h4>
+      </div>
+      <div>
+        <h4 class="text-xs text-gray-300 liveKey">Callback URL</h4>
+      </div>
+    </div>
+    <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 mt-2 apiInput">
+      <div>
+        <mat-form-field appearance="fill">
+          <!-- <mat-label class="text-xs text-gray-300">User Id</mat-label> -->
+          <input
+            #user_id
+            matInput
+            [value]="userBusinessData?.user_id"
+            readonly
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            matTooltip="Copy"
+            (click)="copyInputMessage(user_id)"
+          >
+            <ic-icon [icon]="icCopy"></ic-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field appearance="fill">
+          <!-- <mat-label class="text-xs text-gray-300">callback_url</mat-label> -->
+          <input
+            [(ngModel)]="callbackURL"
+            matInput
+            [value]="userBusinessData?.callback_url"
+            [readonly]="!edit"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            matTooltip="Copy"
+            (click)="edit = !edit"
+          >
+            <ic-icon [icon]="icEdit"></ic-icon>
+          </button>
+        </mat-form-field>
+        <button
+          *ngIf="edit"
+          mat-raised-button
+          color="primary"
+          [disabled]=""
+          (click)="updateCallbackUrl(callbackURL)"
+        >
+          {{ isUpdating ? "Saving..." : "Save Changes" }}
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</mat-card>
