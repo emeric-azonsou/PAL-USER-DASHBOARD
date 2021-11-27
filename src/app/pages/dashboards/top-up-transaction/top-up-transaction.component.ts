@@ -10,6 +10,7 @@ import icAdd from "@iconify/icons-ic/twotone-add";
 import icFilterList from "@iconify/icons-ic/twotone-filter-list";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icFolder from "@iconify/icons-ic/twotone-folder";
+import icRefresh from "@iconify/icons-ic/twotone-refresh";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { Subject } from "rxjs";
@@ -95,6 +96,7 @@ export class TopUpTransactionComponent implements OnInit, AfterViewInit {
   icFilterList = icFilterList;
   icMoreHoriz = icMoreHoriz;
   icFolder = icFolder;
+  icRefresh= icRefresh;
 
   statusLabels = TRANSACTION_TABLE_LABELS;
   userData: any;
@@ -144,6 +146,10 @@ export class TopUpTransactionComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  refreshData(){
+    this.loadTransactions(this.userData.user_id);
   }
 
   getStatusLabel(status: string) {

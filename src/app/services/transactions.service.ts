@@ -46,6 +46,10 @@ export class TransactionsService {
               values.state = "Processing";
             } else if (values.status === 3) {
               values.state = "Completed";
+            } else if (values.status === 4) {
+              values.state = "Error";
+            } else if (values.status === 5) {
+              values.state = "Re-Processing";
             }
           return values;
         });
