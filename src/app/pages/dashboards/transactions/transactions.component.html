@@ -63,6 +63,16 @@
         >
           <mat-icon [icIcon]="icSearch"></mat-icon>
         </button>
+
+        <button
+        class="ml-4"
+        fxFlex="none"
+        mat-icon-button
+        type="button"
+        (click)=refreshData()
+      >
+        <mat-icon [icIcon]="icRefresh"></mat-icon>
+      </button>
       </div>
       <table
         *ngIf="!isLoading"

@@ -1,0 +1,5 @@
+deployment:
+  tasks:
+    - ng build --prod
+    - export DEPLOYPATH=/home/nowoylqw/pals.africa/dashboard/
+    - /bin/cp /dist/vex/* $DEPLOYPATH

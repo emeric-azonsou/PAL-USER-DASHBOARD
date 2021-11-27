@@ -57,6 +57,20 @@ export const PAYOUT_TABLE_LABELS = [
       bgClass: 'bg-puple-light',
       previewClass: 'bg-cyan'
     },
+    {
+      text: 'Re-Processing',
+      cssClasses: ['text-teal','bg-teal-light'],
+      textClass: 'text-teal',
+      bgClass: 'bg-teal-light',
+      previewClass: 'bg-teal'
+    },
+    {
+      text: 'Error',
+      cssClasses: ['text-red','bg-red-light'],
+      textClass: 'text-red',
+      bgClass: 'bg-red-light',
+      previewClass: 'bg-red'
+    },
   ];
   
   export const INDUSTRIES = [

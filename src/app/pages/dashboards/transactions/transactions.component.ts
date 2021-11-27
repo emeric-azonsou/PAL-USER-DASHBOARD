@@ -23,6 +23,7 @@ import icAdd from "@iconify/icons-ic/twotone-add";
 import icFilterList from "@iconify/icons-ic/twotone-filter-list";
 import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
 import icFolder from "@iconify/icons-ic/twotone-folder";
+import icRefresh from "@iconify/icons-ic/twotone-refresh";
 import { PercentPipe } from "@angular/common";
 import { LoadingBarService } from "@ngx-loading-bar/core";
 import { SummaryData } from "src/app/Models/models.interface";
@@ -104,6 +105,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
   icFilterList = icFilterList;
   icMoreHoriz = icMoreHoriz;
   icFolder = icFolder;
+  icRefresh= icRefresh;
 
   statusLabels = TRANSACTION_TABLE_LABELS;
   countries = COUNTRIES
@@ -159,6 +161,10 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
       return 0;
     }
    
+  }
+
+  refreshData(){
+    this.loadTransactions(this.userData.user_id);
   }
 
   ngOnDestroy() {
