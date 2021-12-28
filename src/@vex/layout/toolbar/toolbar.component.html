@@ -42,6 +42,88 @@
       </button>
     </div>
   </div>
+
+  <div class="p-10">
+
+    <div class="relative inline-block dropdown btn-smal-grp">
+      <button class="inline-flex items-center px-4 py-2 font-semibold text-gray-700 bg-gray-300 rounded">
+        <span class="mr-1">More + </span>
+        <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+        </svg>
+      </button>
+      <ul class="absolute hidden pt-1 text-gray-700 dropdown-menu">
+        <li class="">
+          <button class="disburs" mat-raised-button type="button" (click)='openDisbursePopup()'>Disburse cash
+          </button>
+        </li>
+        <li class="">
+          <button class="apiDoc" (click)='onViewApiPart()' mat-raised-button type="button">
+            API
+          </button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <mat-menu #addNewMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
   </mat-menu>
   <mat-menu #documentMenu="matMenu">
@@ -61,7 +143,7 @@
     </div> -->
     <button class="add-funds" mat-raised-button type="button" (click)='openRechargePopup()'>Add Funds
     </button>
-    <div class="px-1">
+    <div class="px-1 ">
       <vex-toolbar-user></vex-toolbar-user>
     </div>
   </div>

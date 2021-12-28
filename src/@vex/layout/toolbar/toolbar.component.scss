@@ -41,6 +41,7 @@ a {
   opacity: 1;
 }
 
+<<<<<<< HEAD
 
 
 // responssive
@@ -88,3 +89,36 @@ a {
  
 }
 
+=======
+.dropdown:hover .dropdown-menu {
+  display: block;
+  background-color: white;
+}
+
+.dropdown{
+  li{
+    margin:15px;
+  }
+}
+@media (max-width: 742px) { 
+  .btn-large-grp{
+    display: none;
+  }
+ }
+
+ @media (min-width: 742px) { 
+  .btn-smal-grp{
+    display: none;
+  }
+ }
+
+ @media (min-width: 432px) { 
+  .profil{
+    margin-left:-300px;
+  }
+  .btn-smal-grp{
+  margin-left: -700px;
+  }
+ 
+ }
+>>>>>>> fe0d325 (content)
