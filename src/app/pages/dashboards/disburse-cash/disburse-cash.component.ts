@@ -1,7 +1,7 @@
 import { CustomerCreateUpdateComponent } from "./../../apps/aio-table/customer-create-update/customer-create-update.component";
 import { Customer } from "./../../apps/aio-table/interfaces/customer.model";
 import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import icMoreVert from "@iconify/icons-ic/twotone-more-vert";
 import icClose from "@iconify/icons-ic/twotone-close";
@@ -24,6 +24,7 @@ import { Subject } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { MerchantData, SummaryData, User } from "src/app/Models/models.interface";
+import { isThisSecond } from "date-fns";
 
 @Component({
   selector: "vex-disburse-cash",
@@ -56,7 +57,15 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   hasError: boolean;
   errorMessage: string;
   phoneNumberValidationPattern = /^[0-9]{0,15}$/;
+  repeatePhoneNumberValidationPattern = /^[0-9]{0,15}$/;
+  phoneCheckError: boolean;
+
   validationMessages = {
+    repeat_phone_no: {
+      pattern: "Only digits allowed starting with ",
+      required: "Receiver's Phone Field  is required.",
+      min: "Please provide a correct phone number",
+    },
     phone_no: {
       pattern: "Only digits allowed starting with ",
       required: "Receiver's Phone Field  is required.",
@@ -95,6 +104,14 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
         [
           Validators.required,
           Validators.pattern(this.phoneNumberValidationPattern),
+          Validators.min(8)
+        ],
+      ],
+      repeat_phone_no: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern(this.repeatePhoneNumberValidationPattern),
           Validators.min(8),
         ],
       ],
@@ -104,6 +121,8 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
     this.getModulesData(this.credentials);
+
+    console.log(this.transferForm.value['phone_no'])
   }
 
   ngOnDestroy() {
@@ -191,7 +210,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   getMaxLength(country) {
-    if(country === 'BJ') {
+    if (country === 'BJ') {
       return 8;
     } else {
       return 10;
@@ -223,5 +242,24 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
 
   close() {
     this.dialogRef.close();
+  }
+
+
+  onCheckConformNumber = () => {
+    if (this.transferForm.value['phone_no'] === this.transferForm.value['repeat_phone_no']) {
+      //  this.phoneCheckError=false
+    } else {
+      this.phoneCheckError=true;
+      console.log(this.phoneCheckError);
+    }
+  }
+
+
+  get phoneNumber(): AbstractControl {
+    return this.transferForm.controls['phone_no'];
+  }
+
+  get confirmPhoneNumber(): AbstractControl {
+    return this.transferForm.controls['repeat_phone_no'];
   }
 }

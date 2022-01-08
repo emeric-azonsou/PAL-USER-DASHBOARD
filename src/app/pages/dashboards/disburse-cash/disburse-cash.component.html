@@ -43,7 +43,8 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <input matInput formControlName="phone_no" #input placeholder="96040522" maxlength="{{ maxLength }}" />
+          <input (change)='onCheckConformNumber()' matInput formControlName="phone_no" #input placeholder="96040522"
+            maxlength="{{ maxLength }}" />
           <mat-error>
             <span *ngFor="
                 let error of transferForm.get('phone_no').errors | keyvalue
@@ -74,15 +75,23 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <input matInput formControlName="phone_no" #input placeholder="96040522" maxlength="{{ maxLength }}" />
+          <input (change)='onCheckConformNumber()' matInput formControlName="repeat_phone_no" #input
+            placeholder="96040522" maxlength="{{ maxLength }}" />
           <mat-error>
             <span *ngFor="
-                let error of transferForm.get('phone_no').errors | keyvalue
+                let error of transferForm.get('repeat_phone_no').errors | keyvalue
               ">
-              {{ validationMessages.phone_no[error.key] }}
+              {{ validationMessages.repeat_phone_no[error.key] }}
+            </span>
+
+          </mat-error>
+         
+        </mat-form-field>
+         <mat-error>
+            <span  class="identical" *ngIf='phoneCheckError'>
+              phone numbers must be identical
             </span>
           </mat-error>
-        </mat-form-field>
       </div>
     </div>
     <div>
@@ -105,9 +114,7 @@
       </mat-form-field>
     </div>
   </mat-dialog-content>
-
   <mat-dialog-actions>
-
     <div class="grid grid-cols-4 gap-2 sm:grid-cols-4 md:grid-cols-4  button">
       <div>
         <mat-error *ngIf="hasError || transferForm.invalid">

@@ -43,6 +43,11 @@ form {
   margin-top: 22px;
 }
 
+.identical {
+  font-size: 11px;
+  text-align: center;
+}
+
 @media screen and (max-width: 600px) {
   .respon {
     .label {
@@ -52,12 +57,11 @@ form {
 
   .button {
     h6 {
-     font-size: small;
+      font-size: small;
     }
-      button{
-          position: relative;
-          right: 2rem;
-      }
-
+    button {
+      position: relative;
+      right: 2rem;
+    }
   }
 }
