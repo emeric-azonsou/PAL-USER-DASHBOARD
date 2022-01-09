@@ -1,8 +1,19 @@
 import { CustomerCreateUpdateComponent } from "./../../apps/aio-table/customer-create-update/customer-create-update.component";
 import { Customer } from "./../../apps/aio-table/interfaces/customer.model";
 import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from "@angular/forms";
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialog,
+} from "@angular/material/dialog";
 import icMoreVert from "@iconify/icons-ic/twotone-more-vert";
 import icClose from "@iconify/icons-ic/twotone-close";
 import icPrint from "@iconify/icons-ic/twotone-print";
@@ -23,8 +34,15 @@ import { take, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { MerchantData, SummaryData, User } from "src/app/Models/models.interface";
+import {
+  MerchantData,
+  SummaryData,
+  User,
+} from "src/app/Models/models.interface";
 import { isThisSecond } from "date-fns";
+
+import { ConfirmTransfersComponent } from "../confirm-transfers/confirm-transfers.component";
+import { SharedDataService } from "src/app/services/shared-data.service";
 
 @Component({
   selector: "vex-disburse-cash",
@@ -45,7 +63,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   transferForm: FormGroup;
   currency: string = "XOF";
   dailingCode: string = "+229";
-  maxLength: number = 8
+  maxLength: number = 8;
   transferData: any;
   userData: User;
   module_id: any = "102";
@@ -84,7 +102,9 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private transactionsService: TransactionsService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
+    private sharedData: SharedDataService
   ) {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
@@ -104,7 +124,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
         [
           Validators.required,
           Validators.pattern(this.phoneNumberValidationPattern),
-          Validators.min(8)
+          Validators.min(8),
         ],
       ],
       repeat_phone_no: [
@@ -121,8 +141,6 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
     this.getModulesData(this.credentials);
-
-    console.log(this.transferForm.value['phone_no'])
   }
 
   ngOnDestroy() {
@@ -130,41 +148,24 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  createTransfer() {
+  confirmTransfers() {
+    this.dialog.open(ConfirmTransfersComponent);
     const fee = this.getPalFee(
       this.transferForm.value["amount"],
       this.transferForm.value["country"]
     );
     const amount = parseInt(this.transferForm.value["amount"], 10);
     this.transferForm.get("amount").setValue(amount);
-    this.isDisbursing = true;
+    // this.isDisbursing = true;
     this.transferData = {
-      ...this.transferForm.value,
+      ...this.transferForm.value, 
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
       charges: fee,
       hasExceededFeeTransfers: this.hasExceededFeeTransfers,
     };
-
-    this.transactionsService
-      .createTransaction(this.transferData, this.credentials)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((response) => {
-        this.isDisbursing = false;
-        if (response && response["status"] === true) {
-          this.openSnackbar(response["message"]);
-          window.location.reload();
-        } else {
-          this.hasError = true;
-          this.errorMessage = response["message"];
-        }
-      }),
-      (error) => {
-        this.hasError = true;
-        this.errorMessage = error.message;
-        console.error(error);
-      };
+    this.sharedData.saveTransferData(this.transferData,this.credentials);
   }
 
   openSnackbar(message) {
@@ -179,7 +180,10 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   get hasExceededFeeTransfers(): boolean {
-    return this.merchantSummaryData?.totalTransactionsAmount > this.maxTransactionAmount;
+    return (
+      this.merchantSummaryData?.totalTransactionsAmount >
+      this.maxTransactionAmount
+    );
   }
 
   getPalFee(amount, country: string): number {
@@ -210,7 +214,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   getMaxLength(country) {
-    if (country === 'BJ') {
+    if (country === "BJ") {
       return 8;
     } else {
       return 10;
@@ -244,22 +248,22 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-
   onCheckConformNumber = () => {
-    if (this.transferForm.value['phone_no'] === this.transferForm.value['repeat_phone_no']) {
-      //  this.phoneCheckError=false
+    if (
+      this.transferForm.value["phone_no"] ===
+      this.transferForm.value["repeat_phone_no"]
+    ) {
+      this.phoneCheckError = false;
     } else {
-      this.phoneCheckError=true;
-      console.log(this.phoneCheckError);
+      this.phoneCheckError = true;
     }
-  }
-
+  };
 
   get phoneNumber(): AbstractControl {
-    return this.transferForm.controls['phone_no'];
+    return this.transferForm.controls["phone_no"];
   }
 
   get confirmPhoneNumber(): AbstractControl {
-    return this.transferForm.controls['repeat_phone_no'];
+    return this.transferForm.controls["repeat_phone_no"];
   }
 }

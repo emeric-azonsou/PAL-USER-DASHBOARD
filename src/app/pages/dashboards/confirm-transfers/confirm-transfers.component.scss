@@ -1,0 +1,31 @@
+.headline {
+  font-size: medium;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+
+.respon {
+  padding-bottom: 20px;
+  height: 50px;
+  max-width: 800px;
+  display: flex;
+  h5 {
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+    font: Segoe UI;
+    font-weight: 200;
+    font-size:20px;
+  }
+}
+
+.button {
+  margin-top: -20px;
+  .button1{
+       color: #75CEBE;
+  }
+  .button2{
+    color: red;
+}
+}
