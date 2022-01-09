@@ -8,7 +8,7 @@ form {
   }
 
   .content-part {
-    margin-top: 50px;
+    margin-top: 10px;
     .label {
       margin-bottom: 10px;
     }
@@ -49,6 +49,17 @@ form {
 }
 
 @media screen and (max-width: 600px) {
+  mat-form-field {
+   min-width: 500%;
+  }
+
+  .field{
+    min-width: 90%;
+  }
+
+  .icon {
+    font-size: small;
+  }
   .respon {
     .label {
       min-width: 20rem;
@@ -59,9 +70,18 @@ form {
     h6 {
       font-size: small;
     }
-    button {
+    .fiel-requierd{
+      display:none;
+    }
+
+    
+    .send-button{
+    
       position: relative;
       right: 2rem;
+      color: white;
+      min-width: 100%;
     }
+    
   }
 }
