@@ -24,6 +24,7 @@
           <mat-select (selectionChange)="setCurrency($event)" formControlName="country">
             <!-- <mat-option value="GH">GHANA</mat-option> -->
             <mat-option value="BJ">BENIN</mat-option>
+            <mat-option value="GH">GHANA</mat-option>
             <!-- <mat-option value="SN">SENEGAL</mat-option> -->
           </mat-select>
         </mat-form-field>
@@ -81,7 +82,7 @@
         </mat-form-field>
          <mat-error>
             <span  class="identical" *ngIf='phoneCheckError'>
-              phone numbers must be identical
+              {{checkPhoneErrorMessage}}
             </span>
           </mat-error>
       </div>

@@ -40,7 +40,7 @@ export class ConfirmTransfersComponent implements OnInit {
 
 
   getContryName(){
-    this.contry=this.transferData['country']==='BJ' ? 'BENIN' : null;
+    this.contry=this.transferData['country']==='BJ' ? 'BENIN' : 'GHANA';
   }
 
   createTransfer() {
