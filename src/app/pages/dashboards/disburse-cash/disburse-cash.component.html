@@ -104,24 +104,13 @@
             {{ validationMessages.amount[error.key] }}
           </span>
         </mat-error>
-      </mat-form-field>
+      </mat-form-field> 
     </div>
   </mat-dialog-content>
-  <mat-dialog-actions>
-    <div class="grid grid-cols-4 gap-2 sm:grid-cols-4 md:grid-cols-4  button">
-      <div>
-        <mat-error *ngIf="hasError || transferForm.invalid" class="fiel-requierd">
-          <h6> {{ errorMessage || "All * fields are required" }}</h6>
-        </mat-error>
-      </div>
-      <div> </div>
-      <div></div>
-      <div class="flex justify-end">
-        <button  [disabled]="isDisbursing || transferForm.invalid" mat-button type="button"
-          (click)="confirmTransfers()" class="send-button">
-          {{ isDisbursing === true ? "Processing..." : "Confirm" }}
-        </button>
-      </div>
-    </div>
+  <mat-dialog-actions  align="end"  class="button " >
+    <!-- <mat-error  align="start" *ngIf="hasError || transferForm.invalid" class="fiel-requierd">
+      <h6> {{ errorMessage || "All * fields are required" }}</h6>
+    </mat-error> -->
+    <button  color="primary" mat-button type="button" [disabled]="isDisbursing || transferForm.invalid"  class="send-button"     (click)="confirmTransfers()" >   {{ isDisbursing === true ? "Processing..." : "Confirm" }}</button>
   </mat-dialog-actions>
 </form>

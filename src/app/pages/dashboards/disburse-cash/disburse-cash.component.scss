@@ -29,14 +29,26 @@ form {
     }
   }
   .button {
-    .send-button {
-      font: Segoe UI;
-      font-weight: bold;
-      letter-spacing: 0px;
-      color: #2bb996;
-      opacity: 1;
+    h6{
+      text-align:left;
     }
-  }
+    .cancel-button {
+        background-color: #484848;
+        font: Segoe UI;
+        font-weight: bold;
+        letter-spacing: 0px;
+        color: white;
+        opacity: 1;
+    }
+    .send-button {
+        background-color:#2bb996;
+        font: Segoe UI;
+        font-weight: bold;
+        letter-spacing: 0px;
+        color: white;
+        opacity: 1;
+    }
+}
 }
 
 .how-much {
@@ -67,20 +79,26 @@ form {
   }
 
   .button {
-    h6 {
-      font-size: small;
-    }
-    .fiel-requierd{
+    display: flex;
+    justify-content: center;
+    h6{
       display:none;
     }
-
-    
-    .send-button{
-      position: relative;
-      right: 2rem;
-      color: white;
-      min-width: 100%;
+    .cancel-button {
+        background-color: #484848;
+        font: Segoe UI;
+        font-weight: bold;
+        letter-spacing: 0px;
+        color: white;
+        opacity: 1;
     }
-    
-  }
+    .send-button {
+        background-color:#2bb996;
+        font: Segoe UI;
+        font-weight: bold;
+        letter-spacing: 0px;
+        color: white;
+        opacity: 1;
+    }
+}
 }

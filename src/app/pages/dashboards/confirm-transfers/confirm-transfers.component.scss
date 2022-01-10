@@ -21,11 +21,16 @@
 }
 
 .button {
-  margin-top: -20px;
-  .button1{
-       color: #75CEBE;
+  display: flex;
+  justify-content: center;
+  .send-button {
+      background-color:#2bb996;
+      font: Segoe UI;
+      font-weight: bold;
+      letter-spacing: 0px;
+      color: white;
+      opacity: 1;
   }
-  .button2{
-    color: red;
 }
-}
+
+
