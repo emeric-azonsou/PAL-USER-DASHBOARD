@@ -29,19 +29,51 @@ form {
             top: -5px;
         }
     }
+    .icon {
+        font-size: small;
+      }
     .button {
         .cancel-button {
+            background-color: #484848;
             font: Segoe UI;
             font-weight: bold;
             letter-spacing: 0px;
-            color: #484848;
+            color: white;
             opacity: 1;
         }
         .send-button {
+            background-color:#2bb996;
             font: Segoe UI;
             font-weight: bold;
             letter-spacing: 0px;
-            color: #2bb996;
+            color: white;
+            opacity: 1;
+        }
+    }
+
+   
+}
+@media screen and (max-width: 600px){
+    .icon {
+        font-size: small;
+      }
+  
+    .button {
+        .cancel-button {
+            background-color: #484848;
+            font: Segoe UI;
+            font-weight: bold;
+            letter-spacing: 0px;
+            color: white;
+            opacity: 1;
+            margin-bottom: 3px;
+        }
+        .send-button {
+            background-color:#2bb996;
+            font: Segoe UI;
+            font-weight: bold;
+            letter-spacing: 0px;
+            color: white;
             opacity: 1;
         }
     }
