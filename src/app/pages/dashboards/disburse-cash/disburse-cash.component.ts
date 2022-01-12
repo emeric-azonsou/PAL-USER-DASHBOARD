@@ -75,9 +75,8 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   hasError: boolean;
   errorMessage: string;
   phoneNumberValidationPattern = /^[0-9]{0,15}$/;
-  repeatePhoneNumberValidationPattern = /^[0-9]{0,15}$/;
-  phoneCheckError: boolean;
-  checkPhoneErrorMessage:string;
+  hasPhoneInputError: boolean;
+  checkPhoneErrorMessage: string;
 
   validationMessages = {
     repeat_phone_no: {
@@ -132,15 +131,13 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
         "",
         [
           Validators.required,
-          Validators.pattern(this.repeatePhoneNumberValidationPattern),
+          Validators.pattern(this.phoneNumberValidationPattern),
           Validators.min(8),
         ],
       ],
       amount: ["", [Validators.required, Validators.pattern(/[0-9]+$/)]],
       provider: ["mtn", Validators.required],
     });
-
-
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
     this.getModulesData(this.credentials);
@@ -152,7 +149,6 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   confirmTransfers() {
-    console.log(this.transferForm)
     this.dialog.open(ConfirmTransfersComponent);
     const fee = this.getPalFee(
       this.transferForm.value["amount"],
@@ -162,14 +158,14 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.transferForm.get("amount").setValue(amount);
     // this.isDisbursing = true;
     this.transferData = {
-      ...this.transferForm.value, 
+      ...this.transferForm.value,
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
       charges: fee,
       hasExceededFeeTransfers: this.hasExceededFeeTransfers,
     };
-    this.sharedData.saveTransferData(this.transferData,this.credentials);
+    this.sharedData.saveTransferData(this.transferData, this.credentials);
   }
 
   openSnackbar(message) {
@@ -252,18 +248,17 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  onCheckConformNumber = () => {
+  onCheckConfirmNumber = () => {
     if (
       this.transferForm.value["phone_no"] ===
       this.transferForm.value["repeat_phone_no"]
     ) {
-      this.phoneCheckError = false;
+      this.hasPhoneInputError = false;
     } else {
-      this.phoneCheckError = true;
-      this.checkPhoneErrorMessage='phone numbers must be identical'
+      this.hasPhoneInputError = true;
+      this.checkPhoneErrorMessage = "phone numbers must be identical";
     }
   };
-  
 
   get phoneNumber(): AbstractControl {
     return this.transferForm.controls["phone_no"];

@@ -36,7 +36,7 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <input (ngModelChange)='onCheckConformNumber()' matInput formControlName="phone_no" #input placeholder="96040522"
+          <input (ngModelChange)='onCheckConfirmNumber()' matInput formControlName="phone_no" #input placeholder="96040522"
             maxlength="{{ maxLength }}" />
           <mat-error>
             <span *ngFor="
@@ -68,7 +68,7 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <input (ngModelChange)='onCheckConformNumber()' matInput formControlName="repeat_phone_no" #input
+          <input (ngModelChange)='onCheckConfirmNumber()' matInput formControlName="repeat_phone_no" #input
             placeholder="96040522" maxlength="{{ maxLength }}" />
           <mat-error>
             <span *ngFor="
@@ -81,7 +81,7 @@
          
         </mat-form-field>
          <mat-error>
-            <span  class="identical" *ngIf='phoneCheckError'>
+            <span  class="identical" *ngIf='hasPhoneInputError'>
               {{checkPhoneErrorMessage}}
             </span>
           </mat-error>
