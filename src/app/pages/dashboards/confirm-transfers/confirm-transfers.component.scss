@@ -1,0 +1,36 @@
+.headline {
+  font-size: medium;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+
+.respon {
+  padding-bottom: 20px;
+  height: 50px;
+  max-width: 800px;
+  display: flex;
+  h5 {
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+    font: Segoe UI;
+    font-weight: 200;
+    font-size:20px;
+  }
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  .send-button {
+      background-color:#2bb996;
+      font: Segoe UI;
+      font-weight: bold;
+      letter-spacing: 0px;
+      color: white;
+      opacity: 1;
+  }
+}
+
+

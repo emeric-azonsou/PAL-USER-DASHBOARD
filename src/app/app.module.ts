@@ -35,6 +35,7 @@ import { TransactionsComponent } from './pages/dashboards/transactions/transacti
 import { RechargeAccountComponent } from './pages/dashboards/recharge-account/recharge-account.component';
 import { NoBusinessModalComponent } from './pages/dashboards/no-business-modal/no-business-modal.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ConfirmTransfersComponent } from './pages/dashboards/confirm-transfers/confirm-transfers.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     RechargeAccountComponent,
     ApiComponent,
     NoBusinessModalComponent,
+    ConfirmTransfersComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,9 +6,9 @@
     <!-- <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
         <mat-icon [icIcon]="icMoreVert"></mat-icon>
       </button> -->
-    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
-      <mat-icon [icIcon]="icClose"></mat-icon>
-    </button>
+      <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
+        <mat-icon  class="icon" [icIcon]="icClose"></mat-icon>
+      </button>
   </div>
   <mat-divider class="-mx-6 text-border"></mat-divider>
   <mat-dialog-content fxLayout="column"   class="content-part">
@@ -50,7 +50,7 @@
       </div>
     </div>
   </mat-dialog-content>
-  <mat-dialog-actions align="end" class="button" >
+  <mat-dialog-actions align="end" class="button " >
     <mat-error *ngIf="hasError">
       {{ errorMessage }}
     </mat-error>

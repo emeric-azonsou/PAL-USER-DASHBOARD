@@ -1,59 +1,104 @@
 form {
-    .headline {
-        font: normal normal 600 4px/26px Segoe UI;
-        font-size: medium;
+  .headline {
+    font: normal normal 600 4px/26px Segoe UI;
+    font-size: medium;
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+  }
+
+  .content-part {
+    margin-top: 10px;
+    .label {
+      margin-bottom: 10px;
+    }
+    label {
+      letter-spacing: 0px;
+      color: #000000;
+      opacity: 1;
+      font: Segoe UI;
+      font-weight: 200;
+    }
+    h6 {
+      letter-spacing: 0px;
+      color: #000000;
+      opacity: 1;
+      font: normal normal normal 15px/20px Segoe UI;
+      position: relative;
+      top: -5px;
+    }
+  }
+  .button {
+    h6{
+      text-align:left;
+    }
+    .cancel-button {
+        background-color: #484848;
+        font: Segoe UI;
+        font-weight: bold;
         letter-spacing: 0px;
-        color: #000000;
+        color: white;
         opacity: 1;
     }
-
-    .content-part {
-        margin-top: 50px;
-        .label {
-          
-            margin-bottom: 10px;
-        }
-        label {
-            letter-spacing: 0px;
-            color: #000000;
-            opacity: 1;
-            font:Segoe UI;
-            font-weight: 200;
-        }
-        h6 {
-            letter-spacing: 0px;
-            color: #000000;
-            opacity: 1;
-            font: normal normal normal 15px/20px Segoe UI;
-            position: relative;
-            top: -5px;
-        }
-    }
-    .button {
-        .cancel-button {
-            font: Segoe UI;
-            font-weight: bold;
-            letter-spacing: 0px;
-            color: #484848;
-            opacity: 1;
-            
-        }
-        .send-button {
-            font: Segoe UI;
-            font-weight: bold;
-            letter-spacing: 0px;
-            color: #2bb996;
-            opacity: 1;
-            margin-left: -10px;
-        }
+    .send-button {
+        background-color:#2bb996;
+        font: Segoe UI;
+        font-weight: bold;
+        letter-spacing: 0px;
+        color: white;
+        opacity: 1;
     }
 }
+}
 
+.how-much {
+  margin-top: 22px;
+}
+
+.identical {
+  font-size: 11px;
+  text-align: center;
+}
 
 @media screen and (max-width: 600px) {
-   .respon{
-       .label{
-        min-width: 20rem;
-       }
-   }
+  mat-form-field {
+   min-width: 500%;
+  }
+
+  .field{
+    min-width: 90%;
+  }
+
+  .icon {
+    font-size: small;
+  }
+  .respon {
+    .label {
+      min-width: 20rem;
+    }
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    h6{
+      display:none;
+    }
+    .cancel-button {
+        background-color: #484848;
+        font: Segoe UI;
+        font-weight: bold;
+        letter-spacing: 0px;
+        color: white;
+        opacity: 1;
+    }
+    .send-button {
+        background-color:#2bb996;
+        font: Segoe UI;
+        font-weight: bold;
+        letter-spacing: 0px;
+        color: white;
+        opacity: 1;
+    }
+}
 }
