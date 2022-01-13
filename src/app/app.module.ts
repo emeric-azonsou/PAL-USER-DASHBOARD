@@ -36,6 +36,9 @@ import { RechargeAccountComponent } from './pages/dashboards/recharge-account/re
 import { NoBusinessModalComponent } from './pages/dashboards/no-business-modal/no-business-modal.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConfirmTransfersComponent } from './pages/dashboards/confirm-transfers/confirm-transfers.component';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { MomentModule } from 'angular2-moment';
+import { AuthTimeoutModalComponent } from './pages/dashboards/auth-timeout-modal/auth-timeout-modal.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,7 @@ import { ConfirmTransfersComponent } from './pages/dashboards/confirm-transfers/
     ApiComponent,
     NoBusinessModalComponent,
     ConfirmTransfersComponent,
+    AuthTimeoutModalComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +84,8 @@ import { ConfirmTransfersComponent } from './pages/dashboards/confirm-transfers/
     MatDividerModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    NgIdleKeepaliveModule.forRoot(),
+    MomentModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

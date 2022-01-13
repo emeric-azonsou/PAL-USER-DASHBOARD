@@ -1,4 +1,10 @@
-import { Component, Inject, LOCALE_ID, Renderer2 } from "@angular/core";
+import {
+  Component,
+  Inject,
+  LOCALE_ID,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
 import { ConfigService } from "../@vex/services/config.service";
 import { Settings } from "luxon";
 import { DOCUMENT } from "@angular/common";
@@ -18,6 +24,11 @@ import icChromeReaderMode from "@iconify/icons-ic/twotone-chrome-reader-mode";
 import { ConfigName } from "../@vex/interfaces/config-name.model";
 import icMail from "@iconify/icons-ic/twotone-mail";
 import { USER_SESSION_KEY } from "./Models/constants";
+import { Keepalive } from "@ng-idle/keepalive";
+import { DEFAULT_INTERRUPTSOURCES, Idle } from "@ng-idle/core";
+import { MatDialog } from "@angular/material/dialog";
+import { AuthTimeoutModalComponent } from "./pages/dashboards/auth-timeout-modal/auth-timeout-modal.component";
+import { AuthserviceService } from "./services/authservice.service";
 
 @Component({
   selector: "vex-root",
@@ -26,8 +37,14 @@ import { USER_SESSION_KEY } from "./Models/constants";
 })
 export class AppComponent {
   title = "TransFlexmoney";
+  idleState = "Not started.";
+  timedOut = false;
+  lastPing?: Date = null;
 
   constructor(
+    private idle: Idle,
+    private dialog: MatDialog,
+    private keepalive: Keepalive,
     private configService: ConfigService,
     private styleService: StyleService,
     private renderer: Renderer2,
@@ -38,14 +55,53 @@ export class AppComponent {
     private route: ActivatedRoute,
     private router: Router,
     private navigationService: NavigationService,
-    private splashScreenService: SplashScreenService
+    private splashScreenService: SplashScreenService,
+    private authService: AuthserviceService
   ) {
+    // sets an idle timeout of 5 seconds, for testing purposes.
+    idle.setIdle(120);
+    // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
+    idle.setTimeout(30);
+    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
+    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+
+    idle.onIdleEnd.subscribe(() => {
+      this.idleState = "No longer idle.";
+      console.info('[SESSION TIMEOUT]', this.idleState);
+      this.reset();
+    });
+
+    idle.onTimeout.subscribe(() => {
+      this.idleState = "Timed out!";
+      this.timedOut = true;
+      console.info('[SESSION TIMEOUT]', this.idleState);
+      this.logout();
+    });
+
+    idle.onIdleStart.subscribe(() => {
+      this.idleState = "You've gone idle!";
+      console.info('[SESSION TIMEOUT]', this.idleState);
+      this.dialog.open(AuthTimeoutModalComponent);
+    });
+
+    idle.onTimeoutWarning.subscribe((countdown) => {
+      this.idleState = "You will time out in " + countdown + " seconds!";
+      console.info('[SESSION TIMEOUT]', this.idleState);
+    });
+
+    // sets the ping interval to 15 seconds
+    keepalive.interval(60);
+
+    keepalive.onPing.subscribe(() => (this.lastPing = new Date()));
+
+    this.reset();
+
     Settings.defaultLocale = this.localeId;
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
-    if(!sessionData) {
-      router.navigate(['/auth/login'])
+    if (!sessionData) {
+      router.navigate(["/auth/login"]);
     }
-    
+
     if (this.platform.BLINK) {
       this.renderer.addClass(this.document.body, "is-blink");
     }
@@ -164,5 +220,22 @@ export class AppComponent {
       //   icon: icSettings
       // }
     ];
+  }
+
+  hideChildModal() {
+    this.dialog.closeAll();
+  }
+
+  reset() {
+    this.idle.watch();
+    this.idleState = "Started.";
+    this.timedOut = false;
+  }
+
+  logout() {
+    localStorage.clear();
+    sessionStorage.clear();
+    this.dialog.closeAll();
+    this.router.navigate(["/login"]);
   }
 }
