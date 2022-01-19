@@ -90,7 +90,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       min: "Please provide a correct phone number",
     },
     amount: {
-      pattern: "Only digits allowed",
+      pattern: "Only decimal number allowed",
       required: "Amount This Field  is required.",
     },
   };
@@ -135,7 +135,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
           Validators.min(8),
         ],
       ],
-      amount: ["", [Validators.required, Validators.pattern(/[0-9]+$/)]],
+      amount: ["", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
       provider: ["mtn", Validators.required],
     });
 
@@ -154,7 +154,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       this.transferForm.value["amount"],
       this.transferForm.value["country"]
     );
-    const amount = parseInt(this.transferForm.value["amount"], 10);
+    const amount = parseFloat(this.transferForm.value["amount"]);
     this.transferForm.get("amount").setValue(amount);
     // this.isDisbursing = true;
     this.transferData = {
@@ -176,7 +176,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   get maxTransactionAmount() {
-    return this.currency === "XOF" ? 560000 : 6020;
+    return this.currency === "XOF" ? 560000 : 6190;
   }
 
   get hasExceededFeeTransfers(): boolean {
