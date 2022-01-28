@@ -36,7 +36,7 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <input (ngModelChange)='onCheckConfirmNumber()' matInput formControlName="phone_no" #input placeholder="96040522"
+          <input (ngModelChange)='onCheckConfirmNumber()' matInput formControlName="phone_no" #input placeholder="{{ placeHolder }}"
             maxlength="{{ maxLength }}" />
           <mat-error>
             <span *ngFor="
@@ -69,7 +69,7 @@
         </div>
         <mat-form-field appearance="fill">
           <input (ngModelChange)='onCheckConfirmNumber()' matInput formControlName="repeat_phone_no" #input
-            placeholder="96040522" maxlength="{{ maxLength }}" />
+            placeholder="{{placeHolder}}" maxlength="{{ maxLength }}" />
           <mat-error>
             <span *ngFor="
                 let error of transferForm.get('repeat_phone_no').errors | keyvalue
