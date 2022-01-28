@@ -95,6 +95,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     },
   };
   merchantSummaryData: SummaryData;
+  placeHolder: string = "96040522";
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -225,6 +226,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.currency = this.countryData[option.value].currency;
     this.dailingCode = this.countryData[option.value].code;
     this.maxLength = this.getMaxLength(option.value);
+    this.placeHolder = option.value === 'BJ' ? "96040522" : "0544990518" ; 
     // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
     const selectedModule = this.moduleData.find((data) => {
       return (
