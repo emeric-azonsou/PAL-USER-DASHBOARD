@@ -14,7 +14,7 @@ export class ConfirmTransfersComponent implements OnInit {
   icClose = icClose;
 
   unsubscribe$ = new Subject();
-  isDisbursing: boolean;
+  isDisbursing: boolean = false;
   hasError: boolean;
   errorMessage: string;
   allData: Object;
@@ -52,6 +52,7 @@ export class ConfirmTransfersComponent implements OnInit {
         this.isDisbursing = false;
         if (response && response["status"] === true) {
           this.openSnackbar(response["message"]);
+          this.isDisbursing = false;
           window.location.reload();
         } else {
           this.hasError = true;
@@ -59,6 +60,7 @@ export class ConfirmTransfersComponent implements OnInit {
         }
       }),
       (error) => {
+        this.isDisbursing = false;
         this.hasError = true;
         this.errorMessage = error.message;
         console.error(error);

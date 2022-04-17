@@ -180,6 +180,11 @@ export class AppComponent {
             label: "Ghana",
             route: "/apps/mail",
             icon: "../assets/contryFlg/1200px-Flag_of_Ghana.svg.png",
+            badge: {
+              value: "Active",
+              bgClass: "",
+              textClass: "",
+            },
           },
           {
             type: "link",
