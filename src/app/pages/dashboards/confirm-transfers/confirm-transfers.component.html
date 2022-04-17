@@ -15,7 +15,7 @@
 <mat-dialog-actions>
   <div class="grid grid-cols-4 gap-2 sm:grid-cols-4 md:grid-cols-4  button">
     <div class="flex justify-end">
-      <button color="primary" mat-button type="button" (click)="createTransfer()" class="send-button button1">
+      <button color="primary" mat-button type="button" (click)="createTransfer()" class="send-button button1" [disabled]="isDisbursing">
         {{ isDisbursing === true ? "Processing..." : "SEND CASH" }}
       </button>
     </div>
