@@ -8,6 +8,7 @@ import { HomeComponent } from "./pages/dashboards/home/home.component";
 import { TopUpTransactionComponent } from "./pages/dashboards/top-up-transaction/top-up-transaction.component";
 import { ProfilComponent } from "./pages/dashboards/profil/profil.component";
 import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
+import { ReportsComponent } from './pages/dashboards/reports/reports.component';
 
 const routes: VexRoutes = [
   {
@@ -87,6 +88,10 @@ const routes: VexRoutes = [
       {
         path: "top-up-transactions",
         component: TopUpTransactionComponent,
+      },
+      {
+        path: "transactions-report",
+        component: ReportsComponent,
       },
       {
         path: "transactions",

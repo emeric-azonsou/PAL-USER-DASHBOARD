@@ -1,0 +1,441 @@
+<vex-page-layout>
+  <!-- <vex-page-layout-header
+    class="pb-16"
+    fxLayout="column"
+    fxLayoutAlign="center start"
+  > -->
+  <!-- <div
+      [class.container]="layoutCtrl.value === 'boxed'"
+      [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+      class="w-full flex flex-col sm:flex-row justify-between"
+    > -->
+  <!-- <div>
+        <h1 class="title mt-0 mb-1">Transactions Report</h1>
+        <vex-breadcrumbs
+          [crumbs]="['Dashboards', 'reports', 'transactions']"
+        ></vex-breadcrumbs>
+      </div> -->
+
+  <!-- <mat-button-toggle-group [formControl]="layoutCtrl" class="mt-4 sm:mt-0">
+        <mat-button-toggle value="boxed">BOXED</mat-button-toggle>
+        <mat-button-toggle value="fullwidth">FULL-WIDTH</mat-button-toggle>
+      </mat-button-toggle-group> -->
+  <!-- </div> -->
+  <!-- </vex-page-layout-header> -->
+
+  <vex-page-layout-content
+    [class.container]="layoutCtrl.value === 'boxed'"
+    [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+    class="-mt-6"
+  >
+    <div [@stagger]="true" class="w-full" vexContainer>
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px">
+        <div @fadeInUp class="card" fxFlex="auto">
+          <div *ngIf="!isFormReady" class="card overflow-auto -mt-16">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: white;
+              "
+            >
+              <mat-spinner color="primary"> </mat-spinner>
+            </div>
+          </div>
+          <form (ngSubmit)="search()" [formGroup]="form">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <h3
+                class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l"
+                fxFlex="none"
+                fxHide.xs
+              >
+                Search Form
+              </h3>
+            </div>
+
+            <mat-divider class="-mx-6 text-border"></mat-divider>
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div fxLayout="column" class="card" fxFlex="auto">
+                <div class="flex flex-col sm:flex-row">
+                  <mat-form-field class="sm:ml-6 flex-auto">
+                    <mat-label>Country</mat-label>
+
+                    <mat-select placeholder="Country" formControlName="country">
+                      <mat-option [country]=""> Select Country </mat-option>
+                      <mat-option
+                        *ngFor="let country of availableCountries"
+                        id="newAttributeProduct"
+                        [value]="country"
+                      >
+                        {{ country }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-icon
+                      [icIcon]="icBook"
+                      class="mr-3"
+                      matPrefix
+                    ></mat-icon>
+                  </mat-form-field>
+                  <mat-form-field class="sm:ml-6 flex-auto">
+                    <mat-label>Network Provider</mat-label>
+
+                    <mat-select
+                      placeholder="Operator"
+                      formControlName="operator"
+                    >
+                      <mat-option [value]=""> Select Network </mat-option>
+                      <mat-option
+                        *ngFor="let networkProvider of networkProviders"
+                        id="newAttributeUser"
+                        [value]="networkProvider"
+                      >
+                        {{ networkProvider }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-icon
+                      [icIcon]="icPerson"
+                      class="mr-3"
+                      matPrefix
+                    ></mat-icon>
+                  </mat-form-field>
+
+                  <mat-form-field class="sm:ml-6 flex-auto">
+                    <mat-label>Currency</mat-label>
+
+                    <mat-select
+                      placeholder="Currency"
+                      formControlName="currency"
+                    >
+                      <mat-option [value]=""> Select Currency </mat-option>
+                      <mat-option
+                        *ngFor="let currency of currencies"
+                        id="newAttributeCurrencies"
+                        [value]="currency"
+                      >
+                        {{ currency }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-icon
+                      [icIcon]="icAttachMoney"
+                      class="mr-3"
+                      matPrefix
+                    ></mat-icon>
+                  </mat-form-field>
+                  <mat-form-field class="sm:ml-6 flex-auto">
+                    <mat-label>Status</mat-label>
+
+                    <mat-select placeholder="Status" formControlName="status">
+                      <mat-option [value]=""> Select Status </mat-option>
+                      <mat-option
+                        *ngFor="let status of statuses"
+                        id="newAttributeCurrencies"
+                        [value]="status.value"
+                      >
+                        {{ status.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-icon
+                      [icIcon]="icMap"
+                      class="mr-3"
+                      matPrefix
+                    ></mat-icon>
+                  </mat-form-field>
+                </div>
+                <div class="flex flex-col sm:flex-row">
+                  <mat-form-field class="sm:ml-6 flex-auto">
+                    <mat-label>From</mat-label>
+                    <input
+                      formControlName="dateFrom"
+                      [matDatepicker]="datepickerRefa"
+                      matInput
+                    />
+                    <mat-datepicker-toggle
+                      [for]="datepickerRefa"
+                      matSuffix
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #datepickerRefa></mat-datepicker>
+                    <mat-hint>Click to select date</mat-hint>
+                  </mat-form-field>
+                  <mat-form-field class="sm:ml-6 flex-auto">
+                    <mat-label>To</mat-label>
+                    <input
+                      [matDatepicker]="datepickerRefb"
+                      formControlName="dateTo"
+                      matInput
+                    />
+                    <mat-datepicker-toggle
+                      [for]="datepickerRefb"
+                      matSuffix
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #datepickerRefb></mat-datepicker>
+                    <mat-hint>Click to select date</mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div align="end">
+                <button
+                  color="primary"
+                  mat-button
+                  type="submit"
+                  [disabled]="form.invalid"
+                >
+                  SEARCH
+                  <mat-icon
+                    [icIcon]="icSearch"
+                    class="mr-3"
+                    matPrefix
+                  ></mat-icon>
+                </button>
+                <button
+                  color="primary"
+                  mat-button
+                  typr="button"
+                  (click)="resetForm()"
+                  [disabled]="form.invalid"
+                >
+                  RESET
+                  <mat-icon
+                    [icIcon]="icRefresh"
+                    class="mr-3"
+                    matPrefix
+                  ></mat-icon>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div class="card overflow-auto -mt-16">
+      <div
+        class="bg-app-bar px-6 h-16 border-b sticky left-0"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+      >
+        <h2
+          class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l"
+          fxFlex="none"
+          fxHide.xs
+        >
+          <span *ngIf="selection.isEmpty()">Transations</span>
+          <span *ngIf="selection.hasValue()"
+            >{{ selection.selected.length }} Order<span
+              *ngIf="selection.selected.length > 1"
+              >s</span
+            >
+            selected</span
+          >
+        </h2>
+
+        <div
+          *ngIf="selection.hasValue()"
+          class="mr-4 pr-4 border-r"
+          fxFlex="none"
+        >
+          <button
+            (click)="deleteOrder(selection.selected)"
+            color="primary"
+            mat-icon-button
+            matTooltip="Delete selected"
+            type="button"
+          >
+            <mat-icon [icIcon]="icDelete"></mat-icon>
+          </button>
+
+          <button
+            color="primary"
+            mat-icon-button
+            matTooltip="Another action"
+            type="button"
+          >
+            <mat-icon [icIcon]="icFolder"></mat-icon>
+          </button>
+        </div>
+
+        <div
+          class="bg-card rounded-full border px-4"
+          fxFlex="400px"
+          fxFlex.lt-md="auto"
+          fxHide.xs
+          fxLayout="row"
+          fxLayoutAlign="start center"
+        >
+          <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+          <input
+            [formControl]="searchCtrl"
+            class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+            placeholder="Search..."
+            type="search"
+          />
+        </div>
+
+        <span fxFlex></span>
+
+        <button
+          class="ml-4"
+          fxFlex="none"
+          fxHide.gt-xs
+          mat-icon-button
+          type="button"
+        >
+          <mat-icon [icIcon]="icSearch"></mat-icon>
+        </button>
+
+        <button
+          [matMenuTriggerFor]="columnFilterMenu"
+          class="ml-4"
+          fxFlex="none"
+          mat-icon-button
+          matTooltip="Filter Columns"
+          type="button"
+        >
+          <mat-icon [icIcon]="icFilterList"></mat-icon>
+        </button>
+
+        <button mat-raised-button (click)="exportAsXlsx()">
+          <mat-icon [icIcon]="icCloudDownload"></mat-icon>Excel
+        </button>
+        <!-- <button mat-raised-button (click)="exporter.exportTable('csv')">
+          Csv
+        </button>
+        <button mat-raised-button (click)="exporter.exportTable('json')">
+          Json
+        </button>
+        <button mat-raised-button (click)="exporter.exportTable('txt')">
+          Txt
+        </button> -->
+      </div>
+      <div *ngIf="isLoading" class="card overflow-auto -mt-16">
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+          "
+        >
+          <mat-spinner color="primary"> </mat-spinner>
+        </div>
+      </div>
+
+      <table
+        *ngIf="!isLoading"
+        mat-table
+        [dataSource]="dataSource"
+        class="w-full mat-elevation-z"
+        @stagger
+        matSort
+        matTableExporter
+        #exporter="matTableExporter"
+      >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.reference }}</td>
+          <!-- <td mat-cell *matCellDef="">23rt56</td> -->
+        </ng-container>
+
+        <!-- created_at Column -->
+        <ng-container matColumnDef="created_at">
+          <th mat-header-cell *matHeaderCellDef>Date & Time</th>
+          <!-- <td [matTooltip]="element.created_at" mat-cell *matCellDef="let element">{{ element.formatedDate }}</td> -->
+          <mat-cell
+            matTooltipPosition="after"
+            [matTooltip]="element.formatedDate"
+            *matCellDef="let element"
+          >
+            {{ element.formatedDate }}
+          </mat-cell>
+          <!-- <td mat-cell *matCellDef="">25 jun 2021</td> -->
+        </ng-container>
+
+        <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef>Country</th>
+          <td mat-cell *matCellDef="let element">{{ element.country }}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="provider">
+          <th mat-header-cell *matHeaderCellDef>Network Provider</th>
+          <td mat-cell *matCellDef="let element">{{ element.operator }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="wallet">
+          <th mat-header-cell *matHeaderCellDef>Wallet number</th>
+          <td mat-cell *matCellDef="let element">{{ element.phone_no }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fee">
+          <th mat-header-cell *matHeaderCellDef>Pal Fee</th>
+          <td mat-cell *matCellDef="let element">{{ element.charges }}</td>
+        </ng-container>
+
+        <!-- currency Column -->
+        <ng-container matColumnDef="currency">
+          <th mat-header-cell *matHeaderCellDef>Currency</th>
+          <td mat-cell *matCellDef="let element">{{ element.currency }}</td>
+          <!-- <td mat-cell *matCellDef="">FCFA</td> -->
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount Sent</th>
+          <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+          <!-- <td mat-cell *matCellDef="">1200</td> -->
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let item">
+            <div
+              [ngClass]="item.state?.cssClasses"
+              class="px-2 py-1 my-4 text-xs font-medium rounded"
+              fxFlex="none"
+            >
+              <span> {{ item.state?.text }}</span>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            {{
+              errorMessage || "No Transaction Data Found Or Matching The filter"
+            }}
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="pageSizeOptions"
+        [pageSize]="pageSize"
+        class="sticky left-0"
+      ></mat-paginator>
+    </div>
+  </vex-page-layout-content>
+</vex-page-layout>
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+  <button
+    (click)="toggleColumnVisibility(column, $event)"
+    *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item"
+  >
+    <mat-checkbox
+      (click)="$event.stopPropagation()"
+      [(ngModel)]="column.visible"
+      color="primary"
+    >
+      {{ column.label }}
+    </mat-checkbox>
+  </button>
+</mat-menu>

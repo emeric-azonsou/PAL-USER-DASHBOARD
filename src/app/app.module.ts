@@ -1,7 +1,11 @@
-import { IconModule } from '@visurel/iconify-angular';
+import { IconModule } from "@visurel/iconify-angular";
 
 import { BrowserModule } from "@angular/platform-browser";
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA,
+} from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -17,28 +21,34 @@ import { RouterModule } from "@angular/router";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { DisburseCashComponent } from './pages/dashboards/disburse-cash/disburse-cash.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSelectModule } from '@angular/material/select';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { DisburseCashComponent } from "./pages/dashboards/disburse-cash/disburse-cash.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatSelectModule } from "@angular/material/select";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatTableExporterModule } from 'mat-table-exporter';
 
-import { MatDividerModule } from '@angular/material/divider';
-import { ApiComponent } from './pages/dashboards/api/api.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
-import { RechargeAccountComponent } from './pages/dashboards/recharge-account/recharge-account.component';
-import { NoBusinessModalComponent } from './pages/dashboards/no-business-modal/no-business-modal.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ConfirmTransfersComponent } from './pages/dashboards/confirm-transfers/confirm-transfers.component';
-import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-import { MomentModule } from 'angular2-moment';
-import { AuthTimeoutModalComponent } from './pages/dashboards/auth-timeout-modal/auth-timeout-modal.component';
+import { MatDividerModule } from "@angular/material/divider";
+import { ApiComponent } from "./pages/dashboards/api/api.component";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { TransactionsComponent } from "./pages/dashboards/transactions/transactions.component";
+import { RechargeAccountComponent } from "./pages/dashboards/recharge-account/recharge-account.component";
+import { NoBusinessModalComponent } from "./pages/dashboards/no-business-modal/no-business-modal.component";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { NgIdleKeepaliveModule } from "@ng-idle/keepalive";
+import { MomentModule } from "angular2-moment";
+import { ConfirmTransfersComponent } from "./pages/dashboards/confirm-transfers/confirm-transfers.component";
+import { AuthTimeoutModalComponent } from "./pages/dashboards/auth-timeout-modal/auth-timeout-modal.component";
+import { ReportsComponent } from "./pages/dashboards/reports/reports.component";
+import { MatNativeDateModule, MatOptionModule } from "@angular/material/core";
+import { TransactionsReportComponent } from "./pages/dashboards/reports/transactions-report/transactions-report.component";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { DatePipe } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -52,7 +62,9 @@ import { AuthTimeoutModalComponent } from './pages/dashboards/auth-timeout-modal
     ApiComponent,
     NoBusinessModalComponent,
     ConfirmTransfersComponent,
-    AuthTimeoutModalComponent
+    AuthTimeoutModalComponent,
+    ReportsComponent,
+    TransactionsReportComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +81,8 @@ import { AuthTimeoutModalComponent } from './pages/dashboards/auth-timeout-modal
     ReactiveFormsModule,
     FormsModule,
     MatSelectModule,
+    MatOptionModule,
+    MatFormFieldModule,
     IconModule,
     MatPaginatorModule,
     ReactiveFormsModule,
@@ -78,16 +92,17 @@ import { AuthTimeoutModalComponent } from './pages/dashboards/auth-timeout-modal
     MatButtonModule,
     MatIconModule,
     MatRadioModule,
-    MatSelectModule,
     MatMenuModule,
-    IconModule,
     MatDividerModule,
     MatSnackBarModule,
+    MatDatepickerModule,
+    MatTableExporterModule,
+    MatNativeDateModule,
     MatProgressSpinnerModule,
     NgIdleKeepaliveModule.forRoot(),
     MomentModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

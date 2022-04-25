@@ -7,8 +7,11 @@ import { LayoutService } from '../../services/layout.service';
 import { ConfigService } from '../../services/config.service';
 import { map, takeUntil } from 'rxjs/operators';
 import icHome from '@iconify/icons-ic/twotone-home';
+import icReport from '@iconify/icons-ic/twotone-report';
 import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
 import icAssignment from '@iconify/icons-ic/twotone-assignment';
+import icChart from '@iconify/icons-ic/twotone-add-chart';
+import icAnalytics from '@iconify/icons-ic/twotone-analytics';
 import { BUSINESS_DATA_KEY, SUMMARY_DATA_KEY, USER_SESSION_KEY } from 'src/app/Models/constants';
 import { Router } from '@angular/router';
 import { BusinessService } from 'src/app/services/business.service';
@@ -33,7 +36,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
   icRadioButtonChecked = icRadioButtonChecked;
   icRadioButtonUnchecked = icRadioButtonUnchecked;
   icHome= icHome;
+  icReport = icReport;
+  icChart = icChart;
   icAttachMoney= icAttachMoney;
+  icAnalytics = icAnalytics;
   icAssignment=icAssignment
   userData: any;
   businessUserData: any;

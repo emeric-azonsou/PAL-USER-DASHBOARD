@@ -40,21 +40,90 @@ export class TransactionsService {
           values.status = parseInt(values.status);
             if (values.status === 0) {
               values.state = "Cancelled";
+              values.status = "Cancelled";
             } else if (values.status === 1) {
               values.state = "Pending";
+              values.status = "Pending";
             } else if (values.status === 2) {
               values.state = "Processing";
+              values.status = "Processing";
             } else if (values.status === 3) {
               values.state = "Completed";
+              values.status = "Completed";
             } else if (values.status === 4) {
               values.state = "Error";
+              values.status = "Error";
             } else if (values.status === 5) {
               values.state = "Re-Processing";
+              values.status = "Re-Processing";
             }
           return values;
         });
 
         return transactions;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
+  searchTransactions(credentials: string, userId: string, data: any) {
+    let params = new HttpParams();
+    const { status, dateFrom, dateTo, country, currency, operator } = data;
+      // if(from & to) {
+        params = params.append("dateFrom", dateFrom);
+        params = params.append("dateTo", dateTo);
+  
+      // }
+    
+      params = params.append("country", country);
+      params = params.append("currency", currency);
+      params = params.append("operator", operator);
+      params = params.append("status", status);
+
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${credentials}`
+      });
+
+    // const url = `http://127.0.0.1:8000/api/gettransactionsreport/${userId}`;
+    const url = `${environment.gettransactionsreport}${userId}`;
+    return this.http.get(url, { params: params, headers: headers }).pipe(
+      map((transaction: any) => {
+        const transactions = transaction.data.map((values) => {
+          if (typeof values.total_price === undefined) {
+            values.total_price = values.price;
+          }
+
+          if (values.status)
+          values.status = parseInt(values.status);
+            if (values.status === 0) {
+              values.state = "Cancelled";
+              values.status = "Cancelled";
+            } else if (values.status === 1) {
+              values.state = "Pending";
+              values.status = "Pending";
+            } else if (values.status === 2) {
+              values.state = "Processing";
+              values.status = "Processing";
+            } else if (values.status === 3) {
+              values.state = "Completed";
+              values.status = "Completed";
+            } else if (values.status === 4) {
+              values.state = "Error";
+              values.status = "Error";
+            } else if (values.status === 5) {
+              values.state = "Re-Processing";
+              values.status = "Re-Processing";
+            }
+          return values;
+        });
+
+        const formattedTransactions = {...transaction, data: transactions}
+
+        return formattedTransactions;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);

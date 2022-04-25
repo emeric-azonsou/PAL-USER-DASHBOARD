@@ -188,7 +188,7 @@ export class AppComponent {
           },
           {
             type: "link",
-            label: "Ivory Cost",
+            label: "Ivory Coast",
             route: "/apps/editor",
             icon: "../assets/contryFlg/cote-d-ivoire-flag-png-large.png",
           },
@@ -241,6 +241,6 @@ export class AppComponent {
     localStorage.clear();
     sessionStorage.clear();
     this.dialog.closeAll();
-    this.router.navigate(["/login"]);
+    this.router.navigate(["/auth/login"]);
   }
 }

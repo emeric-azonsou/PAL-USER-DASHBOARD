@@ -36,8 +36,9 @@ export const environment = {
   getUserBalancesUrl: `https://api-test.pals.africa/api/getbusinessuserbalances/`,
   sendOTPtoEmailUrl: `https://api-test.pals.africa/api/sendotptoemailforgotpassword`,
   updatePasswordUrl:  `https://api-test.pals.africa/api/forgotpassupdate`,
-  verifyEmailUrl: `https://api-test.pals.africa/api/verifyemail`
+  verifyEmailUrl: `https://api-test.pals.africa/api/verifyemail`,
 
+  gettransactionsreport: `https://api-test.pals.africa/api/gettransactionsreport/`
 };
 /*
  * For easier debugging in development mode, you can import the following file
