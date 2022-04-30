@@ -18,7 +18,7 @@ export const environment = {
   verifyReleaseCodeUrl: `https://api-test.pals.africa/api/verifycode`,
   cancelTransactionUrl: `https://api-test.pals.africa/api/cancelescrowtransaction`,
   getBusinessUserPayoutsUrl: `https://api-test.pals.africa/api/getbusinessuserpayouts`,
-  getBusinessTransactionsSummaryUrl: `https://api-test.pals.africa/api/getusertransactionssummary`,
+  getBusinessTransactionsSummaryUrl: `https://api-test.pals.africa/api/getmerchantusertransactionssummary/`,
   updateDeliveyUrl: `https://api-test.pals.africa/api/updatedeliveryphone`,
   getUserAccountDetailsUrl: `https://api-test.pals.africa/api/getbusinessuseraccountdetails`,
   registerPalUserUrl: `https://api-test.pals.africa/api/registerpaluser`,

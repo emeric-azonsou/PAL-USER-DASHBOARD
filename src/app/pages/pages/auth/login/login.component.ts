@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             USER_SESSION_KEY,
             JSON.stringify(this.sessionResponse)
           );
-          this.router.navigate(["/dashboards/home"]);
+          this.router.navigate(["/dashboards/dashboards/analytics"]);
         } else {
           this.isProcessing = false;
           this.hasError = true;

@@ -9,6 +9,7 @@ import { TopUpTransactionComponent } from "./pages/dashboards/top-up-transaction
 import { ProfilComponent } from "./pages/dashboards/profil/profil.component";
 import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
 import { ReportsComponent } from './pages/dashboards/reports/reports.component';
+import { DashboardAnalyticsComponent } from './pages/dashboards/dashboard-analytics/dashboard-analytics.component';
 
 const routes: VexRoutes = [
   {
@@ -79,7 +80,7 @@ const routes: VexRoutes = [
     children: [
       {
         path: "dashboards/analytics",
-        redirectTo: "/",
+        component: DashboardAnalyticsComponent,
       },
       {
         path: "home",

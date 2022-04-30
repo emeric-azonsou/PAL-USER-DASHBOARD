@@ -119,6 +119,6 @@ export class ToolbarUserDropdownComponent implements OnInit {
   logout() {
     localStorage.clear();
     sessionStorage.clear();
-    this.router.navigate(['/login']);
+    this.router.navigate(['auth/login']);
   }
 }

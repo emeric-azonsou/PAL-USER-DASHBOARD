@@ -623,7 +623,11 @@ export class TransactionsService {
     );
   }
 
-  getUserTransactionSummary(user_id, range = null) {
+  getUserTransactionSummary(user_id, credentials, range = null) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${credentials}`
+    });
     let params = new HttpParams();
     if (range) {
       params = params.append("from", range.from);
@@ -631,8 +635,9 @@ export class TransactionsService {
     } else {
       params = null;
     }
+    // const url = `http://127.0.0.1:8000/api/getmerchantusertransactionssummary/${user_id}`;
     const url = `${environment.getBusinessTransactionsSummaryUrl}${user_id}`;
-    return this.http.get(url, { params: params }).pipe(
+    return this.http.get(url, { params: params, headers: headers }).pipe(
       map((response) => {
         return response;
       }),

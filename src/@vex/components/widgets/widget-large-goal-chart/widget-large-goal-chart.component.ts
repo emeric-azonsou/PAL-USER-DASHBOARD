@@ -6,6 +6,7 @@ import faCaretDown from '@iconify/icons-fa-solid/caret-down';
 import { ApexOptions } from '../../chart/chart.component';
 import { defaultChartOptions } from '../../../utils/default-chart-options';
 import { createDateArray } from '../../../utils/create-date-array';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'vex-widget-large-goal-chart',
@@ -14,6 +15,7 @@ import { createDateArray } from '../../../utils/create-date-array';
 export class WidgetLargeGoalChartComponent implements OnInit {
 
   @Input() total: number;
+  @Input() totalAmount: number;
   @Input() series: ApexNonAxisChartSeries | ApexAxisChartSeries;
   @Input() options: ApexOptions = defaultChartOptions({
     grid: {
@@ -55,9 +57,13 @@ export class WidgetLargeGoalChartComponent implements OnInit {
   faCaretUp = faCaretUp;
   faCaretDown = faCaretDown;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  viewTransactionsReport() {
+    this.router.navigate([`dashboards/transactions-report`]);
   }
 
 }

@@ -29,6 +29,7 @@ import { DEFAULT_INTERRUPTSOURCES, Idle } from "@ng-idle/core";
 import { MatDialog } from "@angular/material/dialog";
 import { AuthTimeoutModalComponent } from "./pages/dashboards/auth-timeout-modal/auth-timeout-modal.component";
 import { AuthserviceService } from "./services/authservice.service";
+import { ColorVariable, colorVariables } from "src/@vex/components/config-panel/color-variables";
 
 @Component({
   selector: "vex-root",
@@ -40,6 +41,9 @@ export class AppComponent {
   idleState = "Not started.";
   timedOut = false;
   lastPing?: Date = null;
+  colorVariables = colorVariables;
+
+  selectedColor = colorVariables.pal;
 
   constructor(
     private idle: Idle,
@@ -58,6 +62,8 @@ export class AppComponent {
     private splashScreenService: SplashScreenService,
     private authService: AuthserviceService
   ) {
+
+    this.selectColor(this.selectedColor);
     // sets an idle timeout of 5 seconds, for testing purposes.
     idle.setIdle(1200);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
@@ -225,6 +231,14 @@ export class AppComponent {
       //   icon: icSettings
       // }
     ];
+  }
+
+  selectColor(color: ColorVariable) {
+    this.selectedColor = color;
+    if (this.document) {
+      this.document.documentElement.style.setProperty('--color-primary', color.default.replace('rgb(', '').replace(')', ''));
+      this.document.documentElement.style.setProperty('--color-primary-contrast', color.contrast.replace('rgb(', '').replace(')', ''));
+    }
   }
 
   hideChildModal() {

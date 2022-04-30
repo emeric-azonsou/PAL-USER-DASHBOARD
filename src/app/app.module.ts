@@ -49,6 +49,7 @@ import { MatNativeDateModule, MatOptionModule } from "@angular/material/core";
 import { TransactionsReportComponent } from "./pages/dashboards/reports/transactions-report/transactions-report.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { DatePipe } from "@angular/common";
+import { DashboardAnalyticsModule } from "./pages/dashboards/dashboard-analytics/dashboard-analytics.module";
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import { DatePipe } from "@angular/common";
     MatProgressSpinnerModule,
     NgIdleKeepaliveModule.forRoot(),
     MomentModule,
+    DashboardAnalyticsModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],
