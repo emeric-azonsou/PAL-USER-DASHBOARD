@@ -13,10 +13,11 @@ import { BusinessService } from "src/app/services/business.service";
 export class CurencyBalanceComponent implements OnInit, OnDestroy {
   userData: User;
   balanceData: any;
+  businessUserData: any;
 
   unsubscribe$ = new Subject();
   merchantSummaryData: any;
-  constructor(private service: BusinessService) {
+  constructor(private businessService: BusinessService) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
@@ -33,7 +34,7 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
   }
 
   getUserBalances() {
-    this.service
+    this.businessService
       .getUserBalances(this.userData.user_id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((response: any) => {

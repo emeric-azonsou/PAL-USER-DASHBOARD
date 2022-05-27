@@ -9,11 +9,13 @@ import {
 } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { BUSINESS_DATA_KEY } from '../Models/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusinessService {
+  businessUserData: any;
 
   constructor(private http: HttpClient) { }
 
@@ -113,12 +115,17 @@ export class BusinessService {
         })
       );
   }
+  
 
   getBusinessDetails(user_id) {
     // const url = `http://127.0.0.1:8000/api/getuserbusiness/${user_id}`;
     const url = `${environment.getBusinessDataUrl}${user_id}`;
     return this.http.get(url).pipe(
       map((response) => {
+        if(response['data']) {
+          this.businessUserData = response['data'];
+          localStorage.setItem(BUSINESS_DATA_KEY, JSON.stringify(this.businessUserData));
+        }
         return response['data'];
       }),
 

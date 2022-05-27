@@ -126,12 +126,7 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
 
-    const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
-    if (businessData !== "undefined") {
-      this.userBusinessData = JSON.parse(businessData);
-    }
-
-    this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
+   
   }
 
   ngOnDestroy() {
@@ -139,10 +134,16 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
   ngOnInit() {
-    this.getUserBalances();
-    this.getTransactionsSummaryCurrentMonthData();
-
+      this.getUserBalances();
+   
     setTimeout(() => {
+      const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
+      if (businessData !== "undefined") {
+        this.userBusinessData = JSON.parse(businessData);
+        this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
+      }
+  
+      this.getTransactionsSummaryCurrentMonthData();
       const temp = [
         {
           name: "Subscribers",
@@ -203,7 +204,7 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
     };
     this.transactionService
       .getUserTransactionSummary(
-        this.userBusinessData.user_id,
+        this.userBusinessData?.user_id,
         this.credentials,
         range
       )

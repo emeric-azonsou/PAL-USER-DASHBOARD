@@ -81,6 +81,7 @@ export class ChartComponent implements OnInit, OnChanges {
   private _createElement() {
     if (this.series) {
       this.options.series = this.series;
+      this.options.colors = ['#2BB996', '#010D4A']
     }
 
     if (this.chart) {

@@ -281,7 +281,7 @@ export class ProfilComponent implements OnInit {
       company_documentUpload: [""],
       business_logo: [""],
       staff_size: [this.businessData?.staff_size, Validators.required],
-      website: [this.businessData?.website],
+      website: [this.businessData?.website || ""],
       callback_url: [this.businessData?.callback_url || ""]
     });
     // this.businessPhoneInputStyl();
