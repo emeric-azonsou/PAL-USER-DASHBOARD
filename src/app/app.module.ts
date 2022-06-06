@@ -50,6 +50,7 @@ import { TransactionsReportComponent } from "./pages/dashboards/reports/transact
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { DatePipe } from "@angular/common";
 import { DashboardAnalyticsModule } from "./pages/dashboards/dashboard-analytics/dashboard-analytics.module";
+import { CollectionsReportComponent } from "./pages/dashboards/reports/collections-report/collections-report.component";
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { DashboardAnalyticsModule } from "./pages/dashboards/dashboard-analytics
     AuthTimeoutModalComponent,
     ReportsComponent,
     TransactionsReportComponent,
+    CollectionsReportComponent,
   ],
   imports: [
     BrowserModule,

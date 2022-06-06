@@ -63,7 +63,7 @@ export class WidgetLargeGoalChartComponent implements OnInit {
   }
 
   viewTransactionsReport() {
-    this.router.navigate([`dashboards/transactions-report`]);
+    this.router.navigate([`dashboards/cach-out-transactions`]);
   }
 
 }

@@ -226,7 +226,7 @@
           fxFlex="none"
           fxHide.xs
         >
-          <span *ngIf="selection.isEmpty()">Disbursements</span>
+          <span *ngIf="selection.isEmpty()">Collections</span>
           <span *ngIf="selection.hasValue()"
             >{{ selection.selected.length }} Order<span
               *ngIf="selection.selected.length > 1"

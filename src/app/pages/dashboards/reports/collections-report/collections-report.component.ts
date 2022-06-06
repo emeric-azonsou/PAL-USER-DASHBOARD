@@ -1,34 +1,7 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { DatePipe } from "@angular/common";
-import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
-import {
-  MAT_FORM_FIELD_DEFAULT_OPTIONS,
-  MatFormFieldDefaultOptions,
-} from "@angular/material/form-field";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSelectChange } from "@angular/material/select";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { Router } from "@angular/router";
-import { ReplaySubject, Observable, Subject, of } from "rxjs";
-import { takeUntil, take } from "rxjs/operators";
-import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
-import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { TableColumn } from "src/@vex/interfaces/table-column.interface";
-import {
-  BUSINESS_DATA_KEY,
-  COUNTRIES,
-  SUMMARY_DATA_KEY,
-  TRANSACTION_TABLE_LABELS,
-  USER_SESSION_KEY,
-} from "src/app/Models/constants";
-import { Customer } from "src/app/pages/apps/aio-table/interfaces/customer.model";
-import { AuthserviceService } from "src/app/services/authservice.service";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { aioTableLabels, aioTableData } from "src/static-data/aio-table-data";
-import { TableUtil } from "./tableUtil";
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
+import { fadeInUp400ms } from 'src/@vex/animations/fade-in-up.animation';
+import { stagger40ms } from 'src/@vex/animations/stagger.animation';
 
 import icEdit from "@iconify/icons-ic/twotone-edit";
 import icDelete from "@iconify/icons-ic/twotone-delete";
@@ -46,15 +19,32 @@ import icRefresh from "@iconify/icons-ic/twotone-refresh";
 import icBook from "@iconify/icons-ic/twotone-book";
 import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
 import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
-
-import { SummaryData } from "src/app/Models/models.interface";
-import moment from "moment";
-import { MatTableExporterDirective } from "mat-table-exporter";
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { MatTableExporterDirective } from 'mat-table-exporter';
+import moment from 'moment';
+import { ReplaySubject, Observable, Subject, of } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
+import { TRANSACTION_TABLE_LABELS, COUNTRIES, USER_SESSION_KEY, SUMMARY_DATA_KEY, BUSINESS_DATA_KEY } from 'src/app/Models/constants';
+import { SummaryData } from 'src/app/Models/models.interface';
+import { Customer } from 'src/app/pages/apps/aio-table/interfaces/customer.model';
+import { AuthserviceService } from 'src/app/services/authservice.service';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { aioTableLabels, aioTableData } from 'src/static-data/aio-table-data';
+import { TableUtil } from '../transactions-report/tableUtil';
 
 @Component({
-  selector: "vex-transactions-report",
-  templateUrl: "./transactions-report.component.html",
-  styleUrls: ["./transactions-report.component.scss"],
+  selector: 'vex-collections-report',
+  templateUrl: './collections-report.component.html',
+  styleUrls: ['./collections-report.component.scss'],
   animations: [fadeInUp400ms, stagger40ms],
   providers: [
     {
@@ -65,7 +55,8 @@ import { MatTableExporterDirective } from "mat-table-exporter";
     },
   ],
 })
-export class TransactionsReportComponent implements OnInit, OnDestroy {
+export class CollectionsReportComponent implements OnInit {
+
   layoutCtrl = new FormControl("boxed");
 
   /**

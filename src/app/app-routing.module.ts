@@ -10,6 +10,7 @@ import { ProfilComponent } from "./pages/dashboards/profil/profil.component";
 import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
 import { ReportsComponent } from './pages/dashboards/reports/reports.component';
 import { DashboardAnalyticsComponent } from './pages/dashboards/dashboard-analytics/dashboard-analytics.component';
+import { CollectionsReportComponent } from './pages/dashboards/reports/collections-report/collections-report.component';
 
 const routes: VexRoutes = [
   {
@@ -87,16 +88,16 @@ const routes: VexRoutes = [
         component: HomeComponent,
       },
       {
-        path: "top-up-transactions",
+        path: "balance",
         component: TopUpTransactionComponent,
       },
       {
-        path: "transactions-report",
+        path: "cash-out-transactions",
         component: ReportsComponent,
       },
       {
-        path: "transactions",
-        component: TransactionsComponent,
+        path: "cash-in-transactions",
+        component: CollectionsReportComponent,
       },
       {
         path: "profile",

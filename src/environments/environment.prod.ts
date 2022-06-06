@@ -34,5 +34,7 @@ export const environment = {
   updatePasswordUrl:  `https://api.pals.africa/api/forgotpassupdate`,
   verifyEmailUrl: `https://api.pals.africa/api/verifyemail`,
 
-  gettransactionsreport: `https://api.pals.africa/api/gettransactionsreport/`
+  getCashOutTransactionsReport: `https://api.pals.africa/api/getcashouttransactionsreport/`,
+  getCashInTransactionsReport: `https://api.pals.africa/api/getcashintransactionsreport/`
+
 };

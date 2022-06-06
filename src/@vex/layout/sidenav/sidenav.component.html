@@ -35,7 +35,7 @@
       >
         <div class="flex items-center flex-none speci-nav sidenav-toolbar">
           <ic-icon
-            [icon]="icHome"
+            [icon]="icAnalytics"
             class="mr-1"
             inline="true"
             size="1.50em"
@@ -44,25 +44,6 @@
         </div>
       </a>
 
-      <a
-        class="item"
-        [routerLink]="['/dashboards/top-up-transactions']"
-        routerLinkActive="router-link-active"
-        fxLayout="row"
-        matRipple
-      >
-        <div class="flex items-center flex-none speci-nav sidenav-toolbar">
-          <ic-icon
-            [icon]="icAssignment"
-            class="mr-1"
-            inline="true"
-            size="1.50rem"
-          ></ic-icon>
-          <span class="item-label text-md" fxFlex="auto">
-            Top Up Transactions</span
-          >
-        </div>
-      </a>
       <!-- <div class="flex items-center flex-none speci-nav sidenav-toolbar">
         <a
           class="item"
@@ -81,9 +62,9 @@
         </a>
       </div> -->
 
-        <a
+      <a
         class="item"
-        [routerLink]="['/dashboards/transactions']"
+        [routerLink]="['/dashboards/cash-in-transactions']"
         routerLinkActive="router-link-active"
         fxLayout="row"
         matRipple
@@ -95,29 +76,42 @@
             inline="true"
             size="1.50rem"
           ></ic-icon>
-          <span class="item-label text-md" fxFlex="auto">
-            Transactions</span
-          >
+          <span class="item-label text-md" fxFlex="auto"> Cash In</span>
         </div>
       </a>
 
       <a
         class="item"
-        [routerLink]="['/dashboards/transactions-report']"
+        [routerLink]="['/dashboards/cash-out-transactions']"
         routerLinkActive="router-link-active"
         fxLayout="row"
         matRipple
       >
         <div class="flex items-center flex-none speci-nav sidenav-toolbar">
           <ic-icon
-            [icon]="icAnalytics"
+            [icon]="icAttachMoney"
             class="mr-1"
             inline="true"
             size="1.50rem"
           ></ic-icon>
-          <span class="item-label text-md" fxFlex="auto">
-            Transactions Report</span
-          >
+          <span class="item-label text-md" fxFlex="auto"> Cash Out</span>
+        </div>
+      </a>
+      <a
+        class="item"
+        [routerLink]="['/dashboards/balance']"
+        routerLinkActive="router-link-active"
+        fxLayout="row"
+        matRipple
+      >
+        <div class="flex items-center flex-none speci-nav sidenav-toolbar">
+          <ic-icon
+            [icon]="icAssignment"
+            class="mr-1"
+            inline="true"
+            size="1.50rem"
+          ></ic-icon>
+          <span class="item-label text-md" fxFlex="auto"> Balance</span>
         </div>
       </a>
       <vex-sidenav-item
