@@ -343,7 +343,7 @@ export class ProfilComponent implements OnInit {
           );
           const parsedUrl = new URL(window.location.href);
           const baseUrl = parsedUrl.origin;
-          window.location.replace(`${baseUrl}/dashboards/home`);
+          window.location.replace(`${baseUrl}/dashboards/analytics`);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;
@@ -380,7 +380,7 @@ export class ProfilComponent implements OnInit {
           );
           const parsedUrl = new URL(window.location.href);
           const baseUrl = parsedUrl.origin;
-          window.location.replace(`${baseUrl}/dashboards/dashboards/analytics`);
+          window.location.replace(`${baseUrl}/dashboards/analytics`);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;

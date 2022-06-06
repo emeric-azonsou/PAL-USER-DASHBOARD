@@ -79,7 +79,7 @@ const routes: VexRoutes = [
     component: CustomLayoutComponent,
     children: [
       {
-        path: "dashboards/analytics",
+        path: "analytics",
         component: DashboardAnalyticsComponent,
       },
       {
