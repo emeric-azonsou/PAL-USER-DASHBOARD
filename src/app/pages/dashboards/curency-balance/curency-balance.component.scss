@@ -31,3 +31,18 @@
   .rounded{
     background-color:white;
   }
+
+  text {
+    font-size: 11px;
+  }
+
+  text.cash-in {
+    color: #2BB996;
+  }
+  text.cash-out {
+    color: #ff0045;
+  }
+
+  // div.balance-type {
+  //   min-width: 50px !important;
+  // }

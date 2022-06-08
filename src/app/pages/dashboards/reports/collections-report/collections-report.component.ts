@@ -1,7 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
-import { fadeInUp400ms } from 'src/@vex/animations/fade-in-up.animation';
-import { stagger40ms } from 'src/@vex/animations/stagger.animation';
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldDefaultOptions,
+} from "@angular/material/form-field";
+import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
+import { stagger40ms } from "src/@vex/animations/stagger.animation";
 
 import icEdit from "@iconify/icons-ic/twotone-edit";
 import icDelete from "@iconify/icons-ic/twotone-delete";
@@ -18,33 +21,39 @@ import icPerson from "@iconify/icons-ic/twotone-person";
 import icRefresh from "@iconify/icons-ic/twotone-refresh";
 import icBook from "@iconify/icons-ic/twotone-book";
 import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
-import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
-import { SelectionModel } from '@angular/cdk/collections';
-import { DatePipe } from '@angular/common';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSelectChange } from '@angular/material/select';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { MatTableExporterDirective } from 'mat-table-exporter';
-import moment from 'moment';
-import { ReplaySubject, Observable, Subject, of } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
-import { TRANSACTION_TABLE_LABELS, COUNTRIES, USER_SESSION_KEY, SUMMARY_DATA_KEY, BUSINESS_DATA_KEY } from 'src/app/Models/constants';
-import { SummaryData } from 'src/app/Models/models.interface';
-import { Customer } from 'src/app/pages/apps/aio-table/interfaces/customer.model';
-import { AuthserviceService } from 'src/app/services/authservice.service';
-import { TransactionsService } from 'src/app/services/transactions.service';
-import { aioTableLabels, aioTableData } from 'src/static-data/aio-table-data';
-import { TableUtil } from '../transactions-report/tableUtil';
+import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
+import { SelectionModel } from "@angular/cdk/collections";
+import { DatePipe } from "@angular/common";
+import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSelectChange } from "@angular/material/select";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { MatTableExporterDirective } from "mat-table-exporter";
+import moment from "moment";
+import { ReplaySubject, Observable, Subject, of } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { TableColumn } from "src/@vex/interfaces/table-column.interface";
+import {
+  TRANSACTION_TABLE_LABELS,
+  COUNTRIES,
+  USER_SESSION_KEY,
+  SUMMARY_DATA_KEY,
+  BUSINESS_DATA_KEY,
+} from "src/app/Models/constants";
+import { SummaryData } from "src/app/Models/models.interface";
+import { Customer } from "src/app/pages/apps/aio-table/interfaces/customer.model";
+import { AuthserviceService } from "src/app/services/authservice.service";
+import { TransactionsService } from "src/app/services/transactions.service";
+import { aioTableLabels, aioTableData } from "src/static-data/aio-table-data";
+import { TableUtil } from "../transactions-report/tableUtil";
 
 @Component({
-  selector: 'vex-collections-report',
-  templateUrl: './collections-report.component.html',
-  styleUrls: ['./collections-report.component.scss'],
+  selector: "vex-collections-report",
+  templateUrl: "./collections-report.component.html",
+  styleUrls: ["./collections-report.component.scss"],
   animations: [fadeInUp400ms, stagger40ms],
   providers: [
     {
@@ -56,7 +65,6 @@ import { TableUtil } from '../transactions-report/tableUtil';
   ],
 })
 export class CollectionsReportComponent implements OnInit {
-
   layoutCtrl = new FormControl("boxed");
 
   /**
@@ -69,7 +77,7 @@ export class CollectionsReportComponent implements OnInit {
   @Input()
   columns: TableColumn<Customer>[] = [
     // { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
-    { label: "Order ID", property: "id", type: "text", visible: true },
+    { label: "ID", property: "reference", type: "text", visible: true },
     {
       label: "date",
       property: "created_at",
@@ -78,36 +86,36 @@ export class CollectionsReportComponent implements OnInit {
       cssClasses: ["text-secondary", "font-medium"],
     },
     {
-      label: "Sales Rep",
-      property: "salesRep",
+      label: "Country",
+      property: "country",
       type: "text",
       visible: true,
       cssClasses: ["font-medium"],
     },
     {
-      label: "Customer Name",
-      property: "name",
+      label: "Network Provider",
+      property: "operator",
       type: "text",
       visible: true,
       cssClasses: ["font-medium"],
     },
     {
-      label: "Total Amount",
-      property: "total_amount",
+      label: "Wallet Number",
+      property: "phone_no",
       type: "text",
       visible: true,
     },
     // { label: "Contact", property: "phone_no", type: "button", visible: true },
     {
-      label: "Delivery Address",
-      property: "delivery_address",
+      label: "Pal fee",
+      property: "charges",
       type: "text",
-      visible: false,
+      visible: true,
       cssClasses: ["text-secondary", "font-medium"],
     },
 
-    // { label: 'Zipcode', property: 'zipcode', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    // { label: 'City', property: 'city', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'Currency', property: 'currency', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
+    { label: 'Amount Sent', property: 'amount', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
     {
       label: "Status",
       property: "status",
@@ -280,7 +288,6 @@ export class CollectionsReportComponent implements OnInit {
     // this.getData().subscribe(customers => {
     //   this.subject$.next(customers);
     // });
-    this.getTransactionsList();
     this.form = this.fb.group({
       country: [""],
       dateFrom: [""],
@@ -295,6 +302,7 @@ export class CollectionsReportComponent implements OnInit {
     //   this.orders = customers;
     //   this.dataSource.data = customers;
     // });
+    this.search();
 
     this.searchCtrl.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
@@ -387,10 +395,11 @@ export class CollectionsReportComponent implements OnInit {
 
     this.isLoading = true;
     this.transactionService
-      .searchCashOutTransactions(
+      .searchTransactions(
         this.credentials,
         this.userBusinessData?.user_id,
-        this.form.value
+        this.form.value,
+        "collections"
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(

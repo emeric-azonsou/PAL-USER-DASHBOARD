@@ -217,4 +217,19 @@ export class BusinessService {
       })
     )
   }
+
+  getUserCollectionsBalances(user_id) {
+    const url = `${environment.getUserCollectionsBalancesUrl}${user_id}`;
+    // const url = `http://127.0.0.1:8000/api/getbusinessusercollectionbalances/${user_id}`;
+    return this.http.get(url).pipe(
+      map(response => {
+        return response;
+      }),
+
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error:", error.message);
+        return observableThrowError(error);
+      })
+    )
+  }
 }

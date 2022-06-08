@@ -17,6 +17,7 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
 
   unsubscribe$ = new Subject();
   merchantSummaryData: any;
+  collectionsBalanceData: any;
   constructor(private businessService: BusinessService) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
@@ -26,6 +27,7 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUserBalances();
+    this.getUserCollectionsBalances();
   }
 
   ngOnDestroy() {
@@ -51,6 +53,28 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
             }
           );
           this.balanceData = balanceDataMap;
+        }
+      });
+  }
+
+  getUserCollectionsBalances() {
+    this.businessService
+      .getUserCollectionsBalances(this.userData.user_id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response: any) => {
+        if (response.data.length) {
+          const balanceDataMap = this.toMap(response.data);
+          Object.keys(balanceDataMap).forEach(
+            (currency) => {
+              const balances = balanceDataMap[currency].map(data => data.balance);
+              const result = balances
+                ?.reduce((acc: any, cur: any) => {
+                  return balanceDataMap[currency] = acc + Number(cur)
+                }, 0) as number;
+                return result.toFixed(2);
+            }
+          );
+          this.collectionsBalanceData = balanceDataMap;
         }
       });
   }

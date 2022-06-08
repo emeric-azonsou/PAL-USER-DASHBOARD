@@ -30,11 +30,11 @@ export const environment = {
   requestTopUpUrl: `https://api.pals.africa/api/requesttopup`,
   getUserTopUpsUrl: `https://api.pals.africa/api/getusertopups/`,
   getUserBalancesUrl: `https://api.pals.africa/api/getbusinessuserbalances/`,
-  sendOTPtoEmailUrl: `https://api.pals.africa/api/sendotptoemailforgotpassword`,
+  getUserCollectionsBalancesUrl: `https://api.pals.africa/api/getbusinessusercollectionbalances/`,
+  endOTPtoEmailUrl: `https://api.pals.africa/api/sendotptoemailforgotpassword`,
   updatePasswordUrl:  `https://api.pals.africa/api/forgotpassupdate`,
   verifyEmailUrl: `https://api.pals.africa/api/verifyemail`,
 
-  getCashOutTransactionsReport: `https://api.pals.africa/api/getcashouttransactionsreport/`,
-  getCashInTransactionsReport: `https://api.pals.africa/api/getcashintransactionsreport/`
+  getTransactionsReportUrl: `https://api.pals.africa/api/gettransactionsreport/`,
 
 };

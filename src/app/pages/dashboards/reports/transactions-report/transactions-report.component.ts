@@ -45,7 +45,7 @@ import icPerson from "@iconify/icons-ic/twotone-person";
 import icRefresh from "@iconify/icons-ic/twotone-refresh";
 import icBook from "@iconify/icons-ic/twotone-book";
 import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
-import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
+import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
 
 import { SummaryData } from "src/app/Models/models.interface";
 import moment from "moment";
@@ -78,7 +78,7 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   @Input()
   columns: TableColumn<Customer>[] = [
     // { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
-    { label: "Order ID", property: "id", type: "text", visible: true },
+    { label: "ID", property: "reference", type: "text", visible: true },
     {
       label: "date",
       property: "created_at",
@@ -87,36 +87,48 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
       cssClasses: ["text-secondary", "font-medium"],
     },
     {
-      label: "Sales Rep",
-      property: "salesRep",
+      label: "Country",
+      property: "country",
       type: "text",
       visible: true,
       cssClasses: ["font-medium"],
     },
     {
-      label: "Customer Name",
-      property: "name",
+      label: "Network Provider",
+      property: "operator",
       type: "text",
       visible: true,
       cssClasses: ["font-medium"],
     },
     {
-      label: "Total Amount",
-      property: "total_amount",
+      label: "Wallet Number",
+      property: "phone_no",
       type: "text",
       visible: true,
     },
     // { label: "Contact", property: "phone_no", type: "button", visible: true },
     {
-      label: "Delivery Address",
-      property: "delivery_address",
+      label: "Pal fee",
+      property: "charges",
       type: "text",
-      visible: false,
+      visible: true,
       cssClasses: ["text-secondary", "font-medium"],
     },
 
-    // { label: 'Zipcode', property: 'zipcode', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
-    // { label: 'City', property: 'city', type: 'text', visible: false, cssClasses: ['text-secondary', 'font-medium'] },
+    {
+      label: "Currency",
+      property: "currency",
+      type: "text",
+      visible: true,
+      cssClasses: ["text-secondary", "font-medium"],
+    },
+    {
+      label: "Amount Sent",
+      property: "amount",
+      type: "text",
+      visible: true,
+      cssClasses: ["text-secondary", "font-medium"],
+    },
     {
       label: "Status",
       property: "status",
@@ -289,7 +301,6 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
     // this.getData().subscribe(customers => {
     //   this.subject$.next(customers);
     // });
-    this.getTransactionsList();
     this.form = this.fb.group({
       country: [""],
       dateFrom: [""],
@@ -304,6 +315,7 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
     //   this.orders = customers;
     //   this.dataSource.data = customers;
     // });
+    this.search();
 
     this.searchCtrl.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
@@ -396,10 +408,11 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
     this.transactionService
-      .searchCashOutTransactions(
+      .searchTransactions(
         this.credentials,
         this.userBusinessData?.user_id,
-        this.form.value
+        this.form.value,
+        "mobile_transfers"
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(

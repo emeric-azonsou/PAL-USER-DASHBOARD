@@ -34,12 +34,12 @@ export const environment = {
   requestTopUpUrl: `https://api-test.pals.africa/api/requesttopup`,
   getUserTopUpsUrl: `https://api-test.pals.africa/api/getusertopups/`,
   getUserBalancesUrl: `https://api-test.pals.africa/api/getbusinessuserbalances/`,
+  getUserCollectionsBalancesUrl: `https://api-test.pals.africa/api/getbusinessusercollectionbalances/`,
   sendOTPtoEmailUrl: `https://api-test.pals.africa/api/sendotptoemailforgotpassword`,
   updatePasswordUrl:  `https://api-test.pals.africa/api/forgotpassupdate`,
   verifyEmailUrl: `https://api-test.pals.africa/api/verifyemail`,
 
-  getCashOutTransactionsReport: `https://api-test.pals.africa/api/getcashouttransactionsreport/`,
-  getCashInTransactionsReport: `https://api-test.pals.africa/api/getcashintransactionsreport/`
+  getTransactionsReportUrl: `https://api-test.pals.africa/api/gettransactionsreport/`,
 
 };
 /*
