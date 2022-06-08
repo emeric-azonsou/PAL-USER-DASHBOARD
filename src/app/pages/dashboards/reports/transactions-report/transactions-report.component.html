@@ -28,188 +28,187 @@
     [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
     class="-mt-6"
   >
-    <div [@stagger]="true" class="w-full" vexContainer>
-      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px">
-        <div @fadeInUp class="card" fxFlex="auto">
-          <div *ngIf="!isFormReady" class="card overflow-auto -mt-16">
-            <div
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: white;
-              "
+  <div [@stagger]="true" class="w-full" vexContainer>
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px">
+      <div @fadeInUp class="card" fxFlex="auto">
+        <div *ngIf="!isFormReady" class="card overflow-auto -mt-16">
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background: white;"
+          >
+            <mat-spinner color="primary"> </mat-spinner>
+          </div>
+        </div>
+        <form (ngSubmit)="search()" [formGroup]="form">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <h3
+              class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l"
+              fxFlex="none"
+              fxHide.xs
             >
-              <mat-spinner color="primary"> </mat-spinner>
+              Search Form
+            </h3>
+          </div>
+
+          <mat-divider class="-mx-6 text-border"></mat-divider>
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="column" class="card" fxFlex="auto">
+              <div class="flex flex-col sm:flex-row">
+                <mat-form-field class="sm:ml-6 flex-auto">
+                  <mat-label>Country</mat-label>
+
+                  <mat-select placeholder="Country" formControlName="country">
+                    <mat-option [country]=""> Select Country </mat-option>
+                    <mat-option
+                      *ngFor="let country of availableCountries"
+                      id="newAttributeProduct"
+                      [value]="country"
+                    >
+                      {{ country }}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-icon
+                    [icIcon]="icBook"
+                    class="mr-3"
+                    matPrefix
+                  ></mat-icon> -->
+                </mat-form-field>
+                <mat-form-field class="sm:ml-6 flex-auto">
+                  <mat-label>Network Provider</mat-label>
+
+                  <mat-select
+                    placeholder="Operator"
+                    formControlName="operator"
+                  >
+                    <mat-option [value]=""> Select Network </mat-option>
+                    <mat-option
+                      *ngFor="let networkProvider of networkProviders"
+                      id="newAttributeUser"
+                      [value]="networkProvider"
+                    >
+                      {{ networkProvider }}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-icon
+                    [icIcon]="icPerson"
+                    class="mr-3"
+                    matPrefix
+                  ></mat-icon> -->
+                </mat-form-field>
+
+                <mat-form-field class="sm:ml-6 flex-auto">
+                  <mat-label>Currency</mat-label>
+
+                  <mat-select
+                    placeholder="Currency"
+                    formControlName="currency"
+                  >
+                    <mat-option [value]=""> Select Currency </mat-option>
+                    <mat-option
+                      *ngFor="let currency of currencies"
+                      id="newAttributeCurrencies"
+                      [value]="currency"
+                    >
+                      {{ currency }}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-icon
+                    [icIcon]="icAttachMoney"
+                    class="mr-3"
+                    matPrefix
+                  ></mat-icon> -->
+                </mat-form-field>
+                <mat-form-field class="sm:ml-6 flex-auto">
+                  <mat-label>Status</mat-label>
+
+                  <mat-select placeholder="Status" formControlName="status">
+                    <mat-option [value]=""> Select Status </mat-option>
+                    <mat-option
+                      *ngFor="let status of statuses"
+                      id="newAttributeCurrencies"
+                      [value]="status.value"
+                    >
+                      {{ status.name }}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-icon
+                    [icIcon]="icMap"
+                    class="mr-3"
+                    matPrefix
+                  ></mat-icon> -->
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col sm:flex-row">
+                <mat-form-field class="sm:ml-6 flex-auto">
+                  <mat-label>From</mat-label>
+                  <input
+                    formControlName="dateFrom"
+                    [matDatepicker]="datepickerRefa"
+                    matInput
+                  />
+                  <mat-datepicker-toggle
+                    [for]="datepickerRefa"
+                    matSuffix
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #datepickerRefa></mat-datepicker>
+                  <mat-hint>Click to select date</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="sm:ml-6 flex-auto">
+                  <mat-label>To</mat-label>
+                  <input
+                    [matDatepicker]="datepickerRefb"
+                    formControlName="dateTo"
+                    matInput
+                  />
+                  <mat-datepicker-toggle
+                    [for]="datepickerRefb"
+                    matSuffix
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #datepickerRefb></mat-datepicker>
+                  <mat-hint>Click to select date</mat-hint>
+                </mat-form-field>
+              </div>
             </div>
           </div>
-          <form (ngSubmit)="search()" [formGroup]="form">
-            <div fxLayout="row" fxLayoutAlign="start center">
-              <h3
-                class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l"
-                fxFlex="none"
-                fxHide.xs
+          <div classs="row">
+            <div align="end">
+              <button
+                mat-raised-button
+                type="submit"
+                class="disburs"
+                [disabled]="form.invalid"
               >
-                Search Form
-              </h3>
+                SEARCH
+                <mat-icon
+                  [icIcon]="icSearch"
+                  class="mr-3"
+                  matPrefix
+                ></mat-icon>
+              </button>
+              <button
+                class="apiDoc"
+                mat-raised-button
+                typr="button"
+                (click)="resetForm()"
+                [disabled]="form.invalid"
+              >
+                RESET
+                <mat-icon
+                  [icIcon]="icRefresh"
+                  class="mr-3"
+                  matPrefix
+                ></mat-icon>
+              </button>
             </div>
-
-            <mat-divider class="-mx-6 text-border"></mat-divider>
-
-            <div fxLayout="row" fxLayoutAlign="start center">
-              <div fxLayout="column" class="card" fxFlex="auto">
-                <div class="flex flex-col sm:flex-row">
-                  <mat-form-field class="sm:ml-6 flex-auto">
-                    <mat-label>Country</mat-label>
-
-                    <mat-select placeholder="Country" formControlName="country">
-                      <mat-option [country]=""> Select Country </mat-option>
-                      <mat-option
-                        *ngFor="let country of availableCountries"
-                        id="newAttributeProduct"
-                        [value]="country"
-                      >
-                        {{ country }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-icon
-                      [icIcon]="icBook"
-                      class="mr-3"
-                      matPrefix
-                    ></mat-icon>
-                  </mat-form-field>
-                  <mat-form-field class="sm:ml-6 flex-auto">
-                    <mat-label>Network Provider</mat-label>
-
-                    <mat-select
-                      placeholder="Operator"
-                      formControlName="operator"
-                    >
-                      <mat-option [value]=""> Select Network </mat-option>
-                      <mat-option
-                        *ngFor="let networkProvider of networkProviders"
-                        id="newAttributeUser"
-                        [value]="networkProvider"
-                      >
-                        {{ networkProvider }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-icon
-                      [icIcon]="icPerson"
-                      class="mr-3"
-                      matPrefix
-                    ></mat-icon>
-                  </mat-form-field>
-
-                  <mat-form-field class="sm:ml-6 flex-auto">
-                    <mat-label>Currency</mat-label>
-
-                    <mat-select
-                      placeholder="Currency"
-                      formControlName="currency"
-                    >
-                      <mat-option [value]=""> Select Currency </mat-option>
-                      <mat-option
-                        *ngFor="let currency of currencies"
-                        id="newAttributeCurrencies"
-                        [value]="currency"
-                      >
-                        {{ currency }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-icon
-                      [icIcon]="icAttachMoney"
-                      class="mr-3"
-                      matPrefix
-                    ></mat-icon>
-                  </mat-form-field>
-                  <mat-form-field class="sm:ml-6 flex-auto">
-                    <mat-label>Status</mat-label>
-
-                    <mat-select placeholder="Status" formControlName="status">
-                      <mat-option [value]=""> Select Status </mat-option>
-                      <mat-option
-                        *ngFor="let status of statuses"
-                        id="newAttributeCurrencies"
-                        [value]="status.value"
-                      >
-                        {{ status.name }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-icon
-                      [icIcon]="icMap"
-                      class="mr-3"
-                      matPrefix
-                    ></mat-icon>
-                  </mat-form-field>
-                </div>
-                <div class="flex flex-col sm:flex-row">
-                  <mat-form-field class="sm:ml-6 flex-auto">
-                    <mat-label>From</mat-label>
-                    <input
-                      formControlName="dateFrom"
-                      [matDatepicker]="datepickerRefa"
-                      matInput
-                    />
-                    <mat-datepicker-toggle
-                      [for]="datepickerRefa"
-                      matSuffix
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker #datepickerRefa></mat-datepicker>
-                    <mat-hint>Click to select date</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field class="sm:ml-6 flex-auto">
-                    <mat-label>To</mat-label>
-                    <input
-                      [matDatepicker]="datepickerRefb"
-                      formControlName="dateTo"
-                      matInput
-                    />
-                    <mat-datepicker-toggle
-                      [for]="datepickerRefb"
-                      matSuffix
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker #datepickerRefb></mat-datepicker>
-                    <mat-hint>Click to select date</mat-hint>
-                  </mat-form-field>
-                </div>
-              </div>
-            </div>
-            <div classs="row">
-              <div align="end">
-                <button
-                  mat-raised-button
-                  type="submit"
-                  class="disburs"
-                  [disabled]="form.invalid"
-                >
-                  SEARCH
-                  <mat-icon
-                    [icIcon]="icSearch"
-                    class="mr-3"
-                    matPrefix
-                  ></mat-icon>
-                </button>
-                <button
-                  class="apiDoc"
-                  mat-raised-button
-                  type="button"
-                  (click)="resetForm()"
-                  [disabled]="form.invalid"
-                >
-                  RESET
-                  <mat-icon
-                    [icIcon]="icRefresh"
-                    class="mr-3"
-                    matPrefix
-                  ></mat-icon>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
     <br />
     <br />
     <br />
@@ -435,6 +434,8 @@
       (click)="$event.stopPropagation()"
       [(ngModel)]="column.visible"
       color="primary"
+      name="columnsFilter"
+      ngDefaultControl
     >
       {{ column.label }}
     </mat-checkbox>

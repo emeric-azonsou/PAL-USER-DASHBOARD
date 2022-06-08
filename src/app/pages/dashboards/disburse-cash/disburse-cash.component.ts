@@ -98,6 +98,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   };
   merchantSummaryData: SummaryData;
   placeHolder: string = "96040522";
+  networkProviders: any[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -139,7 +140,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
         ],
       ],
       amount: ["", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-      provider: ["mtn", Validators.required],
+      operator: ["mtn", Validators.required],
     });
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
@@ -213,6 +214,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((data) => {
         this.moduleData = data;
+        this.networkProviders =  this.moduleData.map((data: any) => data.country);
       });
   }
 

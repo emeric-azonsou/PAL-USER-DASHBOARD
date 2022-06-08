@@ -115,6 +115,7 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
   currentMonthAmount: any;
   balanceData: any;
   dataLoaded: boolean = false;
+  collectionsBalanceData: any;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -135,6 +136,7 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
       this.getUserBalances();
+      this.getUserCollectionsBalances();
    
     setTimeout(() => {
       const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
@@ -154,6 +156,28 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
         },
       ];
     }, 3000);
+  }
+
+    getUserCollectionsBalances() {
+    this.service
+      .getUserCollectionsBalances(this.userData.user_id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response: any) => {
+        if (response.data.length) {
+          const balanceDataMap = this.toMap(response.data);
+          Object.keys(balanceDataMap).forEach(
+            (currency) => {
+              const balances = balanceDataMap[currency].map(data => data.balance);
+              const result = balances
+                ?.reduce((acc: any, cur: any) => {
+                  return balanceDataMap[currency] = acc + Number(cur)
+                }, 0) as number;
+                return result.toFixed(2);
+            }
+          );
+          this.collectionsBalanceData = balanceDataMap;
+        }
+      });
   }
 
   getUserBalances() {

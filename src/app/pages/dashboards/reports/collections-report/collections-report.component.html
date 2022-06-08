@@ -72,11 +72,11 @@
                         {{ country }}
                       </mat-option>
                     </mat-select>
-                    <mat-icon
+                    <!-- <mat-icon
                       [icIcon]="icBook"
                       class="mr-3"
                       matPrefix
-                    ></mat-icon>
+                    ></mat-icon> -->
                   </mat-form-field>
                   <mat-form-field class="sm:ml-6 flex-auto">
                     <mat-label>Network Provider</mat-label>
@@ -94,11 +94,11 @@
                         {{ networkProvider }}
                       </mat-option>
                     </mat-select>
-                    <mat-icon
+                    <!-- <mat-icon
                       [icIcon]="icPerson"
                       class="mr-3"
                       matPrefix
-                    ></mat-icon>
+                    ></mat-icon> -->
                   </mat-form-field>
 
                   <mat-form-field class="sm:ml-6 flex-auto">
@@ -117,11 +117,11 @@
                         {{ currency }}
                       </mat-option>
                     </mat-select>
-                    <mat-icon
+                    <!-- <mat-icon
                       [icIcon]="icAttachMoney"
                       class="mr-3"
                       matPrefix
-                    ></mat-icon>
+                    ></mat-icon> -->
                   </mat-form-field>
                   <mat-form-field class="sm:ml-6 flex-auto">
                     <mat-label>Status</mat-label>
@@ -136,11 +136,11 @@
                         {{ status.name }}
                       </mat-option>
                     </mat-select>
-                    <mat-icon
+                    <!-- <mat-icon
                       [icIcon]="icMap"
                       class="mr-3"
                       matPrefix
-                    ></mat-icon>
+                    ></mat-icon> -->
                   </mat-form-field>
                 </div>
                 <div class="flex flex-col sm:flex-row">
@@ -435,6 +435,8 @@
       (click)="$event.stopPropagation()"
       [(ngModel)]="column.visible"
       color="primary"
+      name="columnsFilter"
+      ngDefaultControl
     >
       {{ column.label }}
     </mat-checkbox>

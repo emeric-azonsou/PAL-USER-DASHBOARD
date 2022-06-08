@@ -1,33 +1,44 @@
 .cardContainer {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    background-color:#2BB996;
-    padding: 50px;
-  }
-  .devise {
-    background-color: #010d4a;
-    color: #ffffff;
-    opacity: 1;
-    letter-spacing: 0px;
-    font: Poppins;
-  }
-  
-  .baance {
-    color: #484848;
-    opacity: 1;
-    letter-spacing: 0px;
-    font: Poppins;
-  }
-  .payout {
-    color: #ff0045;
-    opacity: 1;
-    letter-spacing: 0px;
-    font: Poppins;
-  }
-  .shadow-lg {
-    width: 13rem;
-  }
-  .rounded{
-    background-color:white;
-  }
+  display: flex;
+  justify-content: center;
+  position: relative;
+  background-color:#2BB996;
+  padding: 50px;
+}
+.devise {
+  background-color: #010d4a;
+  color: #ffffff;
+  opacity: 1;
+  letter-spacing: 0px;
+  font: Poppins;
+}
+
+.baance {
+  color: #484848;
+  opacity: 1;
+  letter-spacing: 0px;
+  font: Poppins;
+}
+.payout {
+  color: #ff0045;
+  opacity: 1;
+  letter-spacing: 0px;
+  font: Poppins;
+}
+.shadow-lg {
+  width: 13rem;
+}
+.rounded{
+  background-color:white;
+}
+
+text {
+  font-size: 11px;
+}
+
+text.cash-in {
+  color: #2BB996;
+}
+text.cash-out {
+  color: #ff0045;
+}
