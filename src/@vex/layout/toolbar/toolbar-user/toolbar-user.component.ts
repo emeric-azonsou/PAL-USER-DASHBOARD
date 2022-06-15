@@ -38,7 +38,8 @@ export class ToolbarUserComponent implements OnInit {
     const origin = window.location.origin;
     console.log(`type of logo is ${typeof this.userBusinessData.business_logo}`)
     if(this.userBusinessData.business_logo !== 'undefined') {
-      this.userPhoto = `${origin}/api/public/uploads/company/business/${this.userBusinessData.business_logo}`;
+      const baseURL = origin.includes('sandbox') || origin.includes('localhost:4200') ? 'https://api-test.pals.africa' : 'https://api.pals.africa'
+      this.userPhoto = `${baseURL}/public/uploads/company/business/${this.userBusinessData.business_logo}`;
     }
   }
 

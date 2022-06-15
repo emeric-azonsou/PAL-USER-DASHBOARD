@@ -204,6 +204,7 @@ export class ProfilComponent implements OnInit {
   businessData: MerchantData;
   isUpdating: boolean;
 
+
   constructor(
     private cd: ChangeDetectorRef,
     private formBuilder: FormBuilder,
@@ -249,7 +250,7 @@ export class ProfilComponent implements OnInit {
       business_logo: [""],
       staff_size: [""],
       website: [""],
-      callback_url: [""]
+      callback_url: [""],
     });
 
     this.updateBusinessForm = this.formBuilder.group({
@@ -282,7 +283,7 @@ export class ProfilComponent implements OnInit {
       business_logo: [""],
       staff_size: [this.businessData?.staff_size, Validators.required],
       website: [this.businessData?.website || ""],
-      callback_url: [this.businessData?.callback_url || ""]
+      callback_url: [this.businessData?.callback_url || ""],
     });
     // this.businessPhoneInputStyl();
     // this.deliveryManInputStyl();

@@ -48,6 +48,7 @@
     "mat-table-exporter": "^10.2.4",
     "moment": "^2.29.1",
     "ng-otp-input": "^1.7.1",
+    "ngx-image-cropper": "^6.1.0",
     "ngx-material-file-input": "^2.1.1",
     "ngx-quicklink": "~0.2.7",
     "ngx-quill": "~13.2.0",

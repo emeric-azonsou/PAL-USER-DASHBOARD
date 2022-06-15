@@ -12,6 +12,10 @@ import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
 import icAssignment from '@iconify/icons-ic/twotone-assignment';
 import icChart from '@iconify/icons-ic/twotone-add-chart';
 import icAnalytics from '@iconify/icons-ic/twotone-analytics';
+import icWallet from '@iconify/icons-ic/twotone-account-balance-wallet';
+import icBalance from '@iconify/icons-ic/twotone-account-balance';
+import icArrowDown from '@iconify/icons-ic/twotone-arrow-circle-down';
+import icArrowUp from '@iconify/icons-ic/twotone-arrow-circle-up';
 import { BUSINESS_DATA_KEY, SUMMARY_DATA_KEY, USER_SESSION_KEY } from 'src/app/Models/constants';
 import { Router } from '@angular/router';
 import { BusinessService } from 'src/app/services/business.service';
@@ -36,11 +40,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
   icRadioButtonChecked = icRadioButtonChecked;
   icRadioButtonUnchecked = icRadioButtonUnchecked;
   icHome= icHome;
+  icWallet = icWallet;
   icReport = icReport;
   icChart = icChart;
   icAttachMoney= icAttachMoney;
   icAnalytics = icAnalytics;
-  icAssignment=icAssignment
+  icAssignment= icAssignment;
+  icBalance = icBalance;
+  icArrowDown = icArrowDown;
+  icArrowUp = icArrowUp;
   userData: any;
   businessUserData: any;
   hasBusinessRegistered: boolean;

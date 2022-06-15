@@ -36,5 +36,6 @@ export const environment = {
   verifyEmailUrl: `https://api.pals.africa/api/verifyemail`,
 
   getTransactionsReportUrl: `https://api.pals.africa/api/gettransactionsreport/`,
+  getClientDetailsUrl: `https://api.pals.africa/api/getmomoclientdata`,
 
 };

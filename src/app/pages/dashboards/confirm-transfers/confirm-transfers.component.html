@@ -11,6 +11,10 @@
     class=" grid  respon   grid-flow-col    md:grid-cols-2 md:grid-rows-2    gap-8   xs:grid-cols-4 xs:grid-rows-4  sm:grid-rows-2 sm:grid-cols-2">
     <h6>You're about to send {{ transferData['amount']}} {{ transferData['currency'] }} to {{transferData['phone_no']}} in {{contry}}</h6>
   </div>
+  <div>
+    <h6 *ngIf="clientName">Client Name: {{ clientName }}</h6>
+    <h6 *ngIf="!clientName"> Warning: {{ noNameErrorMessage }}</h6>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="grid grid-cols-4 gap-2 sm:grid-cols-4 md:grid-cols-4  button">

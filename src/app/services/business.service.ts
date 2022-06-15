@@ -136,6 +136,24 @@ export class BusinessService {
     );
   }
 
+  getClientDetails(getmomoclientdata, credentials) {
+    const url = `${environment.getClientDetailsUrl}?phone_no=${getmomoclientdata}`;
+    // const url = `http://127.0.0.1:8000/api/getmomoclientdata?phone_no=${getmomoclientdata}`;
+    const headers = new HttpHeaders({
+      'Authorization' : `Bearer ${credentials}`,
+      'Content-Type': 'application/json'
+    })    
+    return this.http.get(url, { headers }).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
   getBusinessSummary(user_id) {
     // const url = `http://127.0.0.1:8000/api/getmerchantusersummary/${user_id}`;
     const url = `${environment.getBusinessSummaryUrl}${user_id}`;
