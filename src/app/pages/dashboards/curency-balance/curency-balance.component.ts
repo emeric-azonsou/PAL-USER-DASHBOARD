@@ -13,10 +13,12 @@ import { BusinessService } from "src/app/services/business.service";
 export class CurencyBalanceComponent implements OnInit, OnDestroy {
   userData: User;
   balanceData: any;
+  businessUserData: any;
 
   unsubscribe$ = new Subject();
   merchantSummaryData: any;
-  constructor(private service: BusinessService) {
+  collectionsBalanceData: any;
+  constructor(private businessService: BusinessService) {
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
@@ -25,6 +27,7 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUserBalances();
+    this.getUserCollectionsBalances();
   }
 
   ngOnDestroy() {
@@ -33,7 +36,7 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
   }
 
   getUserBalances() {
-    this.service
+    this.businessService
       .getUserBalances(this.userData.user_id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((response: any) => {
@@ -50,6 +53,28 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
             }
           );
           this.balanceData = balanceDataMap;
+        }
+      });
+  }
+
+  getUserCollectionsBalances() {
+    this.businessService
+      .getUserCollectionsBalances(this.userData.user_id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response: any) => {
+        if (response.data.length) {
+          const balanceDataMap = this.toMap(response.data);
+          Object.keys(balanceDataMap).forEach(
+            (currency) => {
+              const balances = balanceDataMap[currency].map(data => data.balance);
+              const result = balances
+                ?.reduce((acc: any, cur: any) => {
+                  return balanceDataMap[currency] = acc + Number(cur)
+                }, 0) as number;
+                return result.toFixed(2);
+            }
+          );
+          this.collectionsBalanceData = balanceDataMap;
         }
       });
   }

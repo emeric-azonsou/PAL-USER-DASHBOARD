@@ -65,4 +65,9 @@ export const colorVariables: Record<string, ColorVariable> = {
     default: 'rgb(233, 30, 99)',
     contrast: 'rgb(255, 255, 255)'
   },
+  pal: {
+    light: 'rgba(43, 185, 150, 0.1)',
+    default: 'rgb(43, 185, 150)',
+    contrast: 'rgb(255, 255, 255)'
+  }
 };

@@ -108,7 +108,7 @@ export class RechargeAccountComponent implements OnInit {
         } else {
           this.hasError = true;
           this.errorMessage = response['message'];
-          this.router.navigate(['/dashboards/transactions'])
+          this.router.navigate(['/dashboards/cash-in-transactions'])
         }
       }),
       error => {

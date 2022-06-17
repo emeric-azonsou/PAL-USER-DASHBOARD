@@ -14,7 +14,7 @@ export const environment = {
   verifyReleaseCodeUrl: `https://api.pals.africa/api/verifycode`,
   cancelTransactionUrl: `https://api.pals.africa/api/cancelescrowtransaction/`,
   getBusinessUserPayoutsUrl: `https://api.pals.africa/api/getbusinessuserpayouts/`,
-  getBusinessTransactionsSummaryUrl: `https://api.pals.africa/api/getusertransactionssummary/`,
+  getBusinessTransactionsSummaryUrl: `https://api.pals.africa/api/getmerchantusertransactionssummary/`,
   updateDeliveyUrl: `https://api.pals.africa/api/updatedeliveryphone`,
   getUserAccountDetailsUrl: `https://api.pals.africa/api/getbusinessuseraccountdetails/`,
   registerPalUserUrl: `https://api.pals.africa/api/registerpaluser`,
@@ -30,7 +30,12 @@ export const environment = {
   requestTopUpUrl: `https://api.pals.africa/api/requesttopup`,
   getUserTopUpsUrl: `https://api.pals.africa/api/getusertopups/`,
   getUserBalancesUrl: `https://api.pals.africa/api/getbusinessuserbalances/`,
-  sendOTPtoEmailUrl: `https://api.pals.africa/api/sendotptoemailforgotpassword`,
+  getUserCollectionsBalancesUrl: `https://api.pals.africa/api/getbusinessusercollectionbalances/`,
+  endOTPtoEmailUrl: `https://api.pals.africa/api/sendotptoemailforgotpassword`,
   updatePasswordUrl:  `https://api.pals.africa/api/forgotpassupdate`,
-  verifyEmailUrl: `https://api.pals.africa/api/verifyemail`
+  verifyEmailUrl: `https://api.pals.africa/api/verifyemail`,
+
+  getTransactionsReportUrl: `https://api.pals.africa/api/gettransactionsreport/`,
+  getClientDetailsUrl: `https://api.pals.africa/api/getmomoclientdata`,
+
 };

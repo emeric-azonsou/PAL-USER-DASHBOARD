@@ -1,52 +1,114 @@
 <div class="cardContainer">
-    <div class="grid grid-cols-4 gap-20 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-        <div class="...">
-            <div class="overflow-hidden rounded shadow-md ">
-                <div class="mb-2 text-xs text-center devise">XOF</div>
-                <div class="px-6 ">
-                    <div>
-                        <h5 class="text-sm text-center balance">Balance</h5>
-                        <h4 class="text-sm font-bold text-center">{{(balanceData?.XOF  | number : '1.2-2') || '0.00'}}</h4>
-                        <!-- <h5 class="text-sm text-center payout"></h5> -->
-                    </div>
-                </div>
+  <div
+    class="grid grid-cols-4 gap-20 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-4"
+  >
+    <div class="...">
+      <div class="overflow-hidden rounded shadow-md">
+        <div class="mb-2 text-xs text-center devise">XOF</div>
+        <div class="px-6">
+          <div>
+            <h5 class="text-sm text-center balance">Balance</h5>
+            <div class="flex flex-col sm:flex-row">
+              <div class="sm:ml-6 flex-auto balance-type">
+                <text class="cash-in">Cash in</text>
+                <h4 class="text-sm font-bold text-center">
+                  {{
+                    (collectionsBalanceData?.XOF | number: "1.2-2") || "0.00"
+                  }}
+                </h4>
+              </div>
+              <div class="sm:ml-6 flex-auto">
+                <text class="cash-out">Cash Out</text>
+                <h4 class="text-sm font-bold text-center">
+                  {{ (balanceData?.XOF | number: "1.2-2") || "0.00" }}
+                </h4>
+              </div>
             </div>
+            <!-- <h5 class="text-sm text-center payout"></h5> -->
+          </div>
         </div>
-        <div class="...">
-            <div class="overflow-hidden rounded shadow-md w-50 " >
-                <div class="mb-2 text-xs text-center devise">XAF</div>
-                <div class="px-6 ">
-                    <div>
-                        <h5 class="text-sm text-center balance">Balance</h5>
-                        <h4 class="text-sm font-bold text-center">{{(balanceData?.XAF  | number : '1.2-2') || '0.00'}}</h4>
-                        <!-- <h5 class="text-sm text-center payout"></h5> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="...">
-            <div class="overflow-hidden rounded shadow-md w-50">
-                <div class="mb-2 text-xs text-center devise">GHS</div>
-                <div class="px-6 ">
-                    <div>
-                        <h5 class="text-sm text-center balance">Balance</h5>
-                        <h4 class="text-sm font-bold text-center">{{(balanceData?.GHS  | number : '1.2-2') || '0.00'}}</h4>
-                        <!-- <h5 class="text-sm text-center payout"></h5> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="...">
-            <div class="overflow-hidden rounded shadow-md w-50">
-                <div class="mb-2 text-xs text-center devise">NGN</div>
-                <div class="px-6 ">
-                    <div>
-                        <h5 class="text-sm text-center balance">Balance</h5>
-                        <h4 class="text-sm font-bold text-center">{{(balanceData?.NGN  | number : '1.2-2') || '0.00'}}</h4>
-                        <h5 class="text-sm text-center payout"></h5>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="...">
+      <div class="overflow-hidden rounded shadow-md w-50">
+        <div class="mb-2 text-xs text-center devise">XAF</div>
+        <div class="px-6">
+          <div>
+            <h5 class="text-sm text-center balance">Balance</h5>
+            <div class="flex flex-col sm:flex-row">
+              <div class="sm:ml-6 flex-auto balance-type">
+                <text class="cash-in">Cash in</text>
+                <h4 class="text-sm font-bold text-center">
+                  {{
+                    (collectionsBalanceData?.XAF | number: "1.2-2") || "0.00"
+                  }}
+                </h4>
+              </div>
+              <div class="sm:ml-6 flex-auto">
+                <text class="cash-out">Cash Out</text>
+                <h4 class="text-sm font-bold text-center">
+                  {{ (balanceData?.XAF | number: "1.2-2") || "0.00" }}
+                </h4>
+              </div>
+            </div>
+            <!-- <h5 class="text-sm text-center payout"></h5> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="...">
+      <div class="overflow-hidden rounded shadow-md w-50">
+        <div class="mb-2 text-xs text-center devise">GHS</div>
+        <div class="px-6">
+          <div>
+            <h5 class="text-sm text-center balance">Balance</h5>
+            <div class="flex flex-col sm:flex-row">
+              <div class="sm:ml-6 flex-auto balance-type">
+                <text class="cash-in">Cash in</text>
+                <h4 class="text-sm font-bold text-center">
+                  {{
+                    (collectionsBalanceData?.GHS | number: "1.2-2") || "0.00"
+                  }}
+                </h4>
+              </div>
+              <div class="sm:ml-6 flex-auto">
+                <text class="cash-out">Cash Out</text>
+                <h4 class="text-sm font-bold text-center">
+                  {{ (balanceData?.GHS | number: "1.2-2") || "0.00" }}
+                </h4>
+              </div>
+            </div>
+            <!-- <h5 class="text-sm text-center payout"></h5> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="...">
+      <div class="overflow-hidden rounded shadow-md w-50">
+        <div class="mb-2 text-xs text-center devise">NGN</div>
+        <div class="px-6">
+          <div>
+            <h5 class="text-sm text-center balance">Balance</h5>
+            <div class="flex flex-col sm:flex-row">
+              <div class="sm:ml-6 flex-auto balance-type">
+                <text class="cash-in">Cash in</text>
+                <h4 class="text-sm font-bold text-center">
+                  {{
+                    (collectionsBalanceData?.NGN | number: "1.2-2") || "0.00"
+                  }}
+                </h4>
+              </div>
+              <div class="sm:ml-6 flex-auto">
+                <text class="cash-out">Cash Out</text>
+                <h4 class="text-sm font-bold text-center">
+                  {{ (balanceData?.NGN | number: "1.2-2") || "0.00" }}
+                </h4>
+              </div>
+            </div>
+            <!-- <h5 class="text-sm text-center payout"></h5> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
