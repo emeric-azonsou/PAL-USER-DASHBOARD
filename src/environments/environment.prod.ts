@@ -31,7 +31,7 @@ export const environment = {
   getUserTopUpsUrl: `https://api.pals.africa/api/getusertopups/`,
   getUserBalancesUrl: `https://api.pals.africa/api/getbusinessuserbalances/`,
   getUserCollectionsBalancesUrl: `https://api.pals.africa/api/getbusinessusercollectionbalances/`,
-  endOTPtoEmailUrl: `https://api.pals.africa/api/sendotptoemailforgotpassword`,
+  sendOTPtoEmailUrl: `https://api.pals.africa/api/sendotptoemailforgotpassword`,
   updatePasswordUrl:  `https://api.pals.africa/api/forgotpassupdate`,
   verifyEmailUrl: `https://api.pals.africa/api/verifyemail`,
 
