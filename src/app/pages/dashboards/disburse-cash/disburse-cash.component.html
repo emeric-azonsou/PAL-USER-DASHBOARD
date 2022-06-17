@@ -72,12 +72,8 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <!-- <mat-label>Select me</mat-label> -->
-          <mat-select formControlName="operator">
-            <!-- <mat-option value="orange">Orange</mat-option> -->
-            <mat-option value="mtn">MTN</mat-option>
-            <mat-option value="vodafone">VODAFONE</mat-option>
-            <mat-option value="airtel-tigo">AIRTEL-TIGO</mat-option>
+          <mat-select formControlName="operator" >
+            <mat-option *ngFor="let provider of getNetworkProviders(transferForm.get('country').value)" [value]="provider.value">{{provider.name}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

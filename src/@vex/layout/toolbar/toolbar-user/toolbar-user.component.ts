@@ -13,6 +13,7 @@ import { User } from "src/app/Models/models.interface";
 @Component({
   selector: "vex-toolbar-user",
   templateUrl: "./toolbar-user.component.html",
+  styleUrls: ["./toolbar-user.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarUserComponent implements OnInit {
@@ -27,14 +28,15 @@ export class ToolbarUserComponent implements OnInit {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
 
+
+  }
+
+  ngOnInit() {
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
     if (businessData !== "undefined") {
       this.userBusinessData = JSON.parse(businessData);
       this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
     }
-  }
-
-  ngOnInit() {
     const origin = window.location.origin;
     console.log(`type of logo is ${typeof this.userBusinessData.business_logo}`)
     if(this.userBusinessData.business_logo !== 'undefined') {

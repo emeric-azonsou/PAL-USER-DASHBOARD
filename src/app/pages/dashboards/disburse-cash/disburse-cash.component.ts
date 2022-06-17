@@ -53,12 +53,12 @@ import { ConfirmTransfersComponent } from "../confirm-transfers/confirm-transfer
 })
 export class DisburseCashComponent implements OnInit, OnDestroy {
   countryData = {
-    BJ: { currency: "XOF", code: "+229" },
-    CI: { currency: "XOF", code: "+225" },
-    GH: { currency: "GHS", code: "+233" },
-    TG: { currency: "XOF", code: "+227" },
-    SN: { currency: "XOF", code: "+221" },
-    NG: { currency: "NGN", code: "+234" },
+    BJ: { currency: "XOF", code: "+229", operators: [{name: 'MTN', value: 'mtn'}] },
+    CI: { currency: "XOF", code: "+225", operators: [{name: 'MTN', value: 'mtn'}, {name: 'ORANGE', value: 'orange'}] },
+    GH: { currency: "GHS", code: "+233", operators: [{name: 'MTN', value: 'mtn'}, {name: 'VODAFONE', value: 'vodafone'}, {name: 'TIGO', value: 'airtel-tigo'}] },
+    TG: { currency: "XOF", code: "+227", operators: [{name: 'MOOV', value: 'moov'}]  },
+    SN: { currency: "XOF", code: "+221", operators: [{name: 'MTN', value: 'MTN'},  {name: 'ORANGE', value: 'orange'}] },
+    NG: { currency: "NGN", code: "+234", operators: [{name: 'MTN', value: 'MTN'}] },
   };
 
   icClose = icClose;
@@ -152,6 +152,11 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  getNetworkProviders(value) {
+    console.log('[value]', value);
+    return this.countryData[value].operators;
+  }
+
   confirmTransfers() {
     this.dialog.open(ConfirmTransfersComponent);
     const fee = this.getPalFee(
@@ -214,7 +219,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((data) => {
         this.moduleData = data;
-        this.networkProviders =  this.moduleData.map((data: any) => data.country);
+        this.networkProviders =  this.moduleData.map((data: any) => data.operator);
       });
   }
 
@@ -238,6 +243,9 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       );
     });
     this.module_id = selectedModule["id"];
+    if(option.value === 'BJ') {
+      this.networkProviders = this.networkProviders.filter(provider => provider !== 'vodafone' && provider !== 'airtel-tigo');
+    }
   }
 
   createCustomer() {
