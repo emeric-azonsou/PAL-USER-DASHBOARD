@@ -30,6 +30,7 @@
   }
   .rounded{
     background-color:white;
+    width: max-content;
   }
 
   text {
@@ -38,11 +39,11 @@
 
   text.cash-in {
     color: #2BB996;
-    font-weight: bold;
+    font-weight: bolder !important;
   }
   text.cash-out {
     color: #ff0045;
-    font-weight: bolder;
+    font-weight: bolder !important;
   }
 
   // div.balance-type {
