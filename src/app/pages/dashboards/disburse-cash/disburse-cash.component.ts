@@ -99,6 +99,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   merchantSummaryData: SummaryData;
   placeHolder: string = "96040522";
   networkProviders: any[];
+  country: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -232,20 +233,26 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   setCurrency(option) {
+    this.country = option.value;
     this.currency = this.countryData[option.value].currency;
     this.dailingCode = this.countryData[option.value].code;
     this.maxLength = this.getMaxLength(option.value);
     this.placeHolder = option.value === 'BJ' ? "96040522" : "0544990518" ; 
     // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
-    const selectedModule = this.moduleData.find((data) => {
-      return (
-        data["country"] === option.value && data["currency"] === this.currency
-      );
-    });
-    this.module_id = selectedModule["id"];
+   
     if(option.value === 'BJ') {
       this.networkProviders = this.networkProviders.filter(provider => provider !== 'vodafone' && provider !== 'airtel-tigo');
     }
+  }
+
+  setSelectedModule(option) {
+    const selectedModule = this.moduleData.find((data) => {
+      return (
+        data["country"] === this.country && data["currency"] === this.currency && data["operator"] === option.value
+      );
+    });
+    this.module_id = selectedModule["id"];
+    console.log('selectedModule', selectedModule);
   }
 
   createCustomer() {
