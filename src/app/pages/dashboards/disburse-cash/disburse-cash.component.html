@@ -72,8 +72,19 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <mat-select formControlName="operator" >
-            <mat-option *ngFor="let provider of getNetworkProviders(transferForm.get('country').value)" [value]="provider.value">{{provider.name}}</mat-option>
+          <mat-select
+            (selectionChange)="setSelectedModule($event)"
+            formControlName="operator"
+          >
+            <mat-option
+              *ngFor="
+                let provider of getNetworkProviders(
+                  transferForm.get('country').value
+                )
+              "
+              [value]="provider.value"
+              >{{ provider.name }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </div>

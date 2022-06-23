@@ -30,6 +30,7 @@
 }
 .rounded{
   background-color:white;
+  width: max-content;
 }
 
 text {
@@ -38,7 +39,13 @@ text {
 
 text.cash-in {
   color: #2BB996;
+  font-weight: bolder !important;
 }
 text.cash-out {
   color: #ff0045;
+  font-weight: bolder !important;
 }
+
+// div.balance-type {
+//   min-width: 50px !important;
+// }
