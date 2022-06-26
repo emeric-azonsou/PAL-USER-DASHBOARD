@@ -154,7 +154,6 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   getNetworkProviders(value) {
-    console.log('[value]', value);
     return this.countryData[value].operators;
   }
 
@@ -243,6 +242,10 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     if(option.value === 'BJ') {
       this.networkProviders = this.networkProviders.filter(provider => provider !== 'vodafone' && provider !== 'airtel-tigo');
     }
+    if(option.value === 'GH') {
+      this.module_id = 103
+      this.transferForm.get('operator').setValue('mtn');
+    }
   }
 
   setSelectedModule(option) {
@@ -252,7 +255,6 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       );
     });
     this.module_id = selectedModule["id"];
-    console.log('selectedModule', selectedModule);
   }
 
   createCustomer() {

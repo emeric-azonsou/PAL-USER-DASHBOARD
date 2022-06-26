@@ -84,7 +84,7 @@ export class ConfirmTransfersComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((response) => {
       if (response && response["status"] === true) {
-        this.clientName = response['data'].phone_no;
+        this.clientName = response['data'].full_name;
       } else {
         this.noNameErrorMessage = response["message"];
       }
