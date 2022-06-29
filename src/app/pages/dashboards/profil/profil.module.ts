@@ -51,7 +51,9 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     AngularFileUploaderModule,
     MatFileUploadModule,
     MaterialFileInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+  
+    
   ],
 })
 export class ProfilModule {}

@@ -20,6 +20,9 @@ import { BUSINESS_DATA_KEY, SUMMARY_DATA_KEY, USER_SESSION_KEY } from 'src/app/M
 import { Router } from '@angular/router';
 import { BusinessService } from 'src/app/services/business.service';
 import { Subject } from 'rxjs';
+import { MerchantData, User } from 'src/app/Models/models.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { NoBusinessModalComponent } from 'src/app/pages/dashboards/no-business-modal/no-business-modal.component';
 
 
 @Component({
@@ -53,14 +56,17 @@ export class SidenavComponent implements OnInit, OnDestroy {
   businessUserData: any;
   hasBusinessRegistered: boolean;
   unsubscribe$ = new Subject();
+  businessData: MerchantData;
+  
 
 
 
   constructor(private navigationService: NavigationService,
               private layoutService: LayoutService,
               private configService: ConfigService,
-              router: Router,
-              private businessService: BusinessService
+              private router: Router,
+              private businessService: BusinessService,
+              private dialog: MatDialog
               ) { 
                 const sessionData = localStorage.getItem(USER_SESSION_KEY);
                 this.userData = JSON.parse(sessionData);
@@ -72,6 +78,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
     this.getUserBusinessData(this.userData.user_id);
     this.getUserBusinessSummary(this.userData.user_id);
+
+   
+    
   }
 
   ngOnDestroy() {
@@ -110,4 +119,13 @@ export class SidenavComponent implements OnInit, OnDestroy {
       localStorage.setItem(SUMMARY_DATA_KEY, response);
     })
   }
+
+  onViewApiPart() {
+    if (this.userData.hasBusiness || !!this.businessData) {
+      this.router.navigate(["/dashboards/api"]);
+    } else {
+      this.dialog.open(NoBusinessModalComponent);
+    }
+  }
+
 }

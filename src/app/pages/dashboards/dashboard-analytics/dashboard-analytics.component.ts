@@ -105,7 +105,7 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
   icTimer = icTimer;
   icMoreVert = icMoreVert;
   dateArray: string[];
-  options: import("e:/Noworri/PAL-USER-DASHBOARD/src/@vex/components/chart/chart.component").ApexOptions;
+  options: import("E:/PARTIE PROFECTIONNELLE/PROJETS ENTREPRISES/PALS.AFRICA/PAL-USER-DASHBOARD/src/@vex/components/chart/chart.component").ApexOptions;
   currentMonthTransactions: any;
   unsubscribe$ = new Subject();
   userData: any;

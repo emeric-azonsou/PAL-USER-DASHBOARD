@@ -15,7 +15,7 @@
   <div class="p-10 reponssivebutton">
     <div class="dropdown inline-block relative">
       <button (click)='toggleMenu()' class="bg text-gray-700 font-semibold  moreplus py-2 px-4 rounded inline-flex items-center">
-        <span class="mr-1" >More +</span>
+        <span class="mr-1 " >More +</span>
         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
       </button>
       <ul class="dropdown-menu absolute  text-gray-700 pt-1 respbutton " *ngIf='isOpen'>
@@ -42,29 +42,12 @@
       </button>
     </div>
   </div>
+  <div>
+    <button class="disburs2" mat-raised-button type="button" (click)='openDisbursePopup()'>Disburse cash
+    </button>
+  </div>
 
   <div class="p-10">
-
-    <!-- <div class="relative inline-block dropdown btn-smal-grp">
-      <button class="inline-flex items-center px-4 py-2 font-semibold text-gray-700 bg-gray-300 rounded">
-        <span class="mr-1">More + </span>
-        <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-        </svg>
-      </button>
-      <ul class="absolute hidden pt-1 text-gray-700 dropdown-menu">
-        <li class="">
-          <button class="disburs" mat-raised-button type="button" (click)='openDisbursePopup()'>Disburse cash
-          </button>
-        </li>
-        <li class="">
-          <button class="apiDoc" (click)='onViewApiPart()' mat-raised-button type="button">
-            API
-          </button>
-        </li>
-      </ul>
-    </div> -->
-
   </div>
   <mat-menu #addNewMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
   </mat-menu>
@@ -79,13 +62,9 @@
   <span fxFlex></span>
 
   <div class="flex items-center -mx-1  rigthside">
-    <!-- 
-    <div class="px-1">
-      <vex-toolbar-notifications></vex-toolbar-notifications>
-    </div> -->
     <button class="add-funds" mat-raised-button type="button" (click)='openRechargePopup()'>Add Funds
     </button>
-    <div class="px-1 ">
+    <div class="px-1  profil ">
       <vex-toolbar-user></vex-toolbar-user>
     </div>
   </div>

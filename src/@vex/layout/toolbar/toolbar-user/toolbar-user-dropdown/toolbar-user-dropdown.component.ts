@@ -42,7 +42,7 @@ export interface OnlineStatus {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarUserDropdownComponent implements OnInit {
-  items: MenuItem[] = [
+ businessSettingItems: MenuItem[] = [
     {
       id: "1",
       icon: icAccountCircle,
@@ -51,6 +51,19 @@ export class ToolbarUserDropdownComponent implements OnInit {
       colorClass: "text-teal",
       route: "/dashboards/profile",
     },
+   
+  ];
+
+  palApiItems: MenuItem[] = [
+    {
+      id: "1",
+      icon: icAccountCircle,
+      label: "PAL API",
+      description: "",
+      colorClass: "text-teal",
+      route: "/dashboards/api",
+    },
+   
   ];
 
   statuses: OnlineStatus[] = [
