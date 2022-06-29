@@ -9,9 +9,9 @@
             <div>
               <h5 class="text-sm text-center balance">Balance</h5>
               <div class="flex flex-col sm:flex-row">
-                <div class="sm:ml-6 flex-auto balance-type">
-                  <text class="cash-in">Cash in</text>
-                  <h4 class="text-sm font-bold text-center">
+                <div class="sm:ml-6  top-0 right-50 flex-auto balance-type">
+                  <text class="cash-in  ">Cash in</text>
+                  <h4 class="text-sm amount font-bold text-center">
                     {{
                       (collectionsBalanceData?.XOF | number: "1.2-2") || "0.00"
                     }}
@@ -38,7 +38,7 @@
               <div class="flex flex-col sm:flex-row">
                 <div class="sm:ml-6 flex-auto balance-type">
                   <text class="cash-in">Cash in</text>
-                  <h4 class="text-sm font-bold text-center">
+                  <h4 class="text-sm amount font-bold text-center">
                     {{
                       (collectionsBalanceData?.XAF | number: "1.2-2") || "0.00"
                     }}
@@ -65,7 +65,7 @@
               <div class="flex flex-col sm:flex-row">
                 <div class="sm:ml-6 flex-auto balance-type">
                   <text class="cash-in">Cash in</text>
-                  <h4 class="text-sm font-bold text-center">
+                  <h4 class="text-sm amount font-bold text-center">
                     {{
                       (collectionsBalanceData?.GHS | number: "1.2-2") || "0.00"
                     }}
@@ -92,7 +92,7 @@
               <div class="flex flex-col sm:flex-row">
                 <div class="sm:ml-6 flex-auto balance-type">
                   <text class="cash-in">Cash in</text>
-                  <h4 class="text-sm font-bold text-center">
+                  <h4 class="text-sm amount font-bold text-center">
                     {{
                       (collectionsBalanceData?.NGN | number: "1.2-2") || "0.00"
                     }}
