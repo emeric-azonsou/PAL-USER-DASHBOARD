@@ -16,7 +16,7 @@ import { catchError, take, takeUntil } from "rxjs/operators";
 import { USER_SESSION_KEY } from "src/app/Models/constants";
 import { Subject, throwError } from "rxjs";
 import { UserSession } from "src/app/Models/models.interface";
-
+export const USER_CREDENTIALS = "credentials";
 @Component({
   selector: "vex-login",
   templateUrl: "./login.component.html",
@@ -37,18 +37,28 @@ export class LoginComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
   isInvalidvUser: boolean;
   sessionResponse: UserSession;
+  userCredentials: {
+    email: string;
+    password: string;
+  };
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
     private snackbar: MatSnackBar,
     private authService: AuthserviceService
-  ) {}
+  ) {
+    const credentialsData = localStorage.getItem(USER_CREDENTIALS);
+    if(credentialsData) {
+      this.userCredentials = JSON.parse(credentialsData);
+    }
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
-      email: ["", [Validators.required, Validators.email]],
-      password: ["", Validators.required],
+      email: [ this.userCredentials?.email || "", [Validators.required, Validators.email]],
+      password: [ this.userCredentials?.password || "", Validators.required],
+      remember: [false]
     });
   }
 
@@ -69,9 +79,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
+ 
     this.isProcessing = true;
     const email = this.form.value["email"];
     const password = this.form.value["password"];
+    console.log('[remember]', this.form.value['remember']);
+    if(this.form.value['remember'] === true) {
+      const credentials = { email, password };
+      localStorage.setItem(USER_CREDENTIALS, JSON.stringify(credentials));
+    }
     this.authService
       .login(email, password)
       .pipe(take(1))
@@ -95,7 +111,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             USER_SESSION_KEY,
             JSON.stringify(this.sessionResponse)
           );
-          this.router.navigate(["/dashboards/home"]);
+          this.router.navigate(["/dashboards/analytics"]);
         } else {
           this.isProcessing = false;
           this.hasError = true;

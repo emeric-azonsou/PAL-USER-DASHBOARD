@@ -204,6 +204,7 @@ export class ProfilComponent implements OnInit {
   businessData: MerchantData;
   isUpdating: boolean;
 
+
   constructor(
     private cd: ChangeDetectorRef,
     private formBuilder: FormBuilder,
@@ -249,7 +250,7 @@ export class ProfilComponent implements OnInit {
       business_logo: [""],
       staff_size: [""],
       website: [""],
-      callback_url: [""]
+      callback_url: [""],
     });
 
     this.updateBusinessForm = this.formBuilder.group({
@@ -281,8 +282,8 @@ export class ProfilComponent implements OnInit {
       company_documentUpload: [""],
       business_logo: [""],
       staff_size: [this.businessData?.staff_size, Validators.required],
-      website: [this.businessData?.website],
-      callback_url: [this.businessData?.callback_url || ""]
+      website: [this.businessData?.website || ""],
+      callback_url: [this.businessData?.callback_url || ""],
     });
     // this.businessPhoneInputStyl();
     // this.deliveryManInputStyl();
@@ -343,7 +344,7 @@ export class ProfilComponent implements OnInit {
           );
           const parsedUrl = new URL(window.location.href);
           const baseUrl = parsedUrl.origin;
-          window.location.replace(`${baseUrl}/dashboards/home`);
+          window.location.replace(`${baseUrl}/dashboards/analytics`);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;
@@ -380,7 +381,7 @@ export class ProfilComponent implements OnInit {
           );
           const parsedUrl = new URL(window.location.href);
           const baseUrl = parsedUrl.origin;
-          window.location.replace(`${baseUrl}/dashboards/home`);
+          window.location.replace(`${baseUrl}/dashboards/analytics`);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;

@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { IconModule } from '@visurel/iconify-angular';
 import { RouterModule } from '@angular/router';
+import { ToolbarUserModule } from '../toolbar/toolbar-user/toolbar-user.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     MatIconModule,
     IconModule,
-    RouterModule
+    RouterModule,
+    ToolbarUserModule
   ],
   exports: [SidenavComponent]
 })

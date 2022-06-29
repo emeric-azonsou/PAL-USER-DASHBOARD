@@ -4,7 +4,7 @@ import {
   HttpErrorResponse,
   HttpParams,
 } from "@angular/common/http";
-import { Observable, throwError as observableThrowError, throwError } from "rxjs";
+import { Observable, Subject, throwError as observableThrowError, throwError } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 
@@ -12,7 +12,13 @@ import { environment } from "src/environments/environment";
   providedIn: "root",
 })
 export class AuthserviceService {
-  constructor(private http: HttpClient) {}
+  
+  private userLoggedIn = new Subject<boolean>();
+
+  constructor(private http: HttpClient) {
+
+    this.userLoggedIn.next(false);
+  }
 
   login(email, password): Observable<any> {
     const url = environment.loginUrl;
@@ -24,6 +30,7 @@ export class AuthserviceService {
 
     return this.http.post(url, body).pipe(
       map((response: Response) => {
+        this.setUserLoggedIn(true);
         return response;
       }),
       catchError((error: any) => {
@@ -281,4 +288,14 @@ export class AuthserviceService {
       })
     );
   }
+
+
+  setUserLoggedIn(userLoggedIn: boolean) {
+    this.userLoggedIn.next(userLoggedIn);
+  }
+
+  getUserLoggedIn(): Observable<boolean> {
+    return this.userLoggedIn.asObservable();
+  }
+
 }

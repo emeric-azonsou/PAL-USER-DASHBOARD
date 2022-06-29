@@ -3,16 +3,21 @@
 <form [formGroup]="transferForm">
   <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
     <h2 class="m-0 headline" fxFlex="auto">DISBURSE CASH</h2>
-    <!-- <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
-        <mat-icon [icIcon]="icMoreVert"></mat-icon>
-      </button> -->
-    <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
-      <mat-icon  class="icon" [icIcon]="icClose"></mat-icon>
+  
+    <button
+      class="text-secondary"
+      mat-dialog-close
+      mat-icon-button
+      type="button"
+    >
+      <mat-icon class="icon" [icIcon]="icClose"></mat-icon>
     </button>
   </div>
   <mat-divider class="-mx-6 text-border"></mat-divider>
-  <mat-dialog-content fxLayout="column" class="content-part  mx-50">
-    <div class=" grid   respon   grid-flow-col  xs:grid-cols-4 xs:grid-rows-4  sm:grid-rows-2 sm:grid-cols-2  md:grid-cols-2 md:grid-rows-2   gap-8 ">
+  <mat-dialog-content fxLayout="column" class="content-part mx-50">
+    <div
+      class="grid respon grid-flow-col xs:grid-cols-4 xs:grid-rows-4 sm:grid-rows-2 sm:grid-cols-2 md:grid-cols-2 md:grid-rows-2 gap-8"
+    >
       <div>
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
@@ -21,7 +26,10 @@
         </div>
         <mat-form-field appearance="fill">
           <!-- <mat-label>Select Country You're disbursing to</mat-label> -->
-          <mat-select (selectionChange)="setCurrency($event)" formControlName="country">
+          <mat-select
+            (selectionChange)="setCurrency($event)"
+            formControlName="country"
+          >
             <!-- <mat-option value="GH">GHANA</mat-option> -->
             <mat-option value="BJ">BENIN</mat-option>
             <mat-option value="GH">GHANA</mat-option>
@@ -36,12 +44,20 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <input (ngModelChange)='onCheckConfirmNumber()' matInput formControlName="phone_no" #input placeholder="96040522"
-            maxlength="{{ maxLength }}" />
+          <input
+            (ngModelChange)="onCheckConfirmNumber()"
+            matInput
+            formControlName="phone_no"
+            #input
+            placeholder="{{ placeHolder }}"
+            maxlength="{{ maxLength }}"
+          />
           <mat-error>
-            <span *ngFor="
+            <span
+              *ngFor="
                 let error of transferForm.get('phone_no').errors | keyvalue
-              ">
+              "
+            >
               {{ validationMessages.phone_no[error.key] }}
             </span>
           </mat-error>
@@ -54,10 +70,19 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <!-- <mat-label>Select me</mat-label> -->
-          <mat-select formControlName="provider">
-            <!-- <mat-option value="orange">Orange</mat-option> -->
-            <mat-option value="mtn">MTN</mat-option>
+          <mat-select
+            (selectionChange)="setSelectedModule($event)"
+            formControlName="operator"
+          >
+            <mat-option
+              *ngFor="
+                let provider of getNetworkProviders(
+                  transferForm.get('country').value
+                )
+              "
+              [value]="provider.value"
+              >{{ provider.name }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </div>
@@ -68,23 +93,30 @@
           </div>
         </div>
         <mat-form-field appearance="fill">
-          <input (ngModelChange)='onCheckConfirmNumber()' matInput formControlName="repeat_phone_no" #input
-            placeholder="96040522" maxlength="{{ maxLength }}" />
+          <input
+            (ngModelChange)="onCheckConfirmNumber()"
+            matInput
+            formControlName="repeat_phone_no"
+            #input
+            placeholder="{{ placeHolder }}"
+            maxlength="{{ maxLength }}"
+          />
           <mat-error>
-            <span *ngFor="
-                let error of transferForm.get('repeat_phone_no').errors | keyvalue
-              ">
+            <span
+              *ngFor="
+                let error of transferForm.get('repeat_phone_no').errors
+                  | keyvalue
+              "
+            >
               {{ validationMessages.repeat_phone_no[error.key] }}
             </span>
-
           </mat-error>
-         
         </mat-form-field>
-         <mat-error>
-            <span  class="identical" *ngIf='hasPhoneInputError'>
-              {{checkPhoneErrorMessage}}
-            </span>
-          </mat-error>
+        <mat-error>
+          <span class="identical" *ngIf="hasPhoneInputError">
+            {{ checkPhoneErrorMessage }}
+          </span>
+        </mat-error>
       </div>
     </div>
     <div>
@@ -100,17 +132,28 @@
           <h6>{{ currency }}</h6>
         </mat-icon>
         <mat-error>
-          <span *ngFor="let error of transferForm.get('amount').errors | keyvalue">
+          <span
+            *ngFor="let error of transferForm.get('amount').errors | keyvalue"
+          >
             {{ validationMessages.amount[error.key] }}
           </span>
         </mat-error>
-      </mat-form-field> 
+      </mat-form-field>
     </div>
   </mat-dialog-content>
-  <mat-dialog-actions  align="end"  class="button " >
+  <mat-dialog-actions align="end" class="button">
     <!-- <mat-error  align="start" *ngIf="hasError || transferForm.invalid" class="fiel-requierd">
       <h6> {{ errorMessage || "All * fields are required" }}</h6>
     </mat-error> -->
-    <button  color="primary" mat-button type="button" [disabled]="isDisbursing || transferForm.invalid"  class="send-button"     (click)="confirmTransfers()" >   {{ isDisbursing === true ? "Processing..." : "Confirm" }}</button>
+    <button
+      color="primary"
+      mat-button
+      type="button"
+      [disabled]="transferForm.invalid || hasPhoneInputError"
+      class="send-button"
+      (click)="confirmTransfers()"
+    >
+      confirm
+    </button>
   </mat-dialog-actions>
 </form>

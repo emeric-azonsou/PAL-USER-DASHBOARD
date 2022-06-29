@@ -18,7 +18,7 @@ export const environment = {
   verifyReleaseCodeUrl: `https://api-test.pals.africa/api/verifycode`,
   cancelTransactionUrl: `https://api-test.pals.africa/api/cancelescrowtransaction`,
   getBusinessUserPayoutsUrl: `https://api-test.pals.africa/api/getbusinessuserpayouts`,
-  getBusinessTransactionsSummaryUrl: `https://api-test.pals.africa/api/getusertransactionssummary`,
+  getBusinessTransactionsSummaryUrl: `https://api-test.pals.africa/api/getmerchantusertransactionssummary/`,
   updateDeliveyUrl: `https://api-test.pals.africa/api/updatedeliveryphone`,
   getUserAccountDetailsUrl: `https://api-test.pals.africa/api/getbusinessuseraccountdetails`,
   registerPalUserUrl: `https://api-test.pals.africa/api/registerpaluser`,
@@ -34,9 +34,14 @@ export const environment = {
   requestTopUpUrl: `https://api-test.pals.africa/api/requesttopup`,
   getUserTopUpsUrl: `https://api-test.pals.africa/api/getusertopups/`,
   getUserBalancesUrl: `https://api-test.pals.africa/api/getbusinessuserbalances/`,
+  getUserCollectionsBalancesUrl: `https://api-test.pals.africa/api/getbusinessusercollectionbalances/`,
   sendOTPtoEmailUrl: `https://api-test.pals.africa/api/sendotptoemailforgotpassword`,
   updatePasswordUrl:  `https://api-test.pals.africa/api/forgotpassupdate`,
-  verifyEmailUrl: `https://api-test.pals.africa/api/verifyemail`
+  verifyEmailUrl: `https://api-test.pals.africa/api/verifyemail`,
+
+  getTransactionsReportUrl: `https://api-test.pals.africa/api/gettransactionsreport/`,
+
+  getClientDetailsUrl: `https://api-test.pals.africa/api/getmomoclientdata`,
 
 };
 /*

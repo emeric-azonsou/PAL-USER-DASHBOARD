@@ -28,7 +28,7 @@
     <div class="sidenav-items">
       <a
         class="item"
-        [routerLink]="['/dashboards/home']"
+        [routerLink]="['/dashboards/analytics']"
         routerLinkActive="router-link-active"
         fxLayout="row"
         matRipple
@@ -46,34 +46,68 @@
 
       <a
         class="item"
-        [routerLink]="['/dashboards/top-up-transactions']"
+        [routerLink]="['/dashboards/cash-in-transactions']"
         routerLinkActive="router-link-active"
         fxLayout="row"
         matRipple
       >
         <div class="flex items-center flex-none speci-nav sidenav-toolbar">
           <ic-icon
-            [icon]="icAssignment"
+            [icon]="icArrowDown"
             class="mr-1"
             inline="true"
             size="1.50rem"
           ></ic-icon>
-          <span class="item-label text-md" fxFlex="auto">
-            Top Up Transactions</span
-          >
+          <span class="item-label text-md" fxFlex="auto"> Cash In</span>
         </div>
       </a>
-      <!-- <div class="flex items-center flex-none speci-nav sidenav-toolbar">
-        <a class="item" [routerLink]="['/dashboards/transactions']" routerLinkActive="router-link-active" fxLayout="row" matRipple>
-         <ic-icon [icon]="icAttachMoney" class="mr-1" inline="true" size="1.50rem"></ic-icon>
-          <span class="item-label text-md" fxFlex="auto"> Transactions</span>
-        </a>
-      </div> -->
+
+      <a
+        class="item"
+        [routerLink]="['/dashboards/cash-out-transactions']"
+        routerLinkActive="router-link-active"
+        fxLayout="row"
+        matRipple
+      >
+        <div class="flex items-center flex-none speci-nav sidenav-toolbar">
+          <ic-icon
+            [icon]="icArrowUp"
+            class="mr-1"
+            inline="true"
+            size="1.50rem"
+          ></ic-icon>
+          <span class="item-label text-md" fxFlex="auto"> Cash Out</span>
+        </div>
+      </a>
+      <a
+        class="item"
+        [routerLink]="['/dashboards/balance']"
+        routerLinkActive="router-link-active"
+        fxLayout="row"
+        matRipple
+      >
+        <div class="flex items-center flex-none speci-nav sidenav-toolbar">
+          <ic-icon
+            [icon]="icWallet"
+            class="mr-1"
+            inline="true"
+            size="1.50rem"
+          ></ic-icon>
+          <span class="item-label text-md" fxFlex="auto"> Balance</span>
+        </div>
+      </a>
       <vex-sidenav-item
         *ngFor="let item of items; trackBy: trackByRoute"
         [item]="item"
         [level]="0"
       ></vex-sidenav-item>
+      <div class="px-1 profil">
+        <vex-toolbar-user></vex-toolbar-user>
+        <div class="user-profil-info">
+          <div class="dropdown-heading">{{ businessUserData.business_legal_name }}</div>
+          <div class="dropdown-heading">{{ userData.first_name }} {{ userData.last_name }}</div>
+        </div>
+      </div>
     </div>
   </vex-scrollbar>
 </div>

@@ -9,15 +9,33 @@
     </div>
   </div>
   <div class="dropdown-content">
-    <a (click)="close()" *ngFor="let item of items; trackBy: trackById" [routerLink]="item.route" class="notification"
+    <a (click)="close()" *ngFor="let  businessSettingItem of  businessSettingItems; trackBy: trackById" [routerLink]="businessSettingItem.route" class="notification"
       fxLayout="row" fxLayoutAlign="start center" matRipple>
-      <mat-icon [icIcon]="item.icon" [ngClass]="item.colorClass" class="notification-icon" fxFlex="none"></mat-icon>
+      <mat-icon [icIcon]="businessSettingItem.icon" [ngClass]="businessSettingItem.colorClass" class="notification-icon" fxFlex="none"></mat-icon>
       <div fxFlex="auto">
-        <div class="notification-label">{{ item.label }}</div>
-        <div class="notification-description">{{ item.description }}</div>
+        <div class="notification-label">{{ businessSettingItem.label }}</div>
+        <div class="notification-description">{{ businessSettingItem.description }}</div>
       </div>
       <mat-icon [icIcon]="icChevronRight" class="notification-chevron" fxFlex="none"></mat-icon>
     </a>
+
+
+
+
+
+   <div class="pal-api" >
+    <a     (click)="close()" *ngFor="let  palApiItem of  palApiItems; trackBy: trackById" [routerLink]="palApiItem.route" class="notification"
+    fxLayout="row" fxLayoutAlign="start center" matRipple>
+    <mat-icon [icIcon]="palApiItem.icon" [ngClass]="palApiItem.colorClass" class="notification-icon" fxFlex="none"></mat-icon>
+    <div fxFlex="auto">
+      <div class="notification-label">{{ palApiItem.label }}</div>
+      <div class="notification-description">{{ palApiItem.description }}</div>
+    </div>
+    <mat-icon [icIcon]="icChevronRight" class="notification-chevron" fxFlex="none"></mat-icon>
+  </a>
+   </div>
+
+    
   </div>
   <div class="dropdown-footer" fxLayout="row" fxLayoutAlign="space-between center">
     <a (click)="logout()" color="primary" mat-button>LOGOUT</a>

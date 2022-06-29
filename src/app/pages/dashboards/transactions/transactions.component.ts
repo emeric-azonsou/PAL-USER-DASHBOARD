@@ -28,6 +28,8 @@ import { PercentPipe } from "@angular/common";
 import { LoadingBarService } from "@ngx-loading-bar/core";
 import { SummaryData } from "src/app/Models/models.interface";
 import * as moment from 'moment';
+import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
+import { stagger40ms } from "src/@vex/animations/stagger.animation";
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {
@@ -75,6 +77,10 @@ export interface PeriodicElement {
   selector: "vex-transactions",
   templateUrl: "./transactions.component.html",
   styleUrls: ["./transactions.component.scss"],
+  animations: [
+    fadeInUp400ms,
+    stagger40ms
+  ],
 })
 export class TransactionsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [

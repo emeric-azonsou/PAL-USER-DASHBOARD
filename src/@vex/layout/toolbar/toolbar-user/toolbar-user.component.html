@@ -6,7 +6,7 @@
   
   <!-- s -->
   <div class="flex items-center justify-center rounded-full h-9 w-9 text-primary bg-primary-light">
-    <mat-icon *ngIf="!userData.photo" [icIcon]="icPerson"></mat-icon>
-    <img *ngIf="userData.photo" [src]="userPhoto" />
+    <mat-icon *ngIf="!userBusinessData?.business_logo" [icIcon]="icPerson"></mat-icon>
+    <img *ngIf="userBusinessData?.business_logo" [src]="userPhoto" />
   </div>
 </div>

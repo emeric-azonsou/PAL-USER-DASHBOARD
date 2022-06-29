@@ -40,9 +40,11 @@ import {
   User,
 } from "src/app/Models/models.interface";
 import { isThisSecond } from "date-fns";
-
-import { ConfirmTransfersComponent } from "../confirm-transfers/confirm-transfers.component";
 import { SharedDataService } from "src/app/services/shared-data.service";
+import { ConfirmTransfersComponent } from "../confirm-transfers/confirm-transfers.component";
+
+// import { ConfirmTransfersComponent } from "../confirm-transfers/confirm-transfers.component";
+// import { SharedDataService } from "src/app/services/shared-data.service";
 
 @Component({
   selector: "vex-disburse-cash",
@@ -51,12 +53,12 @@ import { SharedDataService } from "src/app/services/shared-data.service";
 })
 export class DisburseCashComponent implements OnInit, OnDestroy {
   countryData = {
-    BJ: { currency: "XOF", code: "+229" },
-    CI: { currency: "XOF", code: "+225" },
-    GH: { currency: "GHS", code: "+233" },
-    TG: { currency: "XOF", code: "+227" },
-    SN: { currency: "XOF", code: "+221" },
-    NG: { currency: "NGN", code: "+234" },
+    BJ: { currency: "XOF", code: "+229", operators: [{name: 'MTN', value: 'mtn'}] },
+    CI: { currency: "XOF", code: "+225", operators: [{name: 'MTN', value: 'mtn'}, {name: 'ORANGE', value: 'orange'}] },
+    GH: { currency: "GHS", code: "+233", operators: [{name: 'MTN', value: 'mtn'}, {name: 'VODAFONE', value: 'vodafone'}, {name: 'AIRTEL-TIGO', value: 'airtel-tigo'}] },
+    TG: { currency: "XOF", code: "+227", operators: [{name: 'MOOV', value: 'moov'}]  },
+    SN: { currency: "XOF", code: "+221", operators: [{name: 'MTN', value: 'MTN'},  {name: 'ORANGE', value: 'orange'}] },
+    NG: { currency: "NGN", code: "+234", operators: [{name: 'MTN', value: 'MTN'}] },
   };
 
   icClose = icClose;
@@ -90,11 +92,14 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       min: "Please provide a correct phone number",
     },
     amount: {
-      pattern: "Only digits allowed",
+      pattern: "Only decimal number allowed",
       required: "Amount This Field  is required.",
     },
   };
   merchantSummaryData: SummaryData;
+  placeHolder: string = "96040522";
+  networkProviders: any[];
+  country: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -135,8 +140,8 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
           Validators.min(8),
         ],
       ],
-      amount: ["", [Validators.required, Validators.pattern(/[0-9]+$/)]],
-      provider: ["mtn", Validators.required],
+      amount: ["", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      operator: ["mtn", Validators.required],
     });
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
@@ -148,13 +153,18 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  getNetworkProviders(value) {
+    console.log('[value]', value);
+    return this.countryData[value].operators;
+  }
+
   confirmTransfers() {
     this.dialog.open(ConfirmTransfersComponent);
     const fee = this.getPalFee(
       this.transferForm.value["amount"],
       this.transferForm.value["country"]
     );
-    const amount = parseInt(this.transferForm.value["amount"], 10);
+    const amount = parseFloat(this.transferForm.value["amount"]);
     this.transferForm.get("amount").setValue(amount);
     // this.isDisbursing = true;
     this.transferData = {
@@ -176,7 +186,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   get maxTransactionAmount() {
-    return this.currency === "XOF" ? 560000 : 6020;
+    return this.currency === "XOF" ? 560000 : 6190;
   }
 
   get hasExceededFeeTransfers(): boolean {
@@ -210,6 +220,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((data) => {
         this.moduleData = data;
+        this.networkProviders =  this.moduleData.map((data: any) => data.operator);
       });
   }
 
@@ -222,16 +233,26 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   }
 
   setCurrency(option) {
+    this.country = option.value;
     this.currency = this.countryData[option.value].currency;
     this.dailingCode = this.countryData[option.value].code;
     this.maxLength = this.getMaxLength(option.value);
+    this.placeHolder = option.value === 'BJ' ? "96040522" : "0544990518" ; 
     // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
+   
+    if(option.value === 'BJ') {
+      this.networkProviders = this.networkProviders.filter(provider => provider !== 'vodafone' && provider !== 'airtel-tigo');
+    }
+  }
+
+  setSelectedModule(option) {
     const selectedModule = this.moduleData.find((data) => {
       return (
-        data["country"] === option.value && data["currency"] === this.currency
+        data["country"] === this.country && data["currency"] === this.currency && data["operator"] === option.value
       );
     });
     this.module_id = selectedModule["id"];
+    console.log('selectedModule', selectedModule);
   }
 
   createCustomer() {

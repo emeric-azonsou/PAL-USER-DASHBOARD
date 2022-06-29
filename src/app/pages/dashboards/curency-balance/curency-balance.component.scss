@@ -30,4 +30,27 @@
   }
   .rounded{
     background-color:white;
+    width: max-content;
   }
+
+  text {
+    font-size: 11px;
+  }
+
+  text.cash-in {
+    color: #2BB996;
+    font-weight: bolder !important;
+    position: relative;
+    right: 12px;
+  }
+  text.cash-out {
+    color: #ff0045;
+    font-weight: bolder !important;
+  }
+.amount{
+  position: relative;
+  right: 12px;
+}
+  // div.balance-type {
+  //   min-width: 50px !important;
+  // }

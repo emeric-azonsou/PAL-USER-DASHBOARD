@@ -8,6 +8,9 @@ import { HomeComponent } from "./pages/dashboards/home/home.component";
 import { TopUpTransactionComponent } from "./pages/dashboards/top-up-transaction/top-up-transaction.component";
 import { ProfilComponent } from "./pages/dashboards/profil/profil.component";
 import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
+import { ReportsComponent } from './pages/dashboards/reports/reports.component';
+import { DashboardAnalyticsComponent } from './pages/dashboards/dashboard-analytics/dashboard-analytics.component';
+import { CollectionsReportComponent } from './pages/dashboards/reports/collections-report/collections-report.component';
 
 const routes: VexRoutes = [
   {
@@ -77,20 +80,24 @@ const routes: VexRoutes = [
     component: CustomLayoutComponent,
     children: [
       {
-        path: "dashboards/analytics",
-        redirectTo: "/",
+        path: "analytics",
+        component: DashboardAnalyticsComponent,
       },
       {
         path: "home",
         component: HomeComponent,
       },
       {
-        path: "top-up-transactions",
+        path: "balance",
         component: TopUpTransactionComponent,
       },
       {
-        path: "transactions",
-        component: TransactionsComponent,
+        path: "cash-out-transactions",
+        component: ReportsComponent,
+      },
+      {
+        path: "cash-in-transactions",
+        component: CollectionsReportComponent,
       },
       {
         path: "profile",
