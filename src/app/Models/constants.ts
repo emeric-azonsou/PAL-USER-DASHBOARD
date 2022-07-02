@@ -72,6 +72,13 @@ export const PAYOUT_TABLE_LABELS = [
       previewClass: 'bg-red'
     },
     {
+      text: 'Network Error',
+      cssClasses: ['text-red','bg-red-light'],
+      textClass: 'text-red',
+      bgClass: 'bg-red-light',
+      previewClass: 'bg-red'
+    },
+    {
       text: 'Denied',
       cssClasses: ['text-red','bg-red-light'],
       textClass: 'text-red',

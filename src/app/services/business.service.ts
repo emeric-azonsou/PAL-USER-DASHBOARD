@@ -137,13 +137,22 @@ export class BusinessService {
   }
 
   getClientDetails(getmomoclientdata, credentials) {
-    const url = `${environment.getClientDetailsUrl}?phone_no=${getmomoclientdata}`;
+    const url = `${environment.getClientDetailsUrl}`;
+    const params = new HttpParams()
+    .set('user_id', getmomoclientdata['user_id'])
+    .set('module_id', getmomoclientdata['module_id'])
+    .set('operator', getmomoclientdata['operator'])
+    .set('phone_no', getmomoclientdata['phone_no'])
+    .set('currency', getmomoclientdata['currency'])
+    .set('country', getmomoclientdata['country'])
+    .set('amount', getmomoclientdata['amount']);
+
     // const url = `http://127.0.0.1:8000/api/getmomoclientdata?phone_no=${getmomoclientdata}`;
     const headers = new HttpHeaders({
       'Authorization' : `Bearer ${credentials}`,
       'Content-Type': 'application/json'
     })    
-    return this.http.get(url, { headers }).pipe(
+    return this.http.get(url, { headers: headers, params: params }).pipe(
       map((response: any) => {
         return response;
       }),

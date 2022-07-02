@@ -13,7 +13,8 @@
   </div>
   <div>
     <h6 *ngIf="clientName">Client Name: {{ clientName }}</h6>
-    <h6 *ngIf="!clientName"> Warning: {{ noNameErrorMessage }}</h6>
+    <h6 *ngIf="isFetchingName">Fetching Client Name...</h6>
+    <h6 *ngIf="!clientName && !isFetchingName"> Warning: {{ noNameErrorMessage }}</h6>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>

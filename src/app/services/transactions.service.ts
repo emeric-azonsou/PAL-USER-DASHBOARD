@@ -56,6 +56,9 @@ export class TransactionsService {
             } else if (values.status === 5) {
               values.state = "Re-Processing";
               values.status = "Re-Processing";
+            } else if (values.status === 6) {
+              values.state = "Network Error";
+              values.status = "Network Error";
             }
           return values;
         });
@@ -120,8 +123,9 @@ export class TransactionsService {
             }
           return values;
         });
+        const filteredTransactions = transactions.filter(transaction => transaction.status !== 200);
 
-        const formattedTransactions = {...transaction, data: transactions}
+        const formattedTransactions = {...transaction, data: filteredTransactions}
 
         return formattedTransactions;
       }),

@@ -24,6 +24,7 @@ export class ConfirmTransfersComponent implements OnInit {
   contry:string;
   clientName: any;
   noNameErrorMessage: any;
+  isFetchingName: boolean;
 
   constructor(
     private transactionsService: TransactionsService,
@@ -79,10 +80,12 @@ export class ConfirmTransfersComponent implements OnInit {
   }
 
   getClientData() {
+    this.isFetchingName = true;
     this.businessService
-    .getClientDetails(this.transferData['phone_no'], this.credentials)
+    .getClientDetails(this.transferData, this.credentials)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((response) => {
+      this.isFetchingName = false
       if (response && response["status"] === true) {
         this.clientName = response['data'].full_name;
       } else {
@@ -90,6 +93,7 @@ export class ConfirmTransfersComponent implements OnInit {
       }
     }),
     (error) => {
+      this.isFetchingName = false;
       console.error(error);
     };
   }
