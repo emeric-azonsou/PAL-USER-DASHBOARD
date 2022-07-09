@@ -6530,13 +6530,6 @@
   dependencies:
     "tslib" "^1.9.0"
 
-"ngx-image-cropper@^6.1.0":
-  "integrity" "sha512-eumBdYVTzujkF9Z4tRCSlJy2FM/hjUZSJwyup8rXG7ntbRdaHT46WaxiiwJblL6xuu5BfRu1V+K0+YzOXaUuew=="
-  "resolved" "https://registry.npmjs.org/ngx-image-cropper/-/ngx-image-cropper-6.1.0.tgz"
-  "version" "6.1.0"
-  dependencies:
-    "tslib" "^2.3.0"
-
 "ngx-material-file-input@^2.1.1":
   "integrity" "sha512-FbaIjiJnL6BZtZYWLvMSn9aSaM62AZaJegloTUphmLz5jopXPzE5W+3aC+dsf9h1IIqHSCLcyv0w+qH0ypBhMA=="
   "resolved" "https://registry.npmjs.org/ngx-material-file-input/-/ngx-material-file-input-2.1.1.tgz"
@@ -9566,7 +9559,7 @@
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   "version" "1.14.1"
 
-"tslib@^2.0.0", "tslib@^2.0.1", "tslib@^2.2.0", "tslib@^2.3.0", "tslib@>=1.7.1":
+"tslib@^2.0.0", "tslib@^2.0.1", "tslib@^2.2.0", "tslib@>=1.7.1":
   "integrity" "sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ=="
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.4.0.tgz"
   "version" "2.4.0"
