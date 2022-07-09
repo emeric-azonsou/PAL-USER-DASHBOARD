@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   position: relative;
-  background-color:#2BB996;
+  background-color: #2bb996;
   padding: 50px;
 }
 .devise {
@@ -13,11 +13,13 @@
   font: Poppins;
 }
 
-.baance {
-  color: #484848;
+.balance {
   opacity: 1;
   letter-spacing: 0px;
   font: Poppins;
+  position: relative;
+  left: 1.3px;
+
 }
 .payout {
   color: #ff0045;
@@ -28,33 +30,152 @@
 .shadow-lg {
   width: 13rem;
 }
-.rounded{
-  background-color:white;
+.rounded {
+  background-color: white;
   width: max-content;
 }
 
 text {
   font-size: 11px;
 }
+.tex1{
+  position: relative;
+  left: -4px;
+}
 
 text.cash-in {
-  color: #2BB996;
+  color: #2bb996;
   font-weight: bolder !important;
+ 
 }
 text.cash-out {
   color: #ff0045;
   font-weight: bolder !important;
+  position: relative;
+  left: 5px;
 }
 
-.cash-in{
- position: relative;
- right: 15px;
+.cash-in1 {
+  position: relative;
+  top: 4px;
+  left: 4px;
+  color: #2bb996;
+  font-weight: bolder !important;
 }
-.amount{
+
+.cash-out1 {
+  position: relative;
+  top: 4px;
+  left: 8px;
+  color: #ff0045;
+  font-weight: bolder !important;
+
+}
+.text1 {
+  position: relative;
+  top: 5px;
+   left: -6px;
+}
+.text2 {
+  position: relative;
+  top: 5px;
+  left: -6px;
+}
+.cash-in {
+  position: relative;
+  left: -2px;
+
+}
+.amount {
   position: relative;
   right: 15px;
 }
 
-// div.balance-type {
-//   min-width: 50px !important;
-// }
+.currrency-box1 {
+  position: relative;
+  top: 2px;
+  padding-bottom: 5px;
+  .balance {
+    position: relative;
+    top: 6px;
+  }
+}
+.currrency-box {
+  width: 13rem;
+ 
+ }
+
+@media screen and (max-width: 596px) {
+  .currrency-box {
+   width: 14.4rem;
+  }
+
+  .tex1{
+    position: relative;
+    left: -4px;
+  }
+  .cash-in1{
+    position: relative;
+    left: 16px;
+  }
+
+  .cash-out1{
+    position: relative ;
+    left:120px ;
+    top: -35px;
+    
+  }
+
+  
+
+
+
+
+  .cash-in {
+    position: relative;
+    left:16px;
+  
+  }
+  .cash-out{
+    position: relative !important;
+    left:120px !important;
+    bottom: 41px;
+  }
+
+  
+  .text1 {
+    position: relative;
+    right: 44px;
+    top: -3px;
+    
+    width: 5px;
+  }
+  .text2 {
+    position: relative;
+   
+    top: -38px;
+    left: 120px;
+    
+    width: 5px;
+  }
+  .amount{
+    width: 30px;
+    position: relative;
+    top: 2px;
+    left: 18px;
+  }
+  .amount2   {
+    width: 30px;
+    position: relative;
+    left:7.5rem;
+    bottom: 40px;
+  }
+}
+@media screen and (min-width: 600px) {
+  .devise {
+    display: block;
+  }
+  .devise-resp {
+    display: none;
+  }
+}

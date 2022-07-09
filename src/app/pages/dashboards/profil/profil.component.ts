@@ -32,6 +32,8 @@ import { BusinessService } from "src/app/services/business.service";
 import { GeoLocationService } from "src/app/services/geo-location.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MerchantData, User } from "src/app/Models/models.interface";
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+
 
 export interface CountryState {
   name: string;
@@ -116,6 +118,17 @@ export class ProfilComponent implements OnInit {
   nameValidationPattern = /^[a-zA-Z0-9-\s]{0,25}$/;
   cityValidationPattern = /^[a-zA-Z-'\s]{0,25}$/;
   phoneNumberValidationPattern = /^[+][0-9]{0,15}$/;
+  
+
+
+
+
+
+
+
+
+
+
 
   allCreatBusinessData: object;
   userData: User;
@@ -203,6 +216,7 @@ export class ProfilComponent implements OnInit {
   updateBusinessForm: FormGroup;
   businessData: MerchantData;
   isUpdating: boolean;
+  
 
 
   constructor(
@@ -211,7 +225,8 @@ export class ProfilComponent implements OnInit {
     private router: Router,
     private businessService: BusinessService,
     private geoLocationService: GeoLocationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+   
   ) {
     this.getLocationData();
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
@@ -487,4 +502,18 @@ export class ProfilComponent implements OnInit {
       this.isLegallyRegistered = false;
     }
   }
+
+
+
+
+
+
+
+
+
+  
+
+
+
+ 
 }
