@@ -3,9 +3,7 @@
 <form [formGroup]="transferForm">
   <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
     <h2 class="m-0 headline" fxFlex="auto">DISBURSE CASH</h2>
-    <!-- <button [matMenuTriggerFor]="settingsMenu" class="text-secondary" mat-icon-button type="button">
-        <mat-icon [icIcon]="icMoreVert"></mat-icon>
-      </button> -->
+  
     <button
       class="text-secondary"
       mat-dialog-close
@@ -51,6 +49,8 @@
             matInput
             formControlName="phone_no"
             #input
+            type="tel"
+            pattern="\d*"
             placeholder="{{ placeHolder }}"
             maxlength="{{ maxLength }}"
           />
@@ -100,6 +100,8 @@
             matInput
             formControlName="repeat_phone_no"
             #input
+            type="tel"
+            pattern="\d*"
             placeholder="{{ placeHolder }}"
             maxlength="{{ maxLength }}"
           />

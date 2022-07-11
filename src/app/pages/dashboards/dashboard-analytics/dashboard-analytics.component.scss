@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   position: relative;
-  background-color:#2BB996;
+  background-color: #2bb996;
   padding: 50px;
 }
 .devise {
@@ -13,11 +13,13 @@
   font: Poppins;
 }
 
-.baance {
-  color: #484848;
+.balance {
   opacity: 1;
   letter-spacing: 0px;
   font: Poppins;
+  position: relative;
+  left: 1.3px;
+
 }
 .payout {
   color: #ff0045;
@@ -28,22 +30,65 @@
 .shadow-lg {
   width: 13rem;
 }
-.rounded{
-  background-color:white;
+.rounded {
+  background-color: white;
   width: max-content;
 }
 
 text {
   font-size: 11px;
 }
+.tex1{
+  position: relative;
+  left: -4px;
+}
 
 text.cash-in {
-  color: #2BB996;
+  color: #2bb996;
   font-weight: bolder !important;
+ 
 }
 text.cash-out {
   color: #ff0045;
   font-weight: bolder !important;
+  position: relative;
+  left: 5px;
+}
+
+.cash-in1 {
+  position: relative;
+  top: 4px;
+  left: 4px;
+  color: #2bb996;
+  font-weight: bolder !important;
+}
+
+.cash-out1 {
+  position: relative;
+  top: 4px;
+  left: 8px;
+  color: #ff0045;
+  font-weight: bolder !important;
+
+}
+.text1 {
+  position: relative;
+  top: 5px;
+   left: -6px;
+}
+.text2 {
+  position: relative;
+  top: 5px;
+  left: -6px;
+}
+.cash-in {
+  position: relative;
+  left: -2px;
+
+}
+.amount {
+  position: relative;
+  right: 15px;
 }
 
 // div.balance-type {
