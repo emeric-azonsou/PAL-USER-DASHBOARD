@@ -44,7 +44,9 @@ export class CurencyBalanceComponent implements OnInit, OnDestroy {
           const balanceDataMap = this.toMap(response.data);
           Object.keys(balanceDataMap).forEach(
             (currency) => {
-              const balances = balanceDataMap[currency].map(data => data.balance);
+              const countries = balanceDataMap[currency].map(data => data.country)
+              const filtered = balanceDataMap[currency].filter(({country}, index) => !countries.includes(country, index + 1));
+              const balances = filtered.map(data => data.balance);
               const result = balances
                 ?.reduce((acc: any, cur: any) => {
                   return balanceDataMap[currency] = acc + Number(cur)
