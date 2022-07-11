@@ -126,8 +126,6 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
     this.userData = sessionData;
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
-
-   
   }
 
   ngOnDestroy() {
@@ -135,16 +133,16 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
   ngOnInit() {
-      this.getUserBalances();
-      this.getUserCollectionsBalances();
-   
+    this.getUserBalances();
+    this.getUserCollectionsBalances();
+
     setTimeout(() => {
       const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
       if (businessData !== "undefined") {
         this.userBusinessData = JSON.parse(businessData);
         this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
       }
-  
+
       this.getTransactionsSummaryCurrentMonthData();
       const temp = [
         {
@@ -158,23 +156,22 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
     }, 3000);
   }
 
-    getUserCollectionsBalances() {
+  getUserCollectionsBalances() {
     this.service
       .getUserCollectionsBalances(this.userData.user_id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((response: any) => {
         if (response.data.length) {
           const balanceDataMap = this.toMap(response.data);
-          Object.keys(balanceDataMap).forEach(
-            (currency) => {
-              const balances = balanceDataMap[currency].map(data => data.balance);
-              const result = balances
-                ?.reduce((acc: any, cur: any) => {
-                  return balanceDataMap[currency] = acc + Number(cur)
-                }, 0) as number;
-                return result.toFixed(2);
-            }
-          );
+          Object.keys(balanceDataMap).forEach((currency) => {
+            const balances = balanceDataMap[currency].map(
+              (data) => data.balance
+            );
+            const result = balances?.reduce((acc: any, cur: any) => {
+              return (balanceDataMap[currency] = acc + Number(cur));
+            }, 0) as number;
+            return result.toFixed(2);
+          });
           this.collectionsBalanceData = balanceDataMap;
         }
       });
@@ -187,16 +184,20 @@ export class DashboardAnalyticsComponent implements OnInit, OnDestroy {
       .subscribe((response: any) => {
         if (response.data.length) {
           const balanceDataMap = this.toMap(response.data);
-          Object.keys(balanceDataMap).forEach(
-            (currency) => {
-              const balances = balanceDataMap[currency].map(data => data.balance);
-              const result = balances
-                ?.reduce((acc: any, cur: any) => {
-                  return balanceDataMap[currency] = acc + Number(cur)
-                }, 0) as number;
-                return result.toFixed(2);
-            }
-          );
+          Object.keys(balanceDataMap).forEach((currency) => {
+            const countries = balanceDataMap[currency].map(
+              (data) => data.country
+            );
+            const filtered = balanceDataMap[currency].filter(
+              ({ country }, index) => !countries.includes(country, index + 1)
+            );
+            const balances = filtered.map((data) => data.balance);
+
+            const result = balances?.reduce((acc: any, cur: any) => {
+              return (balanceDataMap[currency] = acc + Number(cur));
+            }, 0) as number;
+            return result.toFixed(2);
+          });
           this.balanceData = balanceDataMap;
         }
       });
