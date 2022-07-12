@@ -91,6 +91,91 @@ text.cash-out {
   right: 15px;
 }
 
-// div.balance-type {
-//   min-width: 50px !important;
-// }
+.currrency-box1 {
+  position: relative;
+  top: 2px;
+  padding-bottom: 5px;
+  .balance {
+    position: relative;
+    top: 6px;
+  }
+}
+.currrency-box {
+  width: 13rem;
+ 
+ }
+
+@media screen and (max-width: 596px) {
+  .currrency-box {
+   width: 14.4rem;
+  }
+
+  .tex1{
+    position: relative;
+    left: -4px;
+  }
+  .cash-in1{
+    position: relative;
+    left: 16px;
+  }
+
+  .cash-out1{
+    position: relative ;
+    left:120px ;
+    top: -35px;
+    
+  }
+
+  
+
+
+
+
+  .cash-in {
+    position: relative;
+    left:16px;
+  
+  }
+  .cash-out{
+    position: relative !important;
+    left:120px !important;
+    bottom: 41px;
+  }
+
+  
+  .text1 {
+    position: relative;
+    right: 44px;
+    top: -3px;
+    
+    width: 5px;
+  }
+  .text2 {
+    position: relative;
+   
+    top: -38px;
+    left: 120px;
+    
+    width: 5px;
+  }
+  .amount{
+    width: 30px;
+    position: relative;
+    top: 2px;
+    left: 18px;
+  }
+  .amount2   {
+    width: 30px;
+    position: relative;
+    left:7.5rem;
+    bottom: 40px;
+  }
+}
+@media screen and (min-width: 600px) {
+  .devise {
+    display: block;
+  }
+  .devise-resp {
+    display: none;
+  }
+}
