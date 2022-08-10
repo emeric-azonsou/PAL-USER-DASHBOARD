@@ -1,34 +1,25 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { DatePipe } from "@angular/common";
-import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
-import {
-  MAT_FORM_FIELD_DEFAULT_OPTIONS,
-  MatFormFieldDefaultOptions,
-} from "@angular/material/form-field";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSelectChange } from "@angular/material/select";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { Router } from "@angular/router";
-import { ReplaySubject, Observable, Subject, of } from "rxjs";
-import { takeUntil, take } from "rxjs/operators";
-import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
-import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { TableColumn } from "src/@vex/interfaces/table-column.interface";
-import {
-  BUSINESS_DATA_KEY,
-  COUNTRIES,
-  SUMMARY_DATA_KEY,
-  TRANSACTION_TABLE_LABELS,
-  USER_SESSION_KEY,
-} from "src/app/Models/constants";
-import { Customer } from "src/app/pages/apps/aio-table/interfaces/customer.model";
-import { AuthserviceService } from "src/app/services/authservice.service";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { aioTableLabels, aioTableData } from "src/static-data/aio-table-data";
-import { TableUtil } from "./tableUtil";
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { MatTableExporterDirective } from 'mat-table-exporter';
+import moment from 'moment';
+import { ReplaySubject, Observable, Subject, of } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
+import { TRANSACTION_TABLE_LABELS, COUNTRIES, USER_SESSION_KEY, SUMMARY_DATA_KEY, BUSINESS_DATA_KEY } from 'src/app/Models/constants';
+import { SummaryData } from 'src/app/Models/models.interface';
+import { Customer } from 'src/app/pages/apps/aio-table/interfaces/customer.model';
+import { AuthserviceService } from 'src/app/services/authservice.service';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { aioTableLabels, aioTableData } from 'src/static-data/aio-table-data';
+import { TableUtil } from '../../reports/transactions-report/tableUtil';
 
 import icEdit from "@iconify/icons-ic/twotone-edit";
 import icDelete from "@iconify/icons-ic/twotone-delete";
@@ -46,32 +37,13 @@ import icRefresh from "@iconify/icons-ic/twotone-refresh";
 import icBook from "@iconify/icons-ic/twotone-book";
 import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
 import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
-
-import { SummaryData } from "src/app/Models/models.interface";
-import moment from "moment";
-import { MatTableExporterDirective } from "mat-table-exporter";
-
+import *  as XLSX from "xlsx";
 @Component({
-  selector: "vex-transactions-report",
-  templateUrl: "./transactions-report.component.html",
-  styleUrls: ["./transactions-report.component.scss"],
-  animations: [fadeInUp400ms, stagger40ms],
-  providers: [
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: "standard",
-      } as MatFormFieldDefaultOptions,
-    },
-  ],
+  selector: 'vex-bulk-disbursement',
+  templateUrl: './bulk-disbursement.component.html',
+  styleUrls: ['./bulk-disbursement.component.scss']
 })
-export class TransactionsReportComponent implements OnInit, OnDestroy {
-  layoutCtrl = new FormControl("boxed");
-
-  /**
-   * Simulating a service with HTTP that returns Observables
-   * You probably want to remove this and do all requests in a service with HTTP
-   */
+export class BulkDisbursementComponent implements OnInit {
   subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
   data$: Observable<Customer[]> = this.subject$.asObservable();
   unsubscribe$ = new Subject();
@@ -221,6 +193,9 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   transactions: any;
   userBusinessData: any;
   credentials: string;
+  file: any;
+  arrayBuffer: string | ArrayBuffer | any;
+  filelist: any[];
 
   constructor(
     private authService: AuthserviceService,
@@ -334,7 +309,27 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
     });
     this.getTransactionsList();
   }
-
+  addfile(event)     
+  {    
+  this.file= event.target.files[0];     
+  let fileReader = new FileReader();    
+  fileReader.readAsArrayBuffer(this.file);     
+  fileReader.onload = (e) => {    
+      this.arrayBuffer = fileReader.result;    
+      var data = new Uint8Array(this.arrayBuffer);    
+      var arr = new Array();    
+      for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);    
+      var bstr = arr.join("");    
+      var workbook = XLSX.read(bstr, {type:"binary"});    
+      var first_sheet_name = workbook.SheetNames[0];    
+      var worksheet = workbook.Sheets[first_sheet_name];    
+      console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));    
+        var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true});     
+            this.filelist = [];    
+            console.log(this.filelist)    
+    
+  }    
+}  
   getTransactionsList(filteredData = null) {
     this.isLoading = true;
     // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid

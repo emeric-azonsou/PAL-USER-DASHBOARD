@@ -53,12 +53,46 @@ import { ConfirmTransfersComponent } from "../confirm-transfers/confirm-transfer
 })
 export class DisburseCashComponent implements OnInit, OnDestroy {
   countryData = {
-    BJ: { currency: "XOF", code: "+229", operators: [{name: 'MTN', value: 'mtn'}] },
-    CI: { currency: "XOF", code: "+225", operators: [{name: 'MTN', value: 'mtn'}, {name: 'ORANGE', value: 'orange'}] },
-    GH: { currency: "GHS", code: "+233", operators: [{name: 'MTN', value: 'mtn'}, {name: 'VODAFONE', value: 'vodafone'}, {name: 'AIRTEL-TIGO', value: 'airtel-tigo'}] },
-    TG: { currency: "XOF", code: "+227", operators: [{name: 'MOOV', value: 'moov'}]  },
-    SN: { currency: "XOF", code: "+221", operators: [{name: 'MTN', value: 'MTN'},  {name: 'ORANGE', value: 'orange'}] },
-    NG: { currency: "NGN", code: "+234", operators: [{name: 'MTN', value: 'MTN'}] },
+    BJ: {
+      currency: "XOF",
+      code: "+229",
+      operators: [{ name: "MTN", value: "mtn" }],
+    },
+    CI: {
+      currency: "XOF",
+      code: "+225",
+      operators: [
+        { name: "MTN", value: "mtn" },
+        { name: "ORANGE", value: "orange" },
+      ],
+    },
+    GH: {
+      currency: "GHS",
+      code: "+233",
+      operators: [
+        { name: "MTN", value: "mtn" },
+        { name: "VODAFONE", value: "vodafone" },
+        { name: "AIRTEL-TIGO", value: "airtel-tigo" },
+      ],
+    },
+    TG: {
+      currency: "XOF",
+      code: "+227",
+      operators: [{ name: "MOOV", value: "moov" }],
+    },
+    SN: {
+      currency: "XOF",
+      code: "+221",
+      operators: [
+        { name: "MTN", value: "MTN" },
+        { name: "ORANGE", value: "orange" },
+      ],
+    },
+    NG: {
+      currency: "NGN",
+      code: "+234",
+      operators: [{ name: "MTN", value: "MTN" }],
+    },
   };
 
   icClose = icClose;
@@ -114,14 +148,15 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
 
-    const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
-    this.userBusinessData = JSON.parse(businessData);
-
+ 
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
   }
 
   ngOnInit() {
+    const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
+    this.userBusinessData = JSON.parse(businessData);
+
     this.transferForm = this.fb.group({
       country: ["BJ", Validators.required],
       phone_no: [
@@ -142,6 +177,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       ],
       amount: ["", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
       operator: ["mtn", Validators.required],
+      object: [""],
     });
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
@@ -165,6 +201,12 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     );
     const amount = parseFloat(this.transferForm.value["amount"]);
     this.transferForm.get("amount").setValue(amount);
+
+    if (!this.transferForm.value["object"]) {
+      this.transferForm
+        .get("object")
+        .setValue(this.userBusinessData?.business_legal_name);
+    }
     // this.isDisbursing = true;
     this.transferData = {
       ...this.transferForm.value,
@@ -219,7 +261,9 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((data) => {
         this.moduleData = data;
-        this.networkProviders =  this.moduleData.map((data: any) => data.operator);
+        this.networkProviders = this.moduleData.map(
+          (data: any) => data.operator
+        );
       });
   }
 
@@ -236,22 +280,26 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     this.currency = this.countryData[option.value].currency;
     this.dailingCode = this.countryData[option.value].code;
     this.maxLength = this.getMaxLength(option.value);
-    this.placeHolder = option.value === 'BJ' ? "96040522" : "0544990518" ; 
+    this.placeHolder = option.value === "BJ" ? "96040522" : "0544990518";
     // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
-   
-    if(option.value === 'BJ') {
-      this.networkProviders = this.networkProviders.filter(provider => provider !== 'vodafone' && provider !== 'airtel-tigo');
+
+    if (option.value === "BJ") {
+      this.networkProviders = this.networkProviders.filter(
+        (provider) => provider !== "vodafone" && provider !== "airtel-tigo"
+      );
     }
-    if(option.value === 'GH') {
-      this.module_id = 103
-      this.transferForm.get('operator').setValue('mtn');
+    if (option.value === "GH") {
+      this.module_id = 103;
+      this.transferForm.get("operator").setValue("mtn");
     }
   }
 
   setSelectedModule(option) {
     const selectedModule = this.moduleData.find((data) => {
       return (
-        data["country"] === this.country && data["currency"] === this.currency && data["operator"] === option.value
+        data["country"] === this.country &&
+        data["currency"] === this.currency &&
+        data["operator"] === option.value
       );
     });
     this.module_id = selectedModule["id"];

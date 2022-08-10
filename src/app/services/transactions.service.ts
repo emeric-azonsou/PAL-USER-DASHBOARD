@@ -78,7 +78,7 @@ export class TransactionsService {
     type: string
   ) {
     let params = new HttpParams();
-    const { status, dateFrom, dateTo, country, currency, operator } = data;
+    const { object, status, dateFrom, dateTo, country, currency, operator } = data;
     // if(from & to) {
     params = params.append("dateFrom", dateFrom);
     params = params.append("dateTo", dateTo);
@@ -89,6 +89,7 @@ export class TransactionsService {
     params = params.append("currency", currency);
     params = params.append("operator", operator);
     params = params.append("status", status);
+    params = params.append("object", object);
 
     const headers = new HttpHeaders({
       "Content-Type": "application/json",

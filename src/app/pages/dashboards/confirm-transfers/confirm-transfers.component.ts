@@ -94,7 +94,8 @@ export class ConfirmTransfersComponent implements OnInit {
     }),
     (error) => {
       this.isFetchingName = false;
-      console.error(error);
+      this.noNameErrorMessage = 'Failed to retreive client name assotiated to this phone number';
+      console.log(error);
     };
   }
 

@@ -324,7 +324,25 @@ export class CollectionsReportComponent implements OnInit {
   getTransactionsList(filteredData = null) {
     this.isLoading = true;
     // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
-    this.transactionService
+    if(filteredData) {
+      const transactions = filteredData
+      this.isLoading = false;
+      this.transactionsData = transactions.map((details) => {
+        details.state = this.getStatusLabel(details.state);
+        // details.palFee = this.getPalFee(details.amount, details.country);
+        details.formatedDate = moment(details.created_at).fromNow();
+        details.country = this.getCountryName(details.country);
+        return details;
+      });
+
+      this.hasNoTransactions = transactions.length === 0 ? true : false;
+      this.dataSource = new MatTableDataSource(this.transactionsData);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+
+    }
+    else {
+      this.transactionService
       .getUserTransactions(this.userData?.user_id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
@@ -349,6 +367,7 @@ export class CollectionsReportComponent implements OnInit {
           console.error(error.message);
         }
       );
+    }
   }
 
   get isFormReady(): boolean {
