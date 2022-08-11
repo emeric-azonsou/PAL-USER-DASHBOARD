@@ -146,7 +146,7 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   searchCtrl = new FormControl();
   exportOptions = {
     fileName: "test",
-    sheet: { reportsProps: { Author: "KACHELAN" } },
+    sheet: { reportsProps: { Author: "PAL" } },
   };
 
   labels = aioTableLabels;

@@ -32,6 +32,7 @@ export const environment = {
   updateBusinessUrl: `http://127.0.0.1:8000/api/updatebusiness/`,
   getModulesDataUrl: `http://127.0.0.1:8000/api/getmodulesdata`,
   createTransferUrl: `http://127.0.0.1:8000/api/createtransfer`,
+  createBulkTransferUrl: `http://127.0.0.1:8000/api/createbulktransfer`,
   requestTopUpUrl: `http://127.0.0.1:8000/api/requesttopup`,
   getUserTopUpsUrl: `http://127.0.0.1:8000/api/getusertopups/`,
   getUserBalancesUrl: `http://127.0.0.1:8000/api/getbusinessuserbalances/`,

@@ -62,7 +62,19 @@ export class TransactionsService {
           return values;
         });
 
-        return transactions;
+        const filteredTransactions = transactions.filter(
+          (transaction) =>
+            transaction.status !== 200 &&
+            transaction.status !== 8 &&
+            transaction.satus !== 7
+        );
+
+        const formattedTransactions = {
+          ...transaction,
+          data: filteredTransactions,
+        };
+
+        return formattedTransactions;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);
@@ -140,6 +152,40 @@ export class TransactionsService {
         };
 
         return formattedTransactions;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
+  createBulkTransfer(
+    credentials: string,
+    userId: string,
+    transferData: any,
+    formData: any,
+    type: string
+  ) {
+    let params = new HttpParams();
+    const { object, country, currency } = formData;
+    const body = {
+      user_id: userId,
+      country: country,
+      currency: currency,
+      data: transferData,
+      object:object
+    }
+ 
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${credentials}`,
+    });
+
+    const url = `${environment.createBulkTransferUrl}`;
+    return this.http.post(url, body, { headers: headers }).pipe(
+      map((data: any) => {
+        return data;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);
