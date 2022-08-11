@@ -11,6 +11,7 @@ import { TransactionsComponent } from './pages/dashboards/transactions/transacti
 import { ReportsComponent } from './pages/dashboards/reports/reports.component';
 import { DashboardAnalyticsComponent } from './pages/dashboards/dashboard-analytics/dashboard-analytics.component';
 import { CollectionsReportComponent } from './pages/dashboards/reports/collections-report/collections-report.component';
+import { BulkDisbursementComponent } from './pages/dashboards/disburse-cash/bulk-disbursement/bulk-disbursement.component';
 
 const routes: VexRoutes = [
   {
@@ -102,6 +103,10 @@ const routes: VexRoutes = [
       {
         path: "profile",
         component: ProfilComponent,
+      },
+      {
+        path:'bulk-disbursement',
+        component:BulkDisbursementComponent
       },
       {
         path:'api',

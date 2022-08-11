@@ -51,6 +51,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { DatePipe } from "@angular/common";
 import { DashboardAnalyticsModule } from "./pages/dashboards/dashboard-analytics/dashboard-analytics.module";
 import { CollectionsReportComponent } from "./pages/dashboards/reports/collections-report/collections-report.component";
+import { BulkDisbursementComponent } from "./pages/dashboards/disburse-cash/bulk-disbursement/bulk-disbursement.component";
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { CollectionsReportComponent } from "./pages/dashboards/reports/collectio
     TopUpTransactionComponent,
     CurencyBalanceComponent,
     DisburseCashComponent,
+    BulkDisbursementComponent,
     TransactionsComponent,
     RechargeAccountComponent,
     ApiComponent,

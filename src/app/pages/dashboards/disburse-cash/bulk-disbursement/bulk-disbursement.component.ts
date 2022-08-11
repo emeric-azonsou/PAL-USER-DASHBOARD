@@ -1,25 +1,31 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSelectChange } from '@angular/material/select';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { MatTableExporterDirective } from 'mat-table-exporter';
-import moment from 'moment';
-import { ReplaySubject, Observable, Subject, of } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
-import { TRANSACTION_TABLE_LABELS, COUNTRIES, USER_SESSION_KEY, SUMMARY_DATA_KEY, BUSINESS_DATA_KEY } from 'src/app/Models/constants';
-import { SummaryData } from 'src/app/Models/models.interface';
-import { Customer } from 'src/app/pages/apps/aio-table/interfaces/customer.model';
-import { AuthserviceService } from 'src/app/services/authservice.service';
-import { TransactionsService } from 'src/app/services/transactions.service';
-import { aioTableLabels, aioTableData } from 'src/static-data/aio-table-data';
-import { TableUtil } from '../../reports/transactions-report/tableUtil';
+import { SelectionModel } from "@angular/cdk/collections";
+import { DatePipe } from "@angular/common";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSelectChange } from "@angular/material/select";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { MatTableExporterDirective } from "mat-table-exporter";
+import moment from "moment";
+import { ReplaySubject, Observable, Subject, of } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { TableColumn } from "src/@vex/interfaces/table-column.interface";
+import {
+  TRANSACTION_TABLE_LABELS,
+  COUNTRIES,
+  USER_SESSION_KEY,
+  SUMMARY_DATA_KEY,
+  BUSINESS_DATA_KEY,
+} from "src/app/Models/constants";
+import { SummaryData } from "src/app/Models/models.interface";
+import { Customer } from "src/app/pages/apps/aio-table/interfaces/customer.model";
+import { AuthserviceService } from "src/app/services/authservice.service";
+import { TransactionsService } from "src/app/services/transactions.service";
+import { aioTableLabels, aioTableData } from "src/static-data/aio-table-data";
+import { TableUtil } from "../../reports/transactions-report/tableUtil";
 
 import icEdit from "@iconify/icons-ic/twotone-edit";
 import icDelete from "@iconify/icons-ic/twotone-delete";
@@ -37,11 +43,11 @@ import icRefresh from "@iconify/icons-ic/twotone-refresh";
 import icBook from "@iconify/icons-ic/twotone-book";
 import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
 import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
-import *  as XLSX from "xlsx";
+import * as XLSX from "xlsx";
 @Component({
-  selector: 'vex-bulk-disbursement',
-  templateUrl: './bulk-disbursement.component.html',
-  styleUrls: ['./bulk-disbursement.component.scss']
+  selector: "vex-bulk-disbursement",
+  templateUrl: "./bulk-disbursement.component.html",
+  styleUrls: ["./bulk-disbursement.component.scss"],
 })
 export class BulkDisbursementComponent implements OnInit {
   subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
@@ -50,17 +56,17 @@ export class BulkDisbursementComponent implements OnInit {
   @Input()
   columns: TableColumn<Customer>[] = [
     // { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
-    { label: "ID", property: "reference", type: "text", visible: true },
+    { label: "Phone", property: "phone", type: "text", visible: true },
     {
-      label: "date",
-      property: "created_at",
+      label: "amount",
+      property: "amount",
       type: "text",
       visible: true,
       cssClasses: ["text-secondary", "font-medium"],
     },
     {
-      label: "Country",
-      property: "country",
+      label: "Name",
+      property: "name",
       type: "text",
       visible: true,
       cssClasses: ["font-medium"],
@@ -72,53 +78,16 @@ export class BulkDisbursementComponent implements OnInit {
       visible: true,
       cssClasses: ["font-medium"],
     },
-    {
-      label: "Wallet Number",
-      property: "phone_no",
-      type: "text",
-      visible: true,
-    },
-    // { label: "Contact", property: "phone_no", type: "button", visible: true },
-    {
-      label: "Pal fee",
-      property: "charges",
-      type: "text",
-      visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
-    },
-
-    {
-      label: "Currency",
-      property: "currency",
-      type: "text",
-      visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
-    },
-    {
-      label: "Amount Sent",
-      property: "amount",
-      type: "text",
-      visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
-    },
-    {
-      label: "Status",
-      property: "status",
-      type: "badge",
-      visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
-    },
-    // { label: 'Labels', property: 'labels', type: 'button', visible: true },
-    // { label: "Actions", property: "actions", type: "button", visible: true },
-  ];
+    ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
+  layoutCtrl = new FormControl("boxed");
+  searchCtrl = new FormControl();
   dataSource: MatTableDataSource<any> | null;
   selection = new SelectionModel<any>(true, []);
-  searchCtrl = new FormControl();
   exportOptions = {
     fileName: "test",
-    sheet: { reportsProps: { Author: "KACHELAN" } },
+    sheet: { reportsProps: { Author: "PAL" } },
   };
 
   labels = aioTableLabels;
@@ -143,18 +112,7 @@ export class BulkDisbursementComponent implements OnInit {
 
   statusLabels = TRANSACTION_TABLE_LABELS;
 
-  displayedColumns: string[] = [
-    "id",
-    "created_at",
-    "country",
-    "provider",
-    "wallet",
-    "fee",
-    "currency",
-    "amount",
-    "network_transaction_ref",
-    "status",
-  ];
+  displayedColumns: string[] = ["phone", "amount", "network", "name"];
 
   statuses = [
     { name: "Pending", value: 1 },
@@ -196,6 +154,10 @@ export class BulkDisbursementComponent implements OnInit {
   file: any;
   arrayBuffer: string | ArrayBuffer | any;
   filelist: any[];
+  hasData: boolean;
+  isDisbursing: boolean;
+  disbursementData: unknown[];
+  totalAmount = 0;
 
   constructor(
     private authService: AuthserviceService,
@@ -264,10 +226,6 @@ export class BulkDisbursementComponent implements OnInit {
     }
   }
 
-  refreshData() {
-    this.getTransactionsList();
-  }
-
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -278,12 +236,9 @@ export class BulkDisbursementComponent implements OnInit {
     //   this.subject$.next(customers);
     // });
     this.form = this.fb.group({
-      country: [""],
-      dateFrom: [""],
-      dateTo: [""],
-      currency: [""],
-      operator: [""],
-      status: [""],
+      country: ["", Validators.required],
+      currency: ["", Validators.required],
+      purpose: [""],
     });
     // this.data$.pipe(
     //   filter<OrderSession[]>(Boolean)
@@ -291,7 +246,6 @@ export class BulkDisbursementComponent implements OnInit {
     //   this.orders = customers;
     //   this.dataSource.data = customers;
     // });
-    this.search();
 
     this.searchCtrl.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
@@ -301,79 +255,37 @@ export class BulkDisbursementComponent implements OnInit {
   resetForm() {
     this.form = this.fb.group({
       country: [""],
-      dateFrom: [""],
-      dateTo: [""],
       currency: [""],
-      operator: [""],
-      status: [""],
+      purpose: [""],
     });
-    this.getTransactionsList();
   }
-  addfile(event)     
-  {    
-  this.file= event.target.files[0];     
-  let fileReader = new FileReader();    
-  fileReader.readAsArrayBuffer(this.file);     
-  fileReader.onload = (e) => {    
-      this.arrayBuffer = fileReader.result;    
-      var data = new Uint8Array(this.arrayBuffer);    
-      var arr = new Array();    
-      for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);    
-      var bstr = arr.join("");    
-      var workbook = XLSX.read(bstr, {type:"binary"});    
-      var first_sheet_name = workbook.SheetNames[0];    
-      var worksheet = workbook.Sheets[first_sheet_name];    
-      console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true}));    
-        var arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true});     
-            this.filelist = [];    
-            console.log(this.filelist)    
-    
-  }    
-}  
-  getTransactionsList(filteredData = null) {
-    this.isLoading = true;
-    // userId = 'a9twRK1JpPPQDrB6hNvfAr2ju682' this is a test User_uid
-    if (filteredData) {
-      const transactions = filteredData;
-      this.isLoading = false;
-      this.transactionsData = transactions.map((details) => {
-        details.state = this.getStatusLabel(details.state);
-        // details.palFee = this.getPalFee(details.amount, details.country);
-        details.formatedDate = moment(details.created_at).fromNow();
-        details.country = this.getCountryName(details.country);
-        return details;
-      });
 
-      this.hasNoTransactions = transactions.length === 0 ? true : false;
-      this.dataSource = new MatTableDataSource(this.transactionsData);
+  addfile(event) {
+    this.file = event.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(this.file);
+    fileReader.onload = (e) => {
+      this.arrayBuffer = fileReader.result;
+      const data = new Uint8Array(this.arrayBuffer);
+      const arr = new Array();
+      for (let i = 0; i != data.length; ++i)
+        arr[i] = String.fromCharCode(data[i]);
+      const bstr = arr.join("");
+      const workbook = XLSX.read(bstr, { type: "binary" });
+      const first_sheet_name = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[first_sheet_name];
+      const disbursementData = XLSX.utils.sheet_to_json(worksheet, {
+        raw: true,
+      });
+      this.disbursementData = disbursementData;
+      const amounts = disbursementData.map((data: any) => data.amount);
+      this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
+      this.dataSource = new MatTableDataSource(disbursementData);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    } else {
-      this.transactionService
-        .getUserTransactions(this.userData?.user_id)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(
-          (transactions) => {
-            this.isLoading = false;
-            this.transactionsData = transactions.map((details) => {
-              details.state = this.getStatusLabel(details.state);
-              // details.palFee = this.getPalFee(details.amount, details.country);
-              details.formatedDate = moment(details.created_at).fromNow();
-              details.country = this.getCountryName(details.country);
-              return details;
-            });
+      this.hasData = true;
 
-            this.hasNoTransactions = transactions.length === 0 ? true : false;
-            this.dataSource = new MatTableDataSource(this.transactionsData);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-          },
-          (error) => {
-            this.isLoading = false;
-            console.error(error.message);
-          }
-        );
-    }
+    };
   }
 
   get isFormReady(): boolean {
@@ -401,56 +313,38 @@ export class BulkDisbursementComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+  openSnackbar(message) {
+    this.snackBar.open(message, "CLOSE", {
+      duration: 3000,
+      horizontalPosition: "right",
+    });
+  }
+ 
+  disburse() {
 
-  search() {
-    if (this.form.value["dateFrom"] && this.form.value["dateTo"]) {
-      const from = new Date(this.form.value["dateFrom"])
-        .toISOString()
-        .slice(0, 19)
-        .replace("T", " ");
-      const to = new Date(this.form.value["dateTo"])
-        .toISOString()
-        .slice(0, 19)
-        .replace("T", " ");
-      // this.form.get("dateFrom").setValue(from);
-      // this.form.get("dateTo").setValue(to);
-      this.form.value["dateFrom"] = from;
-      this.form.value["dateTo"] = to;
-    }
-
-    this.isLoading = true;
+    this.isDisbursing = true;
     this.transactionService
-      .searchTransactions(
+      .createBulkTransfer(
         this.credentials,
         this.userBusinessData?.user_id,
+        this.disbursementData,
         this.form.value,
         "mobile_transfers"
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (response) => {
-          this.isLoading = false;
-          if (response["status"] === true) {
-            this.transactions = response["data"];
-            this.getTransactionsList(response["data"]);
-            this.dataSource = new MatTableDataSource();
-            this.dataSource.data = this.transactions;
-            if (!this.dataSource.data.length) {
-              this.hasError = true;
-              this.errorMessage =
-                "No data Found for the specified search criteria. Please try with different data";
-            } else {
-              this.hasError = false;
-              this.errorMessage = "";
-            }
+          this.isDisbursing = false;
+          if (response && response["status"] === true) {
+            this.openSnackbar(response["message"]);
+            window.location.reload();
           } else {
             this.hasError = true;
-            this.errorMessage =
-              "No data Found for the specified search criteria. Please try with different data";
+            this.errorMessage = response["message"];
           }
         },
         (erro) => {
-          this.isLoading = false;
+          this.isDisbursing = false;
           this.hasError = true;
           this.errorMessage =
             "No data Found for the specified search criteria. Please try with different data";

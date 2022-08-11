@@ -27,6 +27,8 @@ export const environment = {
   getModulesDataUrl: `https://api.pals.africa/api/getmodulesdata`,
   getBusinessDataUrl: `https://api.pals.africa/api/getuserbusiness/`,
   createTransferUrl: `https://api.pals.africa/api/createtransfer`,
+  createBulkTransferUrl: `http://api.pals.africa/api/createbulktransfer`,
+
   requestTopUpUrl: `https://api.pals.africa/api/requesttopup`,
   getUserTopUpsUrl: `https://api.pals.africa/api/getusertopups/`,
   getUserBalancesUrl: `https://api.pals.africa/api/getbusinessuserbalances/`,
