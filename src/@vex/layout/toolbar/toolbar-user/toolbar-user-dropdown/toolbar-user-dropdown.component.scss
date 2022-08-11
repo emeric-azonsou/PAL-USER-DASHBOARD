@@ -103,3 +103,8 @@
 .notification + .notification {
   border-top: 1px solid var(--foreground-divider);
 }
+@media screen and (min-width: 600px){
+  .pal-api{
+    display: none;
+  }
+}

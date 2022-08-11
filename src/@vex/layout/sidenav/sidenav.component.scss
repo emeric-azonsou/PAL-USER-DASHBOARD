@@ -121,3 +121,37 @@
 ic-icon{
   color: #2BB996;
 }
+
+
+.profil{
+  position: relative;
+  
+   z-index: 100;
+} 
+.tools{
+  margin-top:20px ;
+}
+.user-profil-info{
+  position: absolute;
+  
+  left: 55px;
+  top: 2px;
+  margin-left: 15px;
+
+   z-index: -1;
+  cursor: pointer;
+  .arrow-down{
+    position: relative;
+    left: 125px;
+    bottom: 30px;
+  }
+}
+
+@media screen and (min-width: 600px){
+  .disburs{
+    display: none;
+  }
+  .profil{
+    display: none;
+  }
+}

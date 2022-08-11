@@ -36,25 +36,110 @@ export class TransactionsService {
             values.total_price = values.price;
           }
 
-          if (values.status)
-          values.status = parseInt(values.status);
-            if (values.status === 0) {
-              values.state = "Cancelled";
-            } else if (values.status === 1) {
-              values.state = "Pending";
-            } else if (values.status === 2) {
-              values.state = "Processing";
-            } else if (values.status === 3) {
-              values.state = "Completed";
-            } else if (values.status === 4) {
-              values.state = "Error";
-            } else if (values.status === 5) {
-              values.state = "Re-Processing";
-            }
+          if (values.status) values.status = parseInt(values.status);
+          if (values.status === 0) {
+            values.state = "Cancelled";
+            values.status = "Cancelled";
+          } else if (values.status === 1) {
+            values.state = "Pending";
+            values.status = "Pending";
+          } else if (values.status === 2) {
+            values.state = "Processing";
+            values.status = "Processing";
+          } else if (values.status === 3) {
+            values.state = "Completed";
+            values.status = "Completed";
+          } else if (values.status === 4) {
+            values.state = "Error";
+            values.status = "Error";
+          } else if (values.status === 5) {
+            values.state = "Re-Processing";
+            values.status = "Re-Processing";
+          } else if (values.status === 6) {
+            values.state = "Network Error";
+            values.status = "Network Error";
+          }
           return values;
         });
 
         return transactions;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
+  searchTransactions(
+    credentials: string,
+    userId: string,
+    data: any,
+    type: string
+  ) {
+    let params = new HttpParams();
+    const { object, status, dateFrom, dateTo, country, currency, operator } = data;
+    // if(from & to) {
+    params = params.append("dateFrom", dateFrom);
+    params = params.append("dateTo", dateTo);
+
+    // }
+
+    params = params.append("country", country);
+    params = params.append("currency", currency);
+    params = params.append("operator", operator);
+    params = params.append("status", status);
+    params = params.append("object", object);
+
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${credentials}`,
+    });
+
+    // const url = `http://127.0.0.1:8000/api/gettransactionsreport/${userId}/${type}`;
+    const url = `${environment.getTransactionsReportUrl}${userId}/${type}`;
+    return this.http.get(url, { params: params, headers: headers }).pipe(
+      map((transaction: any) => {
+        const transactions = transaction.data.map((values) => {
+          if (typeof values.total_price === undefined) {
+            values.total_price = values.price;
+          }
+
+          if (values.status) values.status = parseInt(values.status);
+          if (values.status === 0) {
+            values.state = "Cancelled";
+            values.status = "Cancelled";
+          } else if (values.status === 1) {
+            values.state = "Pending";
+            values.status = "Pending";
+          } else if (values.status === 2) {
+            values.state = "Processing";
+            values.status = "Processing";
+          } else if (values.status === 3) {
+            values.state = "Completed";
+            values.status = "Completed";
+          } else if (values.status === 4) {
+            values.state = "Error";
+            values.status = "Error";
+          } else if (values.status === 5) {
+            values.state = "Re-Processing";
+            values.status = "Re-Processing";
+          }
+          return values;
+        });
+        const filteredTransactions = transactions.filter(
+          (transaction) =>
+            transaction.status !== 200 &&
+            transaction.status !== 8 &&
+            transaction.satus !== 7
+        );
+
+        const formattedTransactions = {
+          ...transaction,
+          data: filteredTransactions,
+        };
+
+        return formattedTransactions;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);
@@ -380,14 +465,13 @@ export class TransactionsService {
     const url = environment.getModulesDataUrl;
     // const url = 'http://127.0.0.1:8000/api/getmodulesdata';
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${credentials}`
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${credentials}`,
     });
     return this.http.get(url, { headers: headers }).pipe(
-        map((response) => {
-          return response['data'];
-        }
-      ),
+      map((response) => {
+        return response["data"];
+      }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error: ", error.message);
         return observableThrowError(error);
@@ -525,11 +609,11 @@ export class TransactionsService {
     const url = environment.createTransferUrl;
     // const url = 'http://127.0.0.1:8000/api/createtransfer';
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${credentials}`
-    })
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${credentials}`,
+    });
     return this.http
-      .post(url, transactionDetails, { headers ,responseType: "json" })
+      .post(url, transactionDetails, { headers, responseType: "json" })
       .pipe(
         map((response) => {
           return response;
@@ -554,7 +638,11 @@ export class TransactionsService {
     );
   }
 
-  getUserTransactionSummary(user_id, range = null) {
+  getUserTransactionSummary(user_id, credentials, range = null) {
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${credentials}`,
+    });
     let params = new HttpParams();
     if (range) {
       params = params.append("from", range.from);
@@ -562,8 +650,9 @@ export class TransactionsService {
     } else {
       params = null;
     }
+    // const url = `http://127.0.0.1:8000/api/getmerchantusertransactionssummary/${user_id}`;
     const url = `${environment.getBusinessTransactionsSummaryUrl}${user_id}`;
-    return this.http.get(url, { params: params }).pipe(
+    return this.http.get(url, { params: params, headers: headers }).pipe(
       map((response) => {
         return response;
       }),

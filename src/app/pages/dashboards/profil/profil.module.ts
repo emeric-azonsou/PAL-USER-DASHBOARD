@@ -25,6 +25,9 @@ import { MatFileUploadModule } from "mat-file-upload";
 import { MaterialFileInputModule } from "ngx-material-file-input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [ProfilComponent],
@@ -51,7 +54,10 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     AngularFileUploaderModule,
     MatFileUploadModule,
     MaterialFileInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    FormsModule, 
+    BrowserModule,
+    
   ],
 })
 export class ProfilModule {}

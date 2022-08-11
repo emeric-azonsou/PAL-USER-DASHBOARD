@@ -75,6 +75,10 @@ a {
   .reponssivebutton{
   display: none;
   }
+  .disburs2{
+ display: none;
+  }
+ 
  
 }
 
@@ -83,6 +87,31 @@ a {
  position: relative;
   right: 50px;
 }
+
  
 }
+@media screen and (max-width: 598px) {
+   .profil{
+    display: none;
+   }
+    .moreplus{
+      display: none;
+    }
+    .reponssivebutton{
+      display: block;
+      }
+      .disburs2{
+        background: #2BB996 0% 0% no-repeat padding-box;
+        color: #ffffff;
+        opacity: 1;
+        position: relative;
+        right: 77px;
+      }
+  }
 
+  @media screen and (min-width: 600px) {
+    .disburs2{
+      display: none;
+    }
+
+  }

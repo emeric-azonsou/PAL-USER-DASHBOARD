@@ -6,16 +6,16 @@
         fxLayout="row"
         fxLayoutAlign="start center"
       >
-        <h2 class="m-0 title">Profile</h2>
-        <mat-spinner *ngIf="!!businessForm === false" color="primary"> </mat-spinner>
+        <h2 class="m-0 title">Profil</h2>
+        <mat-spinner *ngIf="!!businessForm === false" color="primary">
+        </mat-spinner>
       </div>
-      <div [formGroup]="businessForm" *ngIf="!userData.hasBusiness && !!businessData === false">
+      <div
+        [formGroup]="businessForm"
+        *ngIf="!userData.hasBusiness && !!businessData === false"
+      >
         <div class="top">
-          <div class="proFilPhoto">
-            <!-- <mat-icon [icIcon]="icPerson"></mat-icon> -->
-            <!-- <mat-icon>perm_identity</mat-icon> -->
-            <!-- <img src="../../../../assets/img/demo/1.jpg" alt="" /> -->
-          </div>
+          <div class="proFilPhoto"></div>
           <div>
             <mat-file-upload
               [labelText]="''"
@@ -27,8 +27,6 @@
               (change)="uploadCompanyLogo($event)"
             >
             </mat-file-upload>
-            <!-- <angular-file-uploader [config]="profilPhotoConfig">
-            </angular-file-uploader> -->
           </div>
         </div>
         <div class="px-6 py-4" fxLayout="column">
@@ -128,7 +126,8 @@
               <mat-error>
                 <span
                   *ngFor="
-                    let error of businessForm.get('business_phone').errors | keyvalue
+                    let error of businessForm.get('business_phone').errors
+                      | keyvalue
                   "
                 >
                   {{ validationMessages.business_phone[error.key] }}
@@ -141,7 +140,8 @@
               <mat-error>
                 <span
                   *ngFor="
-                    let error of businessForm.get('business_address').errors | keyvalue
+                    let error of businessForm.get('business_address').errors
+                      | keyvalue
                   "
                 >
                   {{ validationMessages.business_address[error.key] }}
@@ -151,7 +151,8 @@
           </div>
           <div fxLayout="row">
             <mat-label class="upload"
-              >Upload your company registration documents (Multiple files selection allowed)
+              >Upload your company registration documents (Multiple files
+              selection allowed)
             </mat-label>
           </div>
           <div fxLayout="row" fxLayoutAlign="start">
@@ -307,7 +308,10 @@
           </div>
         </div>
       </div>
-      <div [formGroup]="updateBusinessForm" *ngIf="userData.hasBusiness || !!businessData === true">
+      <div
+        [formGroup]="updateBusinessForm"
+        *ngIf="userData.hasBusiness || !!businessData === true"
+      >
         <div class="top">
           <div class="proFilPhoto">
             <mat-icon [icIcon]="icPerson"></mat-icon>
@@ -432,7 +436,8 @@
               <mat-error>
                 <span
                   *ngFor="
-                    let error of businessForm.get('business_phone').errors | keyvalue
+                    let error of businessForm.get('business_phone').errors
+                      | keyvalue
                   "
                 >
                   {{ validationMessages.business_phone[error.key] }}
@@ -447,7 +452,8 @@
           </div>
           <div fxLayout="row">
             <mat-label class="upload"
-              >Upload your company registration documents (Multiple files selection allowed)
+              >Upload your company registration documents (Multiple files
+              selection allowed)
             </mat-label>
           </div>
           <div fxLayout="row" fxLayoutAlign="start">

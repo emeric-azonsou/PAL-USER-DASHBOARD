@@ -9,11 +9,13 @@ import {
 } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { BUSINESS_DATA_KEY } from '../Models/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusinessService {
+  businessUserData: any;
 
   constructor(private http: HttpClient) { }
 
@@ -113,17 +115,49 @@ export class BusinessService {
         })
       );
   }
+  
 
   getBusinessDetails(user_id) {
     // const url = `http://127.0.0.1:8000/api/getuserbusiness/${user_id}`;
     const url = `${environment.getBusinessDataUrl}${user_id}`;
     return this.http.get(url).pipe(
       map((response) => {
+        if(response['data']) {
+          this.businessUserData = response['data'];
+          localStorage.setItem(BUSINESS_DATA_KEY, JSON.stringify(this.businessUserData));
+        }
         return response['data'];
       }),
 
       catchError((error: HttpErrorResponse) => {
         console.error("Error:", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
+  getClientDetails(getmomoclientdata, credentials) {
+    const url = `${environment.getClientDetailsUrl}`;
+    const params = new HttpParams()
+    .set('user_id', getmomoclientdata['user_id'])
+    .set('module_id', getmomoclientdata['module_id'])
+    .set('operator', getmomoclientdata['operator'])
+    .set('phone_no', getmomoclientdata['phone_no'])
+    .set('currency', getmomoclientdata['currency'])
+    .set('country', getmomoclientdata['country'])
+    .set('amount', getmomoclientdata['amount']);
+
+    // const url = `http://127.0.0.1:8000/api/getmomoclientdata?phone_no=${getmomoclientdata}`;
+    const headers = new HttpHeaders({
+      'Authorization' : `Bearer ${credentials}`,
+      'Content-Type': 'application/json'
+    })    
+    return this.http.get(url, { headers: headers, params: params }).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );
@@ -199,6 +233,21 @@ export class BusinessService {
   getUserBalances(user_id) {
     const url = `${environment.getUserBalancesUrl}${user_id}`;
     // const url = `http://127.0.0.1:8000/api/getbusinessuserbalances/${user_id}`;
+    return this.http.get(url).pipe(
+      map(response => {
+        return response;
+      }),
+
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error:", error.message);
+        return observableThrowError(error);
+      })
+    )
+  }
+
+  getUserCollectionsBalances(user_id) {
+    const url = `${environment.getUserCollectionsBalancesUrl}${user_id}`;
+    // const url = `http://127.0.0.1:8000/api/getbusinessusercollectionbalances/${user_id}`;
     return this.http.get(url).pipe(
       map(response => {
         return response;

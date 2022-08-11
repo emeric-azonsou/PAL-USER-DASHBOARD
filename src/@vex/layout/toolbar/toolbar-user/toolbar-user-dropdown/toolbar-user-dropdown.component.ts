@@ -24,7 +24,7 @@ import icLock from "@iconify/icons-ic/twotone-lock";
 import icNotificationsOff from "@iconify/icons-ic/twotone-notifications-off";
 import { Icon } from "@visurel/iconify-angular";
 import { PopoverRef } from "../../../../components/popover/popover-ref";
-import { USER_SESSION_KEY } from "src/app/Models/constants";
+import { BUSINESS_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
 import { User } from "src/app/Models/models.interface";
 import { Router } from "@angular/router";
 
@@ -42,7 +42,7 @@ export interface OnlineStatus {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarUserDropdownComponent implements OnInit {
-  items: MenuItem[] = [
+ businessSettingItems: MenuItem[] = [
     {
       id: "1",
       icon: icAccountCircle,
@@ -51,6 +51,19 @@ export class ToolbarUserDropdownComponent implements OnInit {
       colorClass: "text-teal",
       route: "/dashboards/profile",
     },
+   
+  ];
+
+  palApiItems: MenuItem[] = [
+    {
+      id: "1",
+      icon: icAccountCircle,
+      label: "PAL API",
+      description: "",
+      colorClass: "text-teal",
+      route: "/dashboards/api",
+    },
+   
   ];
 
   statuses: OnlineStatus[] = [
@@ -117,8 +130,9 @@ export class ToolbarUserDropdownComponent implements OnInit {
   }
 
   logout() {
-    localStorage.clear();
+    localStorage.removeItem(BUSINESS_DATA_KEY);
     sessionStorage.clear();
-    this.router.navigate(['/login']);
+    this.popoverRef.close();
+    this.router.navigate(['auth/login']);
   }
 }

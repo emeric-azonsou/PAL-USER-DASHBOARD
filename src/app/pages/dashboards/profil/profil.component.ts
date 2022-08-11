@@ -32,6 +32,8 @@ import { BusinessService } from "src/app/services/business.service";
 import { GeoLocationService } from "src/app/services/geo-location.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MerchantData, User } from "src/app/Models/models.interface";
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+
 
 export interface CountryState {
   name: string;
@@ -116,6 +118,17 @@ export class ProfilComponent implements OnInit {
   nameValidationPattern = /^[a-zA-Z0-9-\s]{0,25}$/;
   cityValidationPattern = /^[a-zA-Z-'\s]{0,25}$/;
   phoneNumberValidationPattern = /^[+][0-9]{0,15}$/;
+  
+
+
+
+
+
+
+
+
+
+
 
   allCreatBusinessData: object;
   userData: User;
@@ -203,6 +216,8 @@ export class ProfilComponent implements OnInit {
   updateBusinessForm: FormGroup;
   businessData: MerchantData;
   isUpdating: boolean;
+  
+
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -210,7 +225,8 @@ export class ProfilComponent implements OnInit {
     private router: Router,
     private businessService: BusinessService,
     private geoLocationService: GeoLocationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+   
   ) {
     this.getLocationData();
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
@@ -249,7 +265,7 @@ export class ProfilComponent implements OnInit {
       business_logo: [""],
       staff_size: [""],
       website: [""],
-      callback_url: [""]
+      callback_url: [""],
     });
 
     this.updateBusinessForm = this.formBuilder.group({
@@ -281,8 +297,8 @@ export class ProfilComponent implements OnInit {
       company_documentUpload: [""],
       business_logo: [""],
       staff_size: [this.businessData?.staff_size, Validators.required],
-      website: [this.businessData?.website],
-      callback_url: [this.businessData?.callback_url || ""]
+      website: [this.businessData?.website || ""],
+      callback_url: [this.businessData?.callback_url || ""],
     });
     // this.businessPhoneInputStyl();
     // this.deliveryManInputStyl();
@@ -343,7 +359,7 @@ export class ProfilComponent implements OnInit {
           );
           const parsedUrl = new URL(window.location.href);
           const baseUrl = parsedUrl.origin;
-          window.location.replace(`${baseUrl}/dashboards/home`);
+          window.location.replace(`${baseUrl}/dashboards/analytics`);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;
@@ -380,7 +396,7 @@ export class ProfilComponent implements OnInit {
           );
           const parsedUrl = new URL(window.location.href);
           const baseUrl = parsedUrl.origin;
-          window.location.replace(`${baseUrl}/dashboards/home`);
+          window.location.replace(`${baseUrl}/dashboards/analytics`);
         } else {
           this.errorMessage = response.message || "something went wrong";
           this.isBusinessSubmitted = false;
@@ -486,4 +502,18 @@ export class ProfilComponent implements OnInit {
       this.isLegallyRegistered = false;
     }
   }
+
+
+
+
+
+
+
+
+
+  
+
+
+
+ 
 }
