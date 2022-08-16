@@ -10,8 +10,8 @@
       *ngIf="hasBusinessRegistered"
       class="flex-auto select-none ltr:pl-4 rtl:pr-4"
     >
-      {{ businessUserData.business_legal_name }} <br />
-      <span>{{ businessUserData.id }}</span>
+      {{ businessUserData?.business_legal_name }} <br />
+      <span>{{ businessUserData?.id }}</span>
     </h6>
     <h6
       *ngIf="!hasBusinessRegistered"
@@ -107,10 +107,10 @@
     <vex-toolbar-user  class="tools"  ></vex-toolbar-user>
     <div class="user-profil-info">
       <div class="dropdown-heading">
-        {{ businessUserData.business_legal_name }}
+        {{ businessUserData?.business_legal_name }}
       </div>
       <div class="dropdown-heading">
-        {{ userData.first_name }} {{ userData.last_name }}
+        {{ userData?.first_name }} {{ userData?.last_name }}
       </div>
       <mat-icon class="arrow-down">keyboard_arrow_down</mat-icon>
     </div>
