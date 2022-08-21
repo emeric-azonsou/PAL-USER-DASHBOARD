@@ -44,6 +44,8 @@ import icBook from "@iconify/icons-ic/twotone-book";
 import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
 import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
 import * as XLSX from "xlsx";
+import { AddUpdateDisbursementModalComponent } from "./add-update-disbursement-modal/add-update-disbursement-modal.component";
+import { MatDialog } from "@angular/material/dialog";
 @Component({
   selector: "vex-bulk-disbursement",
   templateUrl: "./bulk-disbursement.component.html",
@@ -56,18 +58,17 @@ export class BulkDisbursementComponent implements OnInit {
   @Input()
   columns: TableColumn<Customer>[] = [
     // { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
-    { label: "No", property: "No", type: "text", visible: true },
-     { label: "Number", property: "Number", type: "text", visible: true },
-      { label: "Network", property: "Network", type: "text", visible: true },
+    { label: "No", property: "index", type: "text", visible: true },
+     { label: "Number", property: "phone_no", type: "text", visible: true },
+      { label: "Network", property: "network", type: "text", visible: true },
       {
         label: "Amount",
-        property: "Amount",
+        property: "amount",
         type: "text",
         visible: true,
         cssClasses: ["text-secondary", "font-medium"],
       },
-      { label: "Reason of transaction", property: "Reason of transaction", type: "text", visible: true },
-     { label: "Phone", property: "phone", type: "text", visible: true },
+      { label: "Reason of transaction", property: "purpose", type: "text", visible: true },
    
     {
       label: "Name",
@@ -164,7 +165,8 @@ export class BulkDisbursementComponent implements OnInit {
     private fb: FormBuilder,
     private transactionService: TransactionsService,
     private snackBar: MatSnackBar,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dialog: MatDialog
   ) {
     const user = localStorage.getItem("current_user");
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
@@ -376,7 +378,7 @@ export class BulkDisbursementComponent implements OnInit {
     //   });
   }
 
-  deleteCustomers(customers: Customer[]) {
+  deleteDisbursements(customers: Customer[]) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
@@ -384,6 +386,52 @@ export class BulkDisbursementComponent implements OnInit {
     customers.forEach((c) => this.deleteOrder(c));
   }
 
+  addDisbursement() {
+    this.dialog.open(AddUpdateDisbursementModalComponent).afterClosed().subscribe((disbursement: any) => {
+      /**
+       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
+       */
+      if (disbursement) {
+        /**
+         * Here we are updating our local array.
+         * You would probably make an HTTP request here.
+         */
+        this.customers.unshift(new Customer(disbursement));
+        this.subject$.next(this.customers);
+      }
+    });
+  }
+
+  updateDisbursement(customer: Customer) {
+    this.dialog.open(AddUpdateDisbursementModalComponent, {
+      data: customer
+    }).afterClosed().subscribe(updatedCustomer => {
+      /**
+       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
+       */
+      if (updatedCustomer) {
+        /**
+         * Here we are updating our local array.
+         * You would probably make an HTTP request here.
+         */
+        const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === updatedCustomer.id);
+        this.customers[index] = new Customer(updatedCustomer);
+        this.subject$.next(this.customers);
+      }
+    });
+  }
+
+  deleteDisbursement(customer: Customer) {
+    /**
+     * Here we are updating our local array.
+     * You would probably make an HTTP request here.
+     */
+    this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === customer.id), 1);
+    this.selection.deselect(customer);
+    this.subject$.next(this.customers);
+  }
+
+ 
   onFilterChange(value: string) {
     if (!this.dataSource) {
       return;

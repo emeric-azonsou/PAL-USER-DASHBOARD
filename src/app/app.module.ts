@@ -52,6 +52,7 @@ import { DatePipe } from "@angular/common";
 import { DashboardAnalyticsModule } from "./pages/dashboards/dashboard-analytics/dashboard-analytics.module";
 import { CollectionsReportComponent } from "./pages/dashboards/reports/collections-report/collections-report.component";
 import { BulkDisbursementComponent } from "./pages/dashboards/disburse-cash/bulk-disbursement/bulk-disbursement.component";
+import { AddUpdateDisbursementModalComponent } from "./pages/dashboards/disburse-cash/bulk-disbursement/add-update-disbursement-modal/add-update-disbursement-modal.component";
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { BulkDisbursementComponent } from "./pages/dashboards/disburse-cash/bulk
     ReportsComponent,
     TransactionsReportComponent,
     CollectionsReportComponent,
+    AddUpdateDisbursementModalComponent
   ],
   imports: [
     BrowserModule,
