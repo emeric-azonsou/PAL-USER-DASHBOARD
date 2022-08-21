@@ -56,14 +56,19 @@ export class BulkDisbursementComponent implements OnInit {
   @Input()
   columns: TableColumn<Customer>[] = [
     // { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
-    { label: "Phone", property: "phone", type: "text", visible: true },
-    {
-      label: "amount",
-      property: "amount",
-      type: "text",
-      visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
-    },
+    { label: "No", property: "No", type: "text", visible: true },
+     { label: "Number", property: "Number", type: "text", visible: true },
+      { label: "Network", property: "Network", type: "text", visible: true },
+      {
+        label: "Amount",
+        property: "Amount",
+        type: "text",
+        visible: true,
+        cssClasses: ["text-secondary", "font-medium"],
+      },
+      { label: "Reason of transaction", property: "Reason of transaction", type: "text", visible: true },
+     { label: "Phone", property: "phone", type: "text", visible: true },
+   
     {
       label: "Name",
       property: "name",
@@ -71,13 +76,7 @@ export class BulkDisbursementComponent implements OnInit {
       visible: true,
       cssClasses: ["font-medium"],
     },
-    {
-      label: "Network Provider",
-      property: "operator",
-      type: "text",
-      visible: true,
-      cssClasses: ["font-medium"],
-    },
+   
     ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -91,7 +90,7 @@ export class BulkDisbursementComponent implements OnInit {
   };
 
   labels = aioTableLabels;
-
+  
   icPhone = icPhone;
   icMail = icMail;
   icMap = icMap;
@@ -112,7 +111,7 @@ export class BulkDisbursementComponent implements OnInit {
 
   statusLabels = TRANSACTION_TABLE_LABELS;
 
-  displayedColumns: string[] = ["phone", "amount", "network", "name"];
+  displayedColumns: string[] = ["No", "Number", "Network", "Amount","Reason of transaction","Name"];
 
   statuses = [
     { name: "Pending", value: 1 },
@@ -321,7 +320,6 @@ export class BulkDisbursementComponent implements OnInit {
   }
  
   disburse() {
-
     this.isDisbursing = true;
     this.transactionService
       .createBulkTransfer(

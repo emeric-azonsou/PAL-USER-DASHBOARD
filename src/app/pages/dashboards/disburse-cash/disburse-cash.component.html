@@ -2,8 +2,8 @@
 
 <form [formGroup]="transferForm">
   <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
-    <h2 class="m-0 headline" fxFlex="auto">DISBURSE CASH</h2>
-  
+    <h2 class="m-0 headline" fxFlex="auto"></h2>
+
     <button
       class="text-secondary"
       mat-dialog-close
@@ -68,6 +68,27 @@
       <div>
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
+            <label for="" class="label">How much are you disbursing?</label>
+          </div>
+        </div>
+        <mat-form-field appearance="outline" class="field">
+          <input matInput formControlName="amount" placeholder="" />
+          <mat-icon matSuffix>
+            <h6>{{ currency }}</h6>
+          </mat-icon>
+          <mat-error>
+            <span
+              *ngFor="let error of transferForm.get('amount').errors | keyvalue"
+            >
+              {{ validationMessages.amount[error.key] }}
+            </span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
+          <div class="label">
             <label for="">Select the Mobile network</label>
           </div>
         </div>
@@ -86,20 +107,6 @@
               >{{ provider.name }}</mat-option
             >
           </mat-select>
-        </mat-form-field>
-      </div>
-      <div>
-        <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
-          <div class="label">
-            <label for="" class="label">Purpose of disbursement</label>
-          </div>
-        </div>
-        <mat-form-field appearance="fill">
-          <input
-            matInput
-            formControlName="object"
-            #input
-          />
         </mat-form-field>
       </div>
       <div>
@@ -140,47 +147,14 @@
       <div>
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
-            <label for="" class="label">How much are you disbursing?</label>
+            <label for="" class="label">Purpose of disbursement</label>
           </div>
         </div>
-        <mat-form-field appearance="outline" class="field">
-          <!-- <mat-label>Outline form field</mat-label> -->
-          <input matInput formControlName="amount" placeholder="" />
-          <mat-icon matSuffix>
-            <h6>{{ currency }}</h6>
-          </mat-icon>
-          <mat-error>
-            <span
-              *ngFor="let error of transferForm.get('amount').errors | keyvalue"
-            >
-              {{ validationMessages.amount[error.key] }}
-            </span>
-          </mat-error>
+        <mat-form-field appearance="fill">
+          <input matInput maxlength="15" formControlName="object" #input />
         </mat-form-field>
-       
       </div>
-      
     </div>
-    <!-- <div>
-      <div class="how-much grid grid-flow-col gap-4 grid-cols grid-rows">
-        <div class="label">
-          <label for="" class="label">How much are you disbursing?</label>
-        </div>
-      </div>
-      <mat-form-field appearance="outline" class="field">
-        <input matInput formControlName="amount" placeholder="" />
-        <mat-icon matSuffix>
-          <h6>{{ currency }}</h6>
-        </mat-icon>
-        <mat-error>
-          <span
-            *ngFor="let error of transferForm.get('amount').errors | keyvalue"
-          >
-            {{ validationMessages.amount[error.key] }}
-          </span>
-        </mat-error>
-      </mat-form-field>
-    </div> -->
     
   </mat-dialog-content>
   <mat-dialog-actions align="end" class="button">

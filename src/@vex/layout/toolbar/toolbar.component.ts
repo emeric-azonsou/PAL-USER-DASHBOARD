@@ -25,11 +25,13 @@ import icDescription from "@iconify/icons-ic/twotone-description";
 import icAssignment from "@iconify/icons-ic/twotone-assignment";
 import icReceipt from "@iconify/icons-ic/twotone-receipt";
 import icDoneAll from "@iconify/icons-ic/twotone-done-all";
+import permIdentity   from "@iconify/icons-ic/perm-identity"
 import { NavigationService } from "../../services/navigation.service";
 import icArrowDropDown from "@iconify/icons-ic/twotone-arrow-drop-down";
 import { PopoverService } from "../../components/popover/popover.service";
 import { MegaMenuComponent } from "../../components/mega-menu/mega-menu.component";
 import icSearch from "@iconify/icons-ic/twotone-search";
+import peopole from "@iconify/icons-ic/people-outline";
 import { RechargeAccountComponent } from "src/app/pages/dashboards/recharge-account/recharge-account.component";
 import { NoBusinessModalComponent } from "src/app/pages/dashboards/no-business-modal/no-business-modal.component";
 import { BUSINESS_DATA_KEY, USER_SESSION_KEY } from "src/app/Models/constants";
@@ -42,6 +44,7 @@ import { MerchantData } from "src/app/Models/models.interface";
 })
 export class ToolbarComponent implements OnInit {
   isOpen: boolean = false;
+  isOpenDisbursePopup:boolean;
   
   @Input() mobileQuery: boolean;
 
@@ -76,6 +79,8 @@ export class ToolbarComponent implements OnInit {
   icAssignment = icAssignment;
   icReceipt = icReceipt;
   icDoneAll = icDoneAll;
+  perm_identity=permIdentity;
+  peapole=peopole;
   icArrowDropDown = icArrowDropDown;
   userBusinessData: any;
   userData: any;
@@ -135,12 +140,13 @@ export class ToolbarComponent implements OnInit {
   openDisbursePopup() {
     if (this.userData.hasBusiness || !!this.businessData) {
       this.dialog.open(DisburseCashComponent);
+      this.isOpenDisbursePopup=false;
     } else {
       this.dialog.open(NoBusinessModalComponent);
     }
   }
 
-  openRechargePopup() {
+  openRechargePopup(): void {
     if (this.userData.hasBusiness || !!this.businessData) {
       this.dialog.open(RechargeAccountComponent);
     } else {
@@ -158,5 +164,8 @@ export class ToolbarComponent implements OnInit {
 
    toggleMenu() {
     this.isOpen = !this.isOpen;
+  }
+  toggleDisbursePopup(){
+    this.isOpenDisbursePopup=!this.isOpenDisbursePopup;
   }
 }
