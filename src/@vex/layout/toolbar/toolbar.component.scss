@@ -26,6 +26,12 @@ a {
   background: #2BB996 0% 0% no-repeat padding-box;
   color: #ffffff;
   opacity: 1;
+  .arrow{
+    color: white;
+    position: relative;
+    left: 2px;
+    font-size: 20px;
+  }
 }
 .apiDoc{
   background:  0% 0% no-repeat padding-box;
@@ -39,6 +45,24 @@ a {
   background-color: #010d4a ;
   color: #ffffff;
   opacity: 1;
+}
+#disburse-popup{
+  li{
+    cursor: pointer;
+    h4{
+      font-size: 15px;
+      font-weight: 700;
+      color: #010d4a;
+    }
+    p{
+      color: #aaabaf;
+    }
+  }
+
+}
+.icon{
+  position: relative;
+  top: 8px;
 }
 
 // responssive
