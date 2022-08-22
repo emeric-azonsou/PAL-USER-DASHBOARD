@@ -21,6 +21,11 @@ import icClose from "@iconify/icons-ic/twotone-close";
 })
 export class AddUpdateDisbursementModalComponent implements OnInit {
   mode: 'create' | 'update' = 'create';
+  operators = [
+    { name: "MTN", value: "mtn" },
+    { name: "VODAFONE", value: "vodafone" },
+    { name: "AIRTEL-TIGO", value: "airtel-tigo" },
+  ];
 
   countryData = {
     BJ: {
@@ -121,34 +126,18 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
  
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
+
+    this.initForm();
+
   }
 
   ngOnInit() {
+    this.initForm();
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
     this.userBusinessData = JSON.parse(businessData);
-
-    this.transferForm = this.fb.group({
-      country: ["BJ", Validators.required],
-      phone_no: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(this.phoneNumberValidationPattern),
-          Validators.min(8),
-        ],
-      ],
-      repeat_phone_no: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(this.phoneNumberValidationPattern),
-          Validators.min(8),
-        ],
-      ],
-      amount: ["", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-      operator: ["mtn", Validators.required],
-      object: [""],
-    });
+    console.log('[defaults]', this.defaults);
+    this.mode = this.defaults ? 'update' : 'create';
+   this.initForm();
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
     this.getModulesData(this.credentials);
@@ -157,6 +146,29 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  initForm() {
+    this.transferForm = this.fb.group({
+      phone_no: [
+        this.defaults.phone || "",
+        [
+          Validators.required,
+          Validators.pattern(this.phoneNumberValidationPattern),
+          Validators.min(8),
+        ],
+      ],
+      repeat_phone_no: [
+        this.defaults.phone || "",
+        [
+          Validators.required,
+          Validators.pattern(this.phoneNumberValidationPattern),
+          Validators.min(8),
+        ],
+      ],
+      amount: [this.defaults.amount || "", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      operator: [this.defaults.network || "mtn", Validators.required],
+    });
   }
 
   getNetworkProviders(value) {
@@ -300,29 +312,46 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
     return this.transferForm.controls["repeat_phone_no"];
   }
 
+  save() {
+    if (this.mode === 'create') {
+      this.addDisbursement();
+    } else if (this.mode === 'update') {
+      this.updateDisbursement();
+    }
+  }
 
-  createCustomer() {
-    const customer = this.transferForm.value;
 
-    if (!customer.imageSrc) {
-      customer.imageSrc = 'assets/img/avatars/1.jpg';
+  addDisbursement() {
+    const disbursement = this.transferForm.value;
+    const filteredDisbursement = {
+      phone: disbursement.phone,
+      amount: disbursement.amount,
+      name: this.defaults.client_name,
+      network: disbursement.operator,
+      index: this.defaults.index
     }
 
-    this.dialogRef.close(customer);
+    this.dialogRef.close(filteredDisbursement);
   }
 
-  updateCustomer() {
-    const customer = this.transferForm.value;
-    customer.id = this.defaults.id;
+  updateDisbursement() {
+    const disbursement = this.transferForm.value;
+    const filteredDisbursement = {
+      phone: disbursement.phone,
+      amount: disbursement.amount,
+      name: this.defaults.client_name,
+      network: disbursement.operator,
+      index: this.defaults.index
+    }
 
-    this.dialogRef.close(customer);
+    this.dialogRef.close(filteredDisbursement);
   }
 
-  isCreateMode() {
+  get isCreateMode() {
     return this.mode === 'create';
   }
 
-  isUpdateMode() {
+  get isUpdateMode() {
     return this.mode === 'update';
   }
 

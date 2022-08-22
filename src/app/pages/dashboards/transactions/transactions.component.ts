@@ -30,6 +30,7 @@ import { SummaryData } from "src/app/Models/models.interface";
 import * as moment from 'moment';
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
+import { MatFormFieldDefaultOptions, MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {
@@ -81,6 +82,14 @@ export interface PeriodicElement {
     fadeInUp400ms,
     stagger40ms
   ],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'standard'
+      } as MatFormFieldDefaultOptions
+    }
+  ]
 })
 export class TransactionsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [

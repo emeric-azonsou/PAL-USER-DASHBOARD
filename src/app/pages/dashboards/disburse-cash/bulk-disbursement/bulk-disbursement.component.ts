@@ -1,7 +1,12 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, FormBuilder, Validators } from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSelectChange } from "@angular/material/select";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -21,7 +26,6 @@ import {
   BUSINESS_DATA_KEY,
 } from "src/app/Models/constants";
 import { SummaryData } from "src/app/Models/models.interface";
-import { Customer } from "src/app/pages/apps/aio-table/interfaces/customer.model";
 import { AuthserviceService } from "src/app/services/authservice.service";
 import { TransactionsService } from "src/app/services/transactions.service";
 import { aioTableLabels, aioTableData } from "src/static-data/aio-table-data";
@@ -46,30 +50,45 @@ import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
 import * as XLSX from "xlsx";
 import { AddUpdateDisbursementModalComponent } from "./add-update-disbursement-modal/add-update-disbursement-modal.component";
 import { MatDialog } from "@angular/material/dialog";
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldDefaultOptions,
+} from "@angular/material/form-field";
+import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
+import { stagger40ms } from "src/@vex/animations/stagger.animation";
 @Component({
   selector: "vex-bulk-disbursement",
   templateUrl: "./bulk-disbursement.component.html",
   styleUrls: ["./bulk-disbursement.component.scss"],
+  animations: [fadeInUp400ms, stagger40ms],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: "standard",
+      } as MatFormFieldDefaultOptions,
+    },
+  ],
 })
 export class BulkDisbursementComponent implements OnInit {
-  subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
-  data$: Observable<Customer[]> = this.subject$.asObservable();
+  subject$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  data$: Observable<any[]> = this.subject$.asObservable();
   unsubscribe$ = new Subject();
   @Input()
-  columns: TableColumn<Customer>[] = [
-    // { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
+  columns: TableColumn<any>[] = [
+    { label: 'Select', property: 'checkbox', type: 'checkbox', visible: true },
     { label: "No", property: "index", type: "text", visible: true },
-     { label: "Number", property: "phone_no", type: "text", visible: true },
-      { label: "Network", property: "network", type: "text", visible: true },
-      {
-        label: "Amount",
-        property: "amount",
-        type: "text",
-        visible: true,
-        cssClasses: ["text-secondary", "font-medium"],
-      },
-      { label: "Reason of transaction", property: "purpose", type: "text", visible: true },
-   
+    { label: "Number", property: "phone", type: "text", visible: true },
+    { label: "Network", property: "network", type: "text", visible: true },
+    {
+      label: "Amount",
+      property: "amount",
+      type: "text",
+      visible: true,
+      cssClasses: ["text-secondary", "font-medium"],
+    },
+    // { label: "Reason of transaction", property: "purpose", type: "text", visible: true },
+
     {
       label: "Name",
       property: "name",
@@ -77,8 +96,9 @@ export class BulkDisbursementComponent implements OnInit {
       visible: true,
       cssClasses: ["font-medium"],
     },
-   
-    ];
+    { label: 'Actions', property: 'actions', type: 'button', visible: true }
+
+  ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   layoutCtrl = new FormControl("boxed");
@@ -91,7 +111,7 @@ export class BulkDisbursementComponent implements OnInit {
   };
 
   labels = aioTableLabels;
-  
+
   icPhone = icPhone;
   icMail = icMail;
   icMap = icMap;
@@ -112,7 +132,16 @@ export class BulkDisbursementComponent implements OnInit {
 
   statusLabels = TRANSACTION_TABLE_LABELS;
 
-  displayedColumns: string[] = ["No", "Number", "Network", "Amount","Reason of transaction","Name"];
+  displayedColumns: string[] = [
+    "Select",
+    "No",
+    "Number",
+    "Network",
+    "Amount",
+    "Reason of transaction",
+    "Name",
+    "Actions"
+  ];
 
   statuses = [
     { name: "Pending", value: 1 },
@@ -158,6 +187,7 @@ export class BulkDisbursementComponent implements OnInit {
   isDisbursing: boolean;
   disbursementData: unknown[];
   totalAmount = 0;
+  totalTransactions: number;
 
   constructor(
     private authService: AuthserviceService,
@@ -197,7 +227,7 @@ export class BulkDisbursementComponent implements OnInit {
    * We are simulating this request here.
    */
   getData() {
-    return of(aioTableData.map((customer) => new Customer(customer)));
+    return of(aioTableData.map((customer) => customer));
   }
 
   get hasExceededFreeTransfers(): boolean {
@@ -278,27 +308,31 @@ export class BulkDisbursementComponent implements OnInit {
       const disbursementData = XLSX.utils.sheet_to_json(worksheet, {
         raw: true,
       });
-      this.disbursementData = disbursementData;
+      this.disbursementData = disbursementData.map((disbursement, index) => {
+        disbursement['index'] = index + 1;
+        return disbursement;
+      });
+      console.log("[disbursementData]", disbursementData);
       const amounts = disbursementData.map((data: any) => data.amount);
       this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
-      this.dataSource = new MatTableDataSource(disbursementData);
+      this.totalTransactions = disbursementData?.length;
+      this.dataSource = new MatTableDataSource(this.disbursementData);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.hasData = true;
-
     };
   }
 
   get isFormReady(): boolean {
     return true;
-    // return !!this.users && !!this.customers;
+    // return !!this.users && !!this.disbursementData;
   }
 
   getCountryName(countryCode: string): string {
     const countryData = this.countries.find(
       (country) => country.code === countryCode
     );
-    return countryData.name;
+    return countryData?.name;
   }
 
   getSalesRepName(user_id) {
@@ -320,7 +354,7 @@ export class BulkDisbursementComponent implements OnInit {
       horizontalPosition: "right",
     });
   }
- 
+
   disburse() {
     this.isDisbursing = true;
     this.transactionService
@@ -360,78 +394,92 @@ export class BulkDisbursementComponent implements OnInit {
     return this.statusLabels.find((label) => label.text === status);
   }
 
-  deleteOrder(order: any) {
-    /**
-     * Here we are updating our local array.
-     * You would probably make an HTTP request here.
-     */
-    // this.orders.splice(this.orders.findIndex((existingCustomer) => existingCustomer.id === order.id), 1);
-    // this.selection.deselect(order);
-    // this.subject$.next(this.orders);
-    // this.ordersService
-    //   .deleteOrder(this.userSessionData?.user_id, order.id)
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((response) => {
-    //     if (response["data"] === true) {
-    //       this.getTransactionsList();
-    //     }
-    //   });
-  }
 
-  deleteDisbursements(customers: Customer[]) {
+
+  deleteDisbursements(disbursements: any[]) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    customers.forEach((c) => this.deleteOrder(c));
+    disbursements.forEach((d) => this.deleteDisbursement(d));
   }
 
   addDisbursement() {
-    this.dialog.open(AddUpdateDisbursementModalComponent).afterClosed().subscribe((disbursement: any) => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
-      if (disbursement) {
+    this.dialog
+      .open(AddUpdateDisbursementModalComponent)
+      .afterClosed()
+      .subscribe((disbursement: any) => {
         /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
+         * any is the updated customer (if the user pressed Save - otherwise it's null)
          */
-        this.customers.unshift(new Customer(disbursement));
-        this.subject$.next(this.customers);
-      }
-    });
+        if (disbursement) {
+          /**
+           * Here we are updating our local array.
+           * You would probably make an HTTP request here.
+           */
+           const amounts = this.disbursementData.map((data: any) => data.amount);
+           this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
+           this.totalTransactions = this.disbursementData?.length;
+           this.selection.deselect(disbursement);
+           this.subject$.next(this.disbursementData);
+           this.dataSource = new MatTableDataSource(this.disbursementData);
+           this.dataSource.paginator = this.paginator;
+           this.dataSource.sort = this.sort;
+          }
+      });
   }
 
-  updateDisbursement(customer: Customer) {
-    this.dialog.open(AddUpdateDisbursementModalComponent, {
-      data: customer
-    }).afterClosed().subscribe(updatedCustomer => {
-      /**
-       * Customer is the updated customer (if the user pressed Save - otherwise it's null)
-       */
-      if (updatedCustomer) {
+  updateDisbursement(customer: any) {
+    this.dialog
+      .open(AddUpdateDisbursementModalComponent, {
+        data: customer,
+      })
+      .afterClosed()
+      .subscribe((updatedany) => {
         /**
-         * Here we are updating our local array.
-         * You would probably make an HTTP request here.
+         * any is the updated customer (if the user pressed Save - otherwise it's null)
          */
-        const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === updatedCustomer.id);
-        this.customers[index] = new Customer(updatedCustomer);
-        this.subject$.next(this.customers);
-      }
-    });
+        if (updatedany) {
+          /**
+           * Here we are updating our local array.
+           * You would probably make an HTTP request here.
+           */
+          const index = this.disbursementData.findIndex(
+            (existingany) => existingany['phone'] === updatedany.phone
+          );
+          this.disbursementData[index] = updatedany;
+          this.subject$.next(this.disbursementData);
+          this.dataSource = new MatTableDataSource(this.disbursementData);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+    
+        }
+      });
   }
 
-  deleteDisbursement(customer: Customer) {
+  deleteDisbursement(disbursement: any) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    this.customers.splice(this.customers.findIndex((existingCustomer) => existingCustomer.id === customer.id), 1);
-    this.selection.deselect(customer);
-    this.subject$.next(this.customers);
+    this.disbursementData.splice(
+      this.disbursementData.findIndex(
+        (existingany) => existingany['phone'] === disbursement.phone
+      ),
+      1
+    );
+    console.log('[delete ]disbursement', disbursement);
+    console.log('[delete ]disbursementData', this.disbursementData);
+    const amounts = this.disbursementData.map((data: any) => data.amount);
+    this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
+    this.totalTransactions = this.disbursementData?.length;
+    this.selection.deselect(disbursement);
+    this.subject$.next(this.disbursementData);
+    this.dataSource = new MatTableDataSource(this.disbursementData);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
- 
   onFilterChange(value: string) {
     if (!this.dataSource) {
       return;
@@ -465,7 +513,7 @@ export class BulkDisbursementComponent implements OnInit {
     return column.property;
   }
 
-  onLabelChange(change: MatSelectChange, row: Customer) {
+  onLabelChange(change: MatSelectChange, row: any) {
     // const index = this.orders.findIndex(c => c === row);
     // this.orders[index].labels = change.value;
     // this.subject$.next(this.orders);
@@ -482,8 +530,8 @@ export class BulkDisbursementComponent implements OnInit {
   exportArray() {
     const onlyNameAndSymbolArr: Partial<any>[] = this.dataSource.data.map(
       (x) => ({
-        name: x.name,
-        status: x.status,
+        name: x?.name,
+        status: x?.status,
       })
     );
     TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, "ExampleArray");
