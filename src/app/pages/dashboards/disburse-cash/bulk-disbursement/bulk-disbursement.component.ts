@@ -1,6 +1,6 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -151,6 +151,11 @@ export class BulkDisbursementComponent implements OnInit {
     { name: "Processing", value: 2 },
     { name: "Cancelled", value: 0 },
   ];
+  operators = [
+    { name: "MTN", value: "mtn" },
+    { name: "VODAFONE", value: "vodafone" },
+    { name: "AIRTEL-TIGO", value: "airtel-tigo" },
+  ];
   countries = COUNTRIES;
   availableCountries = ["GH", "BJ", "CI"];
   networkProviders = ["mtn", "orange"];
@@ -159,7 +164,8 @@ export class BulkDisbursementComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
+  @ViewChild('disbursementFile')
+  disbursermentListFile: ElementRef;
   @ViewChild(MatTableExporterDirective)
   matTableExporter: MatTableExporterDirective;
 
@@ -312,14 +318,19 @@ export class BulkDisbursementComponent implements OnInit {
         disbursement['index'] = index + 1;
         return disbursement;
       });
-      console.log("[disbursementData]", disbursementData);
+      console.log("addfile [disbursementData]", this.disbursementData);
       const amounts = disbursementData.map((data: any) => data.amount);
       this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
       this.totalTransactions = disbursementData?.length;
+      this.subject$.next(this.disbursementData);
       this.dataSource = new MatTableDataSource(this.disbursementData);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.hasData = true;
+      if(this.disbursementData.length) {
+        this.disbursermentListFile.nativeElement.value = "";
+
+      }
     };
   }
 
@@ -471,7 +482,7 @@ export class BulkDisbursementComponent implements OnInit {
     console.log('[delete ]disbursement', disbursement);
     console.log('[delete ]disbursementData', this.disbursementData);
     const amounts = this.disbursementData.map((data: any) => data.amount);
-    this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
+    this.totalAmount = amounts.length ? amounts.reduce((sum, carr) => sum + carr) : 0;
     this.totalTransactions = this.disbursementData?.length;
     this.selection.deselect(disbursement);
     this.subject$.next(this.disbursementData);

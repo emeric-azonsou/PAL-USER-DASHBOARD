@@ -34,8 +34,68 @@
                 <span class="font-semibold">upload Exel</span>
               </p>
             </div>
-            <input  (change)="addfile($event)" id="dropzone-file" type="file" class="hidden" />
+            <input #disbursementFile (change)="addfile($event)" id="dropzone-file" type="file" class="hidden" />
           </label>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div fxLayout="column" class="card" fxFlex="auto">
+        <div class="flex flex-col sm:flex-row">
+          <mat-form-field class="sm:ml-6 flex-auto">
+            <mat-label>Country</mat-label>
+
+            <mat-select placeholder="Country" formControlName="country">
+              <mat-option [country]=""> Select Country </mat-option>
+              <mat-option
+                *ngFor="let country of availableCountries"
+                id="newAttributeProduct"
+                [value]="country"
+              >
+                {{ country }}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-icon
+              [icIcon]="icBook"
+              class="mr-3"
+              matPrefix
+            ></mat-icon> -->
+          </mat-form-field>
+
+          <mat-form-field class="sm:ml-6 flex-auto">
+            <mat-label>Currency</mat-label>
+
+            <mat-select
+              placeholder="Currency"
+              formControlName="currency"
+            >
+              <mat-option [value]=""> Select Currency </mat-option>
+              <mat-option
+                *ngFor="let currency of currencies"
+                id="newAttributeCurrencies"
+                [value]="currency"
+              >
+                {{ currency }}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-icon
+              [icIcon]="icAttachMoney"
+              class="mr-3"
+              matPrefix
+            ></mat-icon> -->
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Purpose</mat-label>
+            <input
+              (ngModelChange)="onCheckConfirmNumber()"
+              matInput
+              formControlName="object"
+              #input
+              type="text"
+              placeholder="Purpose"
+              maxlength="20"
+            />
+          </mat-form-field>
         </div>
       </div>
     </div>
@@ -61,302 +121,6 @@
   <!-- </div> -->
   </vex-page-layout-header>
 
-  <!-- <vex-page-layout-content
-    [class.container]="layoutCtrl.value === 'boxed'"
-    [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
-    class="-mt-6"
-  >
-    <div [@stagger]="true" class="w-full" vexContainer>
-      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px">
-        <div @fadeInUp class="card" fxFlex="auto">
-          <div *ngIf="!isFormReady" class="card overflow-auto -mt-16">
-            <div
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: white;
-              "
-            >
-              <mat-spinner color="primary"> </mat-spinner>
-            </div>
-          </div>
-          <form (ngSubmit)="disburse()" [formGroup]="form">
-            <div fxLayout="row" fxLayoutAlign="start center">
-              <div fxLayout="column" class="card" fxFlex="auto">
-
-                <div class="flex  file-input">
-                  <label
-                    for="dropzone-file"
-                    class="flex flex-col shadow-md w-32 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
-                  >
-                    <div class="flex flex-col justify-center pt-5 pb-6">
-                      <mat-icon>cloud_upload</mat-icon>
-                      <p class="mb-8  text-gray-500">
-                        <span class="font-semibold">upload Exel</span>
-                      </p>
-                    </div>
-                    <input  (change)="addfile($event)" id="dropzone-file" type="file" class="hidden" />
-                  </label>
-                </div>
-                <div class="grid grid-cols-3">
-                  <div>
-                    <mat-form-field class=" flex-auto">
-                      <mat-label> Select Country</mat-label>
-  
-                      <mat-select placeholder="Country" formControlName="country">
-                        <mat-option
-                          *ngFor="let country of availableCountries"
-                          id="newAttributeProduct"
-                          [value]="country"
-                        >
-                          {{ country }}
-                        </mat-option>
-                      </mat-select>              
-                    </mat-form-field>
-                  </div>
-                  <div>
-                    <mat-form-field class=" flex-auto">
-                      <mat-label>Select Network</mat-label>
-  
-                      <mat-select placeholder="Country" formControlName="country">
-                        <mat-option [country]=""> Select Country </mat-option>
-                        <mat-option
-                          *ngFor="let country of availableCountries"
-                          id="newAttributeProduct"
-                          [value]="country"
-                        >
-                          {{ country }}
-                        </mat-option>
-                      </mat-select>              
-                    </mat-form-field>
-                  </div>
-                  <div>
-                    <mat-form-field class=" flex-auto">
-                      <mat-label>Mobile wallet number</mat-label>
-  
-                      <mat-select placeholder="Country" formControlName="country">
-                        <mat-option [country]=""> Select Country </mat-option>
-                        <mat-option
-                          *ngFor="let country of availableCountries"
-                          id="newAttributeProduct"
-                          [value]="country"
-                        >
-                          {{ country }}
-                        </mat-option>
-                      </mat-select>              
-                    </mat-form-field>
-                  </div>
-                  <div>
-                    <mat-form-field class=" flex-auto">
-                      <mat-label>Select mobile wallet number</mat-label>
-  
-                      <input
-                        matInput
-                        readonly
-                        disabled
-                        #input
-                        [value]="totalAmount"
-                      />
-                     
-                    </mat-form-field>
-                  </div>
-                  <div>
-                    <mat-form-field class=" flex-auto">
-                      <mat-label>Amount to disburse</mat-label>
-  
-                      <mat-select
-                        placeholder="Currency"
-                        formControlName="currency"
-                      >
-                        <mat-option [value]=""> Select Currency </mat-option>
-                        <mat-option
-                          *ngFor="let currency of currencies"
-                          id="newAttributeCurrencies"
-                          [value]="currency"
-                        >
-                          {{ currency }}
-                        </mat-option>
-                      </mat-select>
-                     
-                    </mat-form-field>
-                  </div>
-                  
-                  <div>
-                    <mat-form-field class=" flex-auto">
-                      <mat-label>Reason of transaction</mat-label>
-                      <input
-                        matInput
-                        formControlName="purpose"
-                        #input
-                        placeholder="Purpose"
-                      />
-                     
-                    </mat-form-field>
-                  </div>
-                </div>               
-              </div>
-            </div>
-            <div classs="row">
-              <div align="end">
-
-                <div class="grid   sm:grid-cols-1  md:grid-cols-6 lg:grid-cols-6  gap-2   send-cash-form">
-             
-                  <button
-                    type="button"
-                    class="text-white  marg-col"
-                     (click)="disburse()"
-                  >
-                    Add 
-                  </button>
-                </div>
-            
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <br />
-    <br />
-    <br />
-    <br />
-
-    <div class="card overflow-auto -mt-16">
-      <div
-        class="bg-app-bar px-6 h-16 border-b sticky left-0"
-        fxLayout="row"
-        fxLayoutAlign="start center"
-      >
-        <div
-          *ngIf="selection.hasValue()"
-          class="mr-4 pr-4 border-r"
-          fxFlex="none"
-        >
-          <button
-            (click)="deleteOrder(selection.selected)"
-            color="primary"
-            mat-icon-button
-            matTooltip="Delete selected"
-            type="button"
-          >
-            <mat-icon [icIcon]="icDelete"></mat-icon>
-          </button>
-
-          <button
-            color="primary"
-            mat-icon-button
-            matTooltip="Another action"
-            type="button"
-          >
-            <mat-icon [icIcon]="icFolder"></mat-icon>
-          </button>
-        </div>
-
-        <thead class="text-xs t-head text-gray-700">
-          <tr>
-            <th scope="col" class="py-3 px-6">
-              <label for="">Total transactions:1500</label>
-            </th>
-            <th scope="col" class="py-3 px-6">
-              <label for="">Total Amount:8562.005 X0F</label>
-            </th>
-            <th scope="col" class="py-3 px-6">
-              <label for="">Name verification: <span style="color: #2bb996;">781</span>   /2000</label>
-            </th>
-          </tr>
-        </thead>
-
-        <span fxFlex></span>
-
-        <button
-          class="ml-4"
-          fxFlex="none"
-          fxHide.gt-xs
-          mat-icon-button
-          type="button"
-        >
-          <mat-icon [icIcon]="icSearch"></mat-icon>
-        </button>
-
-        <button
-          [matMenuTriggerFor]="columnFilterMenu"
-          class="ml-4"
-          fxFlex="none"
-          mat-icon-button
-          matTooltip="Filter Columns"
-          type="button"
-        >
-          <mat-icon [icIcon]="icFilterList"></mat-icon>
-        </button>
-      </div>
-      <div *ngIf="isLoading" class="card overflow-auto -mt-16">
-        <div
-          style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: white;
-          "
-        >
-          <mat-spinner color="primary"> </mat-spinner>
-        </div>
-      </div>
-
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        class="w-full mat-elevation-z"
-        matSort
-        matTableExporter
-        #exporter="matTableExporter"
-      >
-        <ng-container matColumnDef="No">
-          <th mat-header-cell *matHeaderCellDef>No</th>
-          <td mat-cell *matCellDef="let element">1</td>
-        </ng-container>
-        <ng-container matColumnDef="Number">
-          <th mat-header-cell *matHeaderCellDef>Number</th>
-          <td mat-cell *matCellDef="let element">97543454</td>
-        </ng-container>
-        <ng-container matColumnDef="Network">
-          <th mat-header-cell *matHeaderCellDef>Network</th>
-          <td mat-cell *matCellDef="let element">mtn</td>
-        </ng-container>
-        <ng-container matColumnDef="Amount">
-          <th mat-header-cell *matHeaderCellDef>Amount</th>
-          <td mat-cell *matCellDef="let element">{{element.Amount}}</td>
-        </ng-container>
-        <ng-container  matColumnDef="Reason of transaction">
-          <th  mat-header-cell *matHeaderCellDef>Reason  </th>
-          <td mat-cell *matCellDef="let element">Salary</td>
-        </ng-container>
-        <ng-container  matColumnDef="Name">
-          <th mat-header-cell *matHeaderCellDef>name</th>
-          <td  mat-cell *matCellDef="let element">
-             <mat-icon class="delect-icon">delete</mat-icon>
-             </td>
-        </ng-container>
-           
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
-            {{ errorMessage || "No Disbursement Data Uploaded Yet" }}
-          </td>
-        </tr>
-      </table>
-
-      <mat-paginator
-        [pageSizeOptions]="pageSizeOptions"
-        [pageSize]="pageSize"
-        class="sticky left-0"
-      ></mat-paginator>
-    </div>
-  </vex-page-layout-content> -->
-
-
 
   <vex-page-layout-content 
                            class="-mt-6">
@@ -378,29 +142,11 @@
             <mat-icon [icIcon]="icDelete"></mat-icon>
           </button>
 
-          <button color="primary" mat-icon-button matTooltip="Another action" type="button">
-            <mat-icon [icIcon]="icFolder"></mat-icon>
-          </button>
         </div>
 
-        <!-- <div class="bg-card rounded-full border px-4"
-             fxFlex="400px"
-             fxFlex.lt-md="auto"
-             fxHide.xs
-             fxLayout="row"
-             fxLayoutAlign="start center">
-          <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
-          <input [formControl]="searchCtrl"
-                 class="px-4 py-3 border-0 outline-none w-full bg-transparent"
-                 placeholder="Search..."
-                 type="search">
-        </div> -->
+      
 
         <span fxFlex></span>
-
-        <!-- <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
-          <mat-icon [icIcon]="icSearch"></mat-icon>
-        </button> -->
 
         
         <div>
@@ -493,6 +239,7 @@
             </div>
           </td>
         </ng-container>
+        
 
         <!-- Action Column -->
         <ng-container matColumnDef="actions">
@@ -527,7 +274,7 @@
 <mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
   <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
           class="checkbox-item mat-menu-item">
-    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary" name="checkbox" >
+    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary" ngDefaultControl>
       {{ column.label }}
     </mat-checkbox>
   </button>
@@ -557,25 +304,6 @@
   </button>
 
 </div>
-
-<!-- <mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
-  <button
-    (click)="toggleColumnVisibility(column, $event)"
-    *ngFor="let column of columns"
-    class="checkbox-item mat-menu-item"
-  >
-    <mat-checkbox
-      (click)="$event.stopPropagation()"
-      [(ngModel)]="column.visible"
-      color="primary"
-      name="columnsFilter"
-      ngDefaultControl
-    >
-      {{ column.label }}
-    </mat-checkbox>
-  </button>
-</mat-menu> -->
-
 
 
 

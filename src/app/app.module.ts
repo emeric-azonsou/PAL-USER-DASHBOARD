@@ -32,6 +32,7 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatTableExporterModule } from 'mat-table-exporter';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { MatDividerModule } from "@angular/material/divider";
 import { ApiComponent } from "./pages/dashboards/api/api.component";
@@ -104,6 +105,7 @@ import { AddUpdateDisbursementModalComponent } from "./pages/dashboards/disburse
     MatSnackBarModule,
     MatDatepickerModule,
     MatTableExporterModule,
+    MatCheckboxModule,
     MatNativeDateModule,
     MatProgressSpinnerModule,
     NgIdleKeepaliveModule.forRoot(),
