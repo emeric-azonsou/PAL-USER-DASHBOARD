@@ -52,6 +52,7 @@
             pattern="\d*"
             placeholder="{{ placeHolder }}"
             maxlength="{{ maxLength }}"
+            ngDefaultControl
           />
           <mat-error>
             <span
@@ -71,7 +72,7 @@
           </div>
         </div>
         <mat-form-field appearance="outline" class="field">
-          <input matInput formControlName="amount" placeholder="" />
+          <input ngDefaultControl matInput formControlName="amount" placeholder="" />
           <mat-icon matSuffix>
             <h6>{{ currency }}</h6>
           </mat-icon>
@@ -95,6 +96,7 @@
           <mat-select
             (selectionChange)="setSelectedModule($event)"
             formControlName="operator"
+            ngDefaultControl
           >
             <mat-option
               *ngFor="let provider of operators"
@@ -112,6 +114,7 @@
         </div>
         <mat-form-field appearance="fill">
           <input
+          ngDefaultControl
             (ngModelChange)="onCheckConfirmNumber()"
             matInput
             formControlName="repeat_phone_no"

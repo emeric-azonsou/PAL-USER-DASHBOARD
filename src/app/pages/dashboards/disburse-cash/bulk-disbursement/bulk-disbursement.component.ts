@@ -190,7 +190,7 @@ export class BulkDisbursementComponent implements OnInit {
   filelist: any[];
   hasData: boolean;
   isDisbursing: boolean;
-  disbursementData: unknown[];
+  disbursementData: any[];
   totalAmount = 0;
   totalTransactions: number;
 
@@ -411,9 +411,8 @@ export class BulkDisbursementComponent implements OnInit {
           this.hasError = true;
           this.errorMessage =
             "Something went wrong please try again or contact support";
-            this.openSnackbar(this.errorMessage);
-
-          }
+          this.openSnackbar(this.errorMessage);
+        }
       );
   }
 
@@ -442,18 +441,21 @@ export class BulkDisbursementComponent implements OnInit {
          * any is the updated customer (if the user pressed Save - otherwise it's null)
          */
         if (disbursement) {
+          console.log('add[disbursement]', disbursement);
           /**
            * Here we are updating our local array.
            * You would probably make an HTTP request here.
            */
-          const amounts = this.disbursementData.map((data: any) => data.amount);
-          this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
-          this.totalTransactions = this.disbursementData?.length;
-          this.selection.deselect(disbursement);
+          const amounts = this.disbursementData
+            ? this.disbursementData?.map((data: any) => data.amount)
+            : [0];
+          this.totalAmount =
+            parseInt(amounts.reduce((sum, carr) => sum + carr), 10) + parseInt(disbursement.amount, 10);
+          this.totalTransactions = this.disbursementData?.length + 1;
+       
+
+          this.disbursementData.unshift(disbursement);
           this.subject$.next(this.disbursementData);
-          this.dataSource = new MatTableDataSource(this.disbursementData);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
         }
       });
   }
@@ -566,5 +568,4 @@ export class BulkDisbursementComponent implements OnInit {
     );
     TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, "ExampleArray");
   }
-  
 }

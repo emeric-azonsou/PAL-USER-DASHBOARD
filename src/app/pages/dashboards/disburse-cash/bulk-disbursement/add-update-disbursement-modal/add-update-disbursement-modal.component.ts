@@ -151,7 +151,7 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
   initForm() {
     this.transferForm = this.fb.group({
       phone_no: [
-        this.defaults.phone || "",
+        this.defaults?.phone || "",
         [
           Validators.required,
           Validators.pattern(this.phoneNumberValidationPattern),
@@ -159,15 +159,15 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
         ],
       ],
       repeat_phone_no: [
-        this.defaults.phone || "",
+        this.defaults?.phone || "",
         [
           Validators.required,
           Validators.pattern(this.phoneNumberValidationPattern),
           Validators.min(8),
         ],
       ],
-      amount: [this.defaults.amount || "", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-      operator: [this.defaults.network || "mtn", Validators.required],
+      amount: [this.defaults?.amount || "", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      operator: [this.defaults?.network || "mtn", Validators.required],
     });
   }
 
@@ -324,11 +324,11 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
   addDisbursement() {
     const disbursement = this.transferForm.value;
     const filteredDisbursement = {
-      phone: disbursement.phone,
+      phone: disbursement.phone_no,
       amount: disbursement.amount,
-      name: this.defaults.client_name,
+      name: this.defaults?.client_name,
       network: disbursement.operator,
-      index: this.defaults.index
+      index: this.defaults?.index
     }
 
     this.dialogRef.close(filteredDisbursement);
@@ -339,9 +339,9 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
     const filteredDisbursement = {
       phone: disbursement.phone,
       amount: disbursement.amount,
-      name: this.defaults.client_name,
+      name: this.defaults?.client_name,
       network: disbursement.operator,
-      index: this.defaults.index
+      index: this.defaults?.index
     }
 
     this.dialogRef.close(filteredDisbursement);
