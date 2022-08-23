@@ -88,6 +88,7 @@
         </li>
         <li>
           <a [routerLink]="['/dashboards/bulk-disbursement']"
+          (click)="toggleDisbursePopup()"
             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
           >
             <h4> <span class="icon"  ><mat-icon [icIcon]="peapole"></mat-icon> </span> Bulk disbursement</h4>
@@ -118,7 +119,7 @@
         type="button"
        (click)="toggleDisbursePopup()"
       >
-        Disburse <mat-icon class="arrow">arrow_drop_down</mat-icon>
+        Disburse <mat-icon class="arrow">{{ !isOpenDisbursePopup ? 'arrow_drop_down' : 'arrow_drop_up'}}</mat-icon>
       </button>
     </div>
     <div>

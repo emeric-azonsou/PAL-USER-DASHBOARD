@@ -76,7 +76,7 @@ export class BulkDisbursementComponent implements OnInit {
   unsubscribe$ = new Subject();
   @Input()
   columns: TableColumn<any>[] = [
-    { label: 'Select', property: 'checkbox', type: 'checkbox', visible: true },
+    { label: "Select", property: "checkbox", type: "checkbox", visible: true },
     { label: "No", property: "index", type: "text", visible: true },
     { label: "Number", property: "phone", type: "text", visible: true },
     { label: "Network", property: "network", type: "text", visible: true },
@@ -96,8 +96,7 @@ export class BulkDisbursementComponent implements OnInit {
       visible: true,
       cssClasses: ["font-medium"],
     },
-    { label: 'Actions', property: 'actions', type: 'button', visible: true }
-
+    { label: "Actions", property: "actions", type: "button", visible: true },
   ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -140,7 +139,7 @@ export class BulkDisbursementComponent implements OnInit {
     "Amount",
     "Reason of transaction",
     "Name",
-    "Actions"
+    "Actions",
   ];
 
   statuses = [
@@ -164,7 +163,7 @@ export class BulkDisbursementComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild('disbursementFile')
+  @ViewChild("disbursementFile")
   disbursermentListFile: ElementRef;
   @ViewChild(MatTableExporterDirective)
   matTableExporter: MatTableExporterDirective;
@@ -297,6 +296,26 @@ export class BulkDisbursementComponent implements OnInit {
     });
   }
 
+  setCurrency(country) {
+    let currency;
+    switch (country) {
+      case "GH":
+        currency = "GHS";
+        break;
+      case "BJ":
+        currency = "XOF";
+        break;
+      case "CI":
+        currency = "XOF";
+        break;
+      case "SG":
+        currency = "XOF";
+        break;
+    }
+
+    this.form.get("currency").setValue(currency);
+  }
+
   addfile(event) {
     this.file = event.target.files[0];
     let fileReader = new FileReader();
@@ -315,10 +334,9 @@ export class BulkDisbursementComponent implements OnInit {
         raw: true,
       });
       this.disbursementData = disbursementData.map((disbursement, index) => {
-        disbursement['index'] = index + 1;
+        disbursement["index"] = index + 1;
         return disbursement;
       });
-      console.log("addfile [disbursementData]", this.disbursementData);
       const amounts = disbursementData.map((data: any) => data.amount);
       this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
       this.totalTransactions = disbursementData?.length;
@@ -327,9 +345,8 @@ export class BulkDisbursementComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.hasData = true;
-      if(this.disbursementData.length) {
+      if (this.disbursementData.length) {
         this.disbursermentListFile.nativeElement.value = "";
-
       }
     };
   }
@@ -386,14 +403,17 @@ export class BulkDisbursementComponent implements OnInit {
           } else {
             this.hasError = true;
             this.errorMessage = response["message"];
+            this.openSnackbar(response["message"]);
           }
         },
         (erro) => {
           this.isDisbursing = false;
           this.hasError = true;
           this.errorMessage =
-            "No data Found for the specified search criteria. Please try with different data";
-        }
+            "Something went wrong please try again or contact support";
+            this.openSnackbar(this.errorMessage);
+
+          }
       );
   }
 
@@ -404,8 +424,6 @@ export class BulkDisbursementComponent implements OnInit {
   getStatusLabel(status: string) {
     return this.statusLabels.find((label) => label.text === status);
   }
-
-
 
   deleteDisbursements(disbursements: any[]) {
     /**
@@ -428,15 +446,15 @@ export class BulkDisbursementComponent implements OnInit {
            * Here we are updating our local array.
            * You would probably make an HTTP request here.
            */
-           const amounts = this.disbursementData.map((data: any) => data.amount);
-           this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
-           this.totalTransactions = this.disbursementData?.length;
-           this.selection.deselect(disbursement);
-           this.subject$.next(this.disbursementData);
-           this.dataSource = new MatTableDataSource(this.disbursementData);
-           this.dataSource.paginator = this.paginator;
-           this.dataSource.sort = this.sort;
-          }
+          const amounts = this.disbursementData.map((data: any) => data.amount);
+          this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
+          this.totalTransactions = this.disbursementData?.length;
+          this.selection.deselect(disbursement);
+          this.subject$.next(this.disbursementData);
+          this.dataSource = new MatTableDataSource(this.disbursementData);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
       });
   }
 
@@ -456,14 +474,13 @@ export class BulkDisbursementComponent implements OnInit {
            * You would probably make an HTTP request here.
            */
           const index = this.disbursementData.findIndex(
-            (existingany) => existingany['phone'] === updatedany.phone
+            (existingany) => existingany["phone"] === updatedany.phone
           );
           this.disbursementData[index] = updatedany;
           this.subject$.next(this.disbursementData);
           this.dataSource = new MatTableDataSource(this.disbursementData);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
-    
         }
       });
   }
@@ -475,14 +492,16 @@ export class BulkDisbursementComponent implements OnInit {
      */
     this.disbursementData.splice(
       this.disbursementData.findIndex(
-        (existingany) => existingany['phone'] === disbursement.phone
+        (existingany) => existingany["phone"] === disbursement.phone
       ),
       1
     );
-    console.log('[delete ]disbursement', disbursement);
-    console.log('[delete ]disbursementData', this.disbursementData);
+    console.log("[delete ]disbursement", disbursement);
+    console.log("[delete ]disbursementData", this.disbursementData);
     const amounts = this.disbursementData.map((data: any) => data.amount);
-    this.totalAmount = amounts.length ? amounts.reduce((sum, carr) => sum + carr) : 0;
+    this.totalAmount = amounts.length
+      ? amounts.reduce((sum, carr) => sum + carr)
+      : 0;
     this.totalTransactions = this.disbursementData?.length;
     this.selection.deselect(disbursement);
     this.subject$.next(this.disbursementData);
@@ -547,4 +566,5 @@ export class BulkDisbursementComponent implements OnInit {
     );
     TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, "ExampleArray");
   }
+  
 }

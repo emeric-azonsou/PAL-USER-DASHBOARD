@@ -2,7 +2,7 @@
   page with native  version
  -->
 
- <div class="bulk-group">
+<div class="bulk-group">
   <div class="group">
     <h3>BULK DISBURSEMENT</h3>
     <div class="element">
@@ -18,182 +18,223 @@
     fxLayout="column"
     fxLayoutAlign="center start"
   >
-
-  <form (ngSubmit)="disburse()" [formGroup]="form">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <div fxLayout="column" class="card" fxFlex="auto">
-
-        <div class="flex  file-input">
-          <label
-            for="dropzone-file"
-            class="flex flex-col shadow-md w-32 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
-          >
-            <div class="flex flex-col justify-center pt-5 pb-6">
-              <mat-icon>cloud_upload</mat-icon>
-              <p class="mb-8  text-gray-500">
-                <span class="font-semibold">upload Exel</span>
-              </p>
-            </div>
-            <input #disbursementFile (change)="addfile($event)" id="dropzone-file" type="file" class="hidden" />
-          </label>
+    <form (ngSubmit)="disburse()" [formGroup]="form">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="column" class="card" fxFlex="auto">
+          <div class="flex file-input">
+            <label
+              for="dropzone-file"
+              class="flex flex-col shadow-md w-32 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
+            >
+              <div class="flex flex-col justify-center pt-5 pb-6">
+                <mat-icon>cloud_upload</mat-icon>
+                <p class="mb-8 text-gray-500">
+                  <span class="font-semibold">upload Exel</span>
+                </p>
+              </div>
+              <input
+                #disbursementFile
+                (change)="addfile($event)"
+                id="dropzone-file"
+                type="file"
+                class="hidden"
+              />
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <div fxLayout="column" class="card" fxFlex="auto">
-        <div class="flex flex-col sm:flex-row">
-          <mat-form-field class="sm:ml-6 flex-auto">
-            <mat-label>Country</mat-label>
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="column" class="card" fxFlex="auto">
+          <div class="flex flex-col sm:flex-row">
+            <mat-form-field class="sm:ml-6 flex-auto">
+              <mat-label>Country</mat-label>
 
-            <mat-select placeholder="Country" formControlName="country">
-              <mat-option [country]=""> Select Country </mat-option>
-              <mat-option
-                *ngFor="let country of availableCountries"
-                id="newAttributeProduct"
-                [value]="country"
+              <mat-select
+                (ngModelChange)="setCurrency($event)"
+                placeholder="Country"
+                formControlName="country"
+                required
               >
-                {{ country }}
-              </mat-option>
-            </mat-select>
-            <!-- <mat-icon
+                <mat-option [country]=""> Select Country </mat-option>
+                <mat-option
+                  *ngFor="let country of availableCountries"
+                  id="newAttributeProduct"
+                  [value]="country"
+                >
+                  {{ country }}
+                </mat-option>
+              </mat-select>
+              <!-- <mat-icon
               [icIcon]="icBook"
               class="mr-3"
               matPrefix
             ></mat-icon> -->
-          </mat-form-field>
+            </mat-form-field>
 
-          <mat-form-field class="sm:ml-6 flex-auto">
-            <mat-label>Currency</mat-label>
+            <!-- <mat-form-field class="sm:ml-6 flex-auto">
+              <mat-label>Currency</mat-label>
 
-            <mat-select
-              placeholder="Currency"
-              formControlName="currency"
-            >
-              <mat-option [value]=""> Select Currency </mat-option>
-              <mat-option
-                *ngFor="let currency of currencies"
-                id="newAttributeCurrencies"
-                [value]="currency"
-              >
-                {{ currency }}
-              </mat-option>
-            </mat-select>
-            <!-- <mat-icon
-              [icIcon]="icAttachMoney"
-              class="mr-3"
-              matPrefix
-            ></mat-icon> -->
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Purpose</mat-label>
-            <input
-              (ngModelChange)="onCheckConfirmNumber()"
-              matInput
-              formControlName="object"
-              #input
-              type="text"
-              placeholder="Purpose"
-              maxlength="20"
-            />
-          </mat-form-field>
+              <mat-select placeholder="Currency" formControlName="currency">
+                <mat-option [value]=""> Select Currency </mat-option>
+                <mat-option
+                  *ngFor="let currency of currencies"
+                  id="newAttributeCurrencies"
+                  [value]="currency"
+                >
+                  {{ currency }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+            <mat-form-field appearance="fill" class="sm:ml-6 flex-auto">
+              <mat-label>Currency</mat-label>
+              <input
+                matInput
+                formControlName="currency"
+                #input
+                type="text"
+                placeholder="Currency"
+                readonly
+                disabled
+              />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="sm:ml-6 flex-auto">
+              <mat-label>Purpose</mat-label>
+              <input
+                matInput
+                formControlName="purpose"
+                #input
+                type="text"
+                placeholder="Purpose"
+                maxlength="50"
+              />
+            </mat-form-field>
+          </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
 
-  
-  <!-- <div
+    <!-- <div
       [class.container]="layoutCtrl.value === 'boxed'"
       [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
       class="w-full flex flex-col sm:flex-row justify-between"
     > -->
-  <!-- <div>
+    <!-- <div>
         <h1 class="title mt-0 mb-1">Transactions Report</h1>
         <vex-breadcrumbs
           [crumbs]="['Dashboards', 'reports', 'transactions']"
         ></vex-breadcrumbs>
       </div> -->
 
-  <!-- <mat-button-toggle-group [formControl]="layoutCtrl" class="mt-4 sm:mt-0">
+    <!-- <mat-button-toggle-group [formControl]="layoutCtrl" class="mt-4 sm:mt-0">
         <mat-button-toggle value="boxed">BOXED</mat-button-toggle>
         <mat-button-toggle value="fullwidth">FULL-WIDTH</mat-button-toggle>
       </mat-button-toggle-group> -->
-  <!-- </div> -->
+    <!-- </div> -->
   </vex-page-layout-header>
 
-
-  <vex-page-layout-content 
-                           class="-mt-6">
-
+  <vex-page-layout-content class="-mt-6">
     <div class="card overflow-auto -mt-16">
-      <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
-        <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none" fxHide.xs>
+      <div
+        class="bg-app-bar px-6 h-16 border-b sticky left-0"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+      >
+        <h2
+          class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l"
+          fxFlex="none"
+          fxHide.xs
+        >
           <span *ngIf="selection.isEmpty()">Disbursements List</span>
-          <span *ngIf="selection.hasValue()">{{ selection.selected.length }}
-            Disbursement<span *ngIf="selection.selected.length > 1">s</span> selected</span>
+          <span *ngIf="selection.hasValue()"
+            >{{ selection.selected.length }} Disbursement<span
+              *ngIf="selection.selected.length > 1"
+              >s</span
+            >
+            selected</span
+          >
         </h2>
 
-        <div *ngIf="selection.hasValue()" class="mr-4 pr-4 border-r" fxFlex="none">
-          <button (click)="deleteDisbursements(selection.selected)"
-                  color="primary"
-                  mat-icon-button
-                  matTooltip="Delete selected"
-                  type="button">
+        <div
+          *ngIf="selection.hasValue()"
+          class="mr-4 pr-4 border-r"
+          fxFlex="none"
+        >
+          <button
+            (click)="deleteDisbursements(selection.selected)"
+            color="primary"
+            mat-icon-button
+            matTooltip="Delete selected"
+            type="button"
+          >
             <mat-icon [icIcon]="icDelete"></mat-icon>
           </button>
-
         </div>
-
-      
 
         <span fxFlex></span>
 
-        
         <div>
-          <label class="py-3 px-6" for="">Total transactions: {{ totalTransactions || 0 }}</label>
-          <label class="py-3 px-6" for="">Total Amount: {{ totalAmount || 0}}</label>
+          <label class="py-3 px-6" for=""
+            >Total transactions: {{ totalTransactions || 0 }}</label
+          >
+          <label class="py-3 px-6" for=""
+            >Total Amount: {{ totalAmount || 0 }}</label
+          >
           <label class="py-3 px-6" for="">Name verification: {{ 0 }}</label>
         </div>
 
-        <button [matMenuTriggerFor]="columnFilterMenu"
-                class="ml-4"
-                fxFlex="none"
-                mat-icon-button
-                matTooltip="Filter Columns"
-                type="button">
+        <button
+          [matMenuTriggerFor]="columnFilterMenu"
+          class="ml-4"
+          fxFlex="none"
+          mat-icon-button
+          matTooltip="Filter Columns"
+          type="button"
+        >
           <mat-icon [icIcon]="icFilterList"></mat-icon>
         </button>
 
-        <button (click)="addDisbursement()"
-                class="ml-4"
-                color="primary"
-                fxFlex="none"
-                mat-mini-fab
-                matTooltip="Add Disbursement"
-                type="button">
+        <button
+          (click)="addDisbursement()"
+          class="ml-4"
+          color="primary"
+          fxFlex="none"
+          mat-mini-fab
+          matTooltip="Add Disbursement"
+          type="button"
+        >
           <mat-icon [icIcon]="icAdd"></mat-icon>
         </button>
       </div>
 
-      <table @stagger [dataSource]="dataSource" class="w-full" mat-table matSort>
-
+      <table
+        @stagger
+        [dataSource]="dataSource"
+        class="w-full"
+        mat-table
+        matSort
+      >
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="checkbox">
           <th *matHeaderCellDef mat-header-cell>
-            <mat-checkbox (change)="$event ? masterToggle() : null"
-                          [checked]="selection.hasValue() && isAllSelected()"
-                          [indeterminate]="selection.hasValue() && !isAllSelected()"
-                          color="primary">
+            <mat-checkbox
+              (change)="$event ? masterToggle() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+              color="primary"
+            >
             </mat-checkbox>
           </th>
           <td *matCellDef="let row" class="w-4" mat-cell>
-            <mat-checkbox (change)="$event ? selection.toggle(row) : null"
-                          (click)="$event.stopPropagation()"
-                          [checked]="selection.isSelected(row)"
-                          color="primary">
+            <mat-checkbox
+              (change)="$event ? selection.toggle(row) : null"
+              (click)="$event.stopPropagation()"
+              [checked]="selection.isSelected(row)"
+              color="primary"
+            >
             </mat-checkbox>
           </td>
         </ng-container>
@@ -202,15 +243,27 @@
         <ng-container matColumnDef="image">
           <th *matHeaderCellDef mat-header-cell></th>
           <td *matCellDef="let row" class="w-8 min-w-8 pr-0" mat-cell>
-            <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle">
+            <img [src]="row['imageSrc']" class="avatar h-8 w-8 align-middle" />
           </td>
         </ng-container>
 
         <!-- Text Columns -->
         <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
-          <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
-            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header> {{ column.label }}</th>
-            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>{{ row[column.property] }}</td>
+          <ng-container
+            *ngIf="column.type === 'text'"
+            [matColumnDef]="column.property"
+          >
+            <th
+              *matHeaderCellDef
+              class="uppercase"
+              mat-header-cell
+              mat-sort-header
+            >
+              {{ column.label }}
+            </th>
+            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+              {{ row[column.property] }}
+            </td>
           </ng-container>
         </ng-container>
 
@@ -219,62 +272,80 @@
           <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
           <td *matCellDef="let row" mat-cell>
             <div class="flex">
-              <a (click)="$event.stopPropagation()"
-                 class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary-light"
-                 mat-icon-button>
+              <a
+                (click)="$event.stopPropagation()"
+                class="w-8 h-8 leading-none flex items-center justify-center hover:bg-hover text-primary bg-primary-light"
+                mat-icon-button
+              >
                 <mat-icon [icIcon]="icPhone" size="18px"></mat-icon>
               </a>
 
-              <a (click)="$event.stopPropagation()"
-                 class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-teal bg-teal-light"
-                 mat-icon-button>
+              <a
+                (click)="$event.stopPropagation()"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-teal bg-teal-light"
+                mat-icon-button
+              >
                 <mat-icon [icIcon]="icMail" size="18px"></mat-icon>
               </a>
 
-              <a (click)="$event.stopPropagation()"
-                 class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
-                 mat-icon-button>
+              <a
+                (click)="$event.stopPropagation()"
+                class="w-8 h-8 leading-none flex items-center justify-center ml-1 hover:bg-hover text-green bg-green-light"
+                mat-icon-button
+              >
                 <mat-icon [icIcon]="icMap" size="18px"></mat-icon>
               </a>
             </div>
           </td>
         </ng-container>
-        
 
         <!-- Action Column -->
         <ng-container matColumnDef="actions">
           <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
           <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
-            <button (click)="$event.stopPropagation()"
-                    [matMenuTriggerData]="{ disbursement: row }"
-                    [matMenuTriggerFor]="actionsMenu"
-                    mat-icon-button
-                    type="button">
+            <button
+              (click)="$event.stopPropagation()"
+              [matMenuTriggerData]="{ disbursement: row }"
+              [matMenuTriggerFor]="actionsMenu"
+              mat-icon-button
+              type="button"
+            >
               <mat-icon [icIcon]="icMoreHoriz"></mat-icon>
             </button>
           </td>
         </ng-container>
 
         <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
-        <tr (click)="updateDisbursement(row)"
-            *matRowDef="let row; columns: visibleColumns;"
-            @fadeInUp
-            class="hover:bg-hover trans-ease-out cursor-pointer"
-            mat-row></tr>
+        <tr
+          (click)="updateDisbursement(row)"
+          *matRowDef="let row; columns: visibleColumns"
+          @fadeInUp
+          class="hover:bg-hover trans-ease-out cursor-pointer"
+          mat-row
+        ></tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" class="sticky left-0"></mat-paginator>
+      <mat-paginator
+        [pageSizeOptions]="pageSizeOptions"
+        [pageSize]="pageSize"
+        class="sticky left-0"
+      ></mat-paginator>
     </div>
-
   </vex-page-layout-content>
-
-
 </vex-page-layout>
 
 <mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
-  <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
-          class="checkbox-item mat-menu-item">
-    <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary" ngDefaultControl>
+  <button
+    (click)="toggleColumnVisibility(column, $event)"
+    *ngFor="let column of columns"
+    class="checkbox-item mat-menu-item"
+  >
+    <mat-checkbox
+      (click)="$event.stopPropagation()"
+      [(ngModel)]="column.visible"
+      color="primary"
+      ngDefaultControl
+    >
       {{ column.label }}
     </mat-checkbox>
   </button>
@@ -295,18 +366,16 @@
 
 <div class="overflow-x-auto table-full relative">
   <button
-  type="button"
-  class="text-white "
-  (click) = "disburse()"
-  [disabled]="form.invalid || !disbursementData.length"
+    type="button"
+    mat-raised-button
+    color="primary"
+    class="btn-primary"
+    (click)="disburse()"
+    [disabled]="form.invalid || !disbursementData?.length"
   >
-    Send cash 
+    Send cash
   </button>
-
 </div>
-
-
-
 
 <!-- page with library version 
 
