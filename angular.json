@@ -72,8 +72,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "3mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "1000mb"
                 }
               ]
             },
@@ -96,8 +96,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "3mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "1000mb"
                 }
               ]
             }
@@ -111,6 +111,9 @@
           "configurations": {
             "production": {
               "browserTarget": "vex:build:production"
+            },
+            "test": {
+              "browserTarget": "vex:build:test"
             }
           }
         },
@@ -159,6 +162,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "vex:serve:production"
+            },
+            "test": {
+              "devServerTarget": "vex:serve:test"
             }
           }
         }

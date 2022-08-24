@@ -5,9 +5,9 @@
 <div class="bulk-group">
   <div class="group">
     <h3>BULK DISBURSEMENT</h3>
-    <div class="element">
+    <!-- <div class="element">
       <mat-icon class="exit">highlight_off</mat-icon>
-    </div>
+    </div> -->
   </div>
 </div>
 <hr />
@@ -33,14 +33,19 @@
                 </p>
               </div>
               <input
+                [disabled]="form.invalid"
                 #disbursementFile
                 (change)="addfile($event)"
                 id="dropzone-file"
                 type="file"
                 class="hidden"
               />
+             
             </label>
           </div>
+          <mat-error class="no-country-error" *ngIf="form.invalid"> Please select a country before uploading a file.               
+          </mat-error>
+  
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="start center">
@@ -180,7 +185,7 @@
           <label class="py-3 px-6" for=""
             >Total Amount: {{ totalAmount || 0 }}</label
           >
-          <label class="py-3 px-6" for="">Name verification: {{ 0 }}</label>
+          <label class="py-3 px-6" for="">Name verification: {{ verificationCountMessage || 'N/A' }}</label>
         </div>
 
         <button

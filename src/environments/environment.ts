@@ -44,6 +44,7 @@ export const environment = {
   getTransactionsReportUrl: `http://127.0.0.1:8000/api/gettransactionsreport/`,
 
   getClientDetailsUrl: `http://127.0.0.1:8000/api/getmomoclientdata`,
+  getBulkClientDetailsUrl: `http://127.0.0.1:8000/api/getbulkmomoclientdata`,
 
 };
 /*

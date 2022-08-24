@@ -39,5 +39,6 @@ export const environment = {
 
   getTransactionsReportUrl: `https://api.pals.africa/api/gettransactionsreport/`,
   getClientDetailsUrl: `https://api.pals.africa/api/getmomoclientdata`,
+  getBulkClientDetailsUrl: `https://api.pals.africa/api/getbulkmomoclientdata`,
 
 };

@@ -56,6 +56,7 @@ import {
 } from "@angular/material/form-field";
 import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
+import { BusinessService } from "src/app/services/business.service";
 @Component({
   selector: "vex-bulk-disbursement",
   templateUrl: "./bulk-disbursement.component.html",
@@ -190,12 +191,18 @@ export class BulkDisbursementComponent implements OnInit {
   filelist: any[];
   hasData: boolean;
   isDisbursing: boolean;
-  disbursementData: any[];
+  disbursementData = [];
   totalAmount = 0;
   totalTransactions: number;
+  isFetchingName: boolean;
+  noNameErrorMessage: string;
+  verifyingCount: number = 0;
+  verificationCountMessage: string;
+  tempName: string;
 
   constructor(
     private authService: AuthserviceService,
+    private businessService: BusinessService,
     private router: Router,
     private fb: FormBuilder,
     private transactionService: TransactionsService,
@@ -345,6 +352,18 @@ export class BulkDisbursementComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.hasData = true;
+      this.disbursementData.forEach((data) => {
+        const transferData = {
+          currency: this.form.value.currency,
+          user_id: this.userData.user_id,
+          charges: 0,
+          phone_no: data.phone,
+          country: this.form.value.country,
+          operator: data.network,
+        };
+
+        this.getClientData(transferData, data.index);
+      });
       if (this.disbursementData.length) {
         this.disbursermentListFile.nativeElement.value = "";
       }
@@ -441,23 +460,104 @@ export class BulkDisbursementComponent implements OnInit {
          * any is the updated customer (if the user pressed Save - otherwise it's null)
          */
         if (disbursement) {
-          console.log('add[disbursement]', disbursement);
+
           /**
            * Here we are updating our local array.
            * You would probably make an HTTP request here.
            */
-          const amounts = this.disbursementData
-            ? this.disbursementData?.map((data: any) => data.amount)
+          const amounts = this.disbursementData.length
+            ? this.disbursementData?.map((data: any) => data?.amount)
             : [0];
           this.totalAmount =
-            parseInt(amounts.reduce((sum, carr) => sum + carr), 10) + parseInt(disbursement.amount, 10);
+            parseInt(
+              amounts.reduce((sum, carr) => sum + carr),
+              10
+            ) + parseInt(disbursement.amount, 10);
           this.totalTransactions = this.disbursementData?.length + 1;
-       
 
           this.disbursementData.unshift(disbursement);
-          this.subject$.next(this.disbursementData);
+          this.updateDataSource();
+
+          const transferData = {
+            currency: this.form.value.currency,
+            user_id: this.userData.user_id,
+            charges: 0,
+            phone_no: disbursement.phone,
+            operator: disbursement.network,
+            country: this.form.value.country,
+          };
+          this.getClientData(transferData, 1);
+
         }
       });
+  }
+
+  updateDataSource(disbursementData = null) {
+    if (disbursementData) {
+      this.disbursementData = disbursementData;
+    }
+    this.disbursementData = this.disbursementData?.map(
+      (disbursement, index) => {
+        disbursement["index"] = index + 1;
+        return disbursement;
+      }
+    );
+    this.subject$.next(this.disbursementData);
+    this.dataSource = new MatTableDataSource(this.disbursementData);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  getClientData(transferData, index) {
+    this.disbursementData = this.disbursementData.map((data) => {
+      if (data["index"] === index) {
+        this.tempName = data["name"];
+        data["name"] = "verifying....";
+      }
+      return data;
+    });
+    this.updateDataSource();
+    this.verificationCountMessage = `${index}/${this.disbursementData.length}`;
+    this.isFetchingName = true;
+    this.businessService
+      .getClientDetails(transferData, this.credentials)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response) => {
+        this.isFetchingName = false;
+        if (response && response["status"] === true) {
+          const disbursementData = this.disbursementData.map((data) => {
+            if (`${data["phone"]}` === response["data"].phone_no) {
+              data["name"] = response["data"].full_name;
+            }
+            return data;
+          });
+          this.updateDataSource(disbursementData);
+
+        } else {
+          const disbursementData = this.disbursementData.map((data) => {
+            console.log('[data["index"] mathing?]', data["index"] === index);
+            console.log('[this.tempName]', this.tempName);
+            if (data["index"] === index) {
+              data["name"] = this.tempName ? `${this.tempName} (not verified)` : 'Name not found';
+            }
+            return data;
+          });
+          this.updateDataSource(disbursementData);
+        }
+      }),
+      (error) => {
+        this.isFetchingName = false;
+        this.noNameErrorMessage =
+          "Failed to retreive client name assotiated to this phone number";
+        // console.warn(error);
+        const disbursementData = this.disbursementData.map((data) => {
+          if (data["index"] === index) {
+            data["name"] = this.tempName || '';
+          }
+          return data;
+        });
+        this.updateDataSource(disbursementData);
+      };
   }
 
   updateDisbursement(customer: any) {
@@ -479,10 +579,7 @@ export class BulkDisbursementComponent implements OnInit {
             (existingany) => existingany["phone"] === updatedany.phone
           );
           this.disbursementData[index] = updatedany;
-          this.subject$.next(this.disbursementData);
-          this.dataSource = new MatTableDataSource(this.disbursementData);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          this.updateDataSource();
         }
       });
   }
@@ -498,18 +595,13 @@ export class BulkDisbursementComponent implements OnInit {
       ),
       1
     );
-    console.log("[delete ]disbursement", disbursement);
-    console.log("[delete ]disbursementData", this.disbursementData);
     const amounts = this.disbursementData.map((data: any) => data.amount);
     this.totalAmount = amounts.length
       ? amounts.reduce((sum, carr) => sum + carr)
       : 0;
     this.totalTransactions = this.disbursementData?.length;
     this.selection.deselect(disbursement);
-    this.subject$.next(this.disbursementData);
-    this.dataSource = new MatTableDataSource(this.disbursementData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.updateDataSource();
   }
 
   onFilterChange(value: string) {

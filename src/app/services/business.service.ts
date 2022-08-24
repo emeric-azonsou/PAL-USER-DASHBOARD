@@ -158,6 +158,34 @@ export class BusinessService {
       }),
       catchError((error: HttpErrorResponse) => {
         console.error("Error", error.message);
+        if(error.status === 404) {
+          return [{status: false, message: error.error}];
+      } else {
+        return observableThrowError(error);
+      }
+      })
+    );
+  }
+
+  getBulkClientDetails(credentials, user_id, getmomoclientdata, form) {
+    const url = `${environment.getBulkClientDetailsUrl}`;
+    const params = new HttpParams()
+    .set('user_id', user_id)
+    .set('data', getmomoclientdata)
+    .set('currency', form['currency'])
+    .set('country', form['country'])
+
+    // const url = `http://127.0.0.1:8000/api/getmomoclientdata?phone_no=${getmomoclientdata}`;
+    const headers = new HttpHeaders({
+      'Authorization' : `Bearer ${credentials}`,
+      'Content-Type': 'application/json'
+    })    
+    return this.http.get(url, { headers: headers, params: params }).pipe(
+      map((response: any) => {
+        return response;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error", error.message);
         return observableThrowError(error);
       })
     );

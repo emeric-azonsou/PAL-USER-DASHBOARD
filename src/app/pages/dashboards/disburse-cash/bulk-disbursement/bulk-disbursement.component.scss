@@ -5,6 +5,7 @@
     color: #010d4a;
     left: 24px;
     top: 10px;
+    padding-bottom: 25px
   }
   hr{
     position: relative;
@@ -16,7 +17,9 @@ label{
   font-weight: 400
 }
 
-
+mat-error.no-country-error {
+  padding-left: 25px;
+}
 
 .file-input {
   position: relative;
