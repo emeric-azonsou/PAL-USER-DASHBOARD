@@ -27,7 +27,7 @@ export const environment = {
   getModulesDataUrl: `https://api.pals.africa/api/getmodulesdata`,
   getBusinessDataUrl: `https://api.pals.africa/api/getuserbusiness/`,
   createTransferUrl: `https://api.pals.africa/api/createtransfer`,
-  createBulkTransferUrl: `http://api.pals.africa/api/createbulktransfer`,
+  createBulkTransferUrl: `https://api.pals.africa/api/createbulktransfer`,
 
   requestTopUpUrl: `https://api.pals.africa/api/requesttopup`,
   getUserTopUpsUrl: `https://api.pals.africa/api/getusertopups/`,
@@ -39,5 +39,6 @@ export const environment = {
 
   getTransactionsReportUrl: `https://api.pals.africa/api/gettransactionsreport/`,
   getClientDetailsUrl: `https://api.pals.africa/api/getmomoclientdata`,
+  getBulkClientDetailsUrl: `https://api.pals.africa/api/getbulkmomoclientdata`,
 
 };

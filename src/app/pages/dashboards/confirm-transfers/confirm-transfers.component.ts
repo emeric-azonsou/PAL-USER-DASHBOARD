@@ -89,7 +89,7 @@ export class ConfirmTransfersComponent implements OnInit {
       if (response && response["status"] === true) {
         this.clientName = response['data'].full_name;
       } else {
-        this.noNameErrorMessage = response["message"];
+        this.noNameErrorMessage = 'Failed to retreive client name assotiated to this phone number';
       }
     }),
     (error) => {

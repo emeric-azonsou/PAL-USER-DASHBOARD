@@ -1,7 +1,12 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSelectChange } from "@angular/material/select";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -11,7 +16,6 @@ import { Router } from "@angular/router";
 import { MatTableExporterDirective } from "mat-table-exporter";
 import moment from "moment";
 import { ReplaySubject, Observable, Subject, of } from "rxjs";
-import { takeUntil } from "rxjs/operators";
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
 import {
   TRANSACTION_TABLE_LABELS,
@@ -21,7 +25,6 @@ import {
   BUSINESS_DATA_KEY,
 } from "src/app/Models/constants";
 import { SummaryData } from "src/app/Models/models.interface";
-import { Customer } from "src/app/pages/apps/aio-table/interfaces/customer.model";
 import { AuthserviceService } from "src/app/services/authservice.service";
 import { TransactionsService } from "src/app/services/transactions.service";
 import { aioTableLabels, aioTableData } from "src/static-data/aio-table-data";
@@ -44,26 +47,50 @@ import icBook from "@iconify/icons-ic/twotone-book";
 import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
 import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
 import * as XLSX from "xlsx";
+import { AddUpdateDisbursementModalComponent } from "./add-update-disbursement-modal/add-update-disbursement-modal.component";
+import { MatDialog } from "@angular/material/dialog";
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldDefaultOptions,
+} from "@angular/material/form-field";
+import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
+import { stagger40ms } from "src/@vex/animations/stagger.animation";
+import { BusinessService } from "src/app/services/business.service";
+import { take, takeUntil } from "rxjs/operators";
+
 @Component({
   selector: "vex-bulk-disbursement",
   templateUrl: "./bulk-disbursement.component.html",
   styleUrls: ["./bulk-disbursement.component.scss"],
+  animations: [fadeInUp400ms, stagger40ms],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: "standard",
+      } as MatFormFieldDefaultOptions,
+    },
+  ],
 })
 export class BulkDisbursementComponent implements OnInit {
-  subject$: ReplaySubject<Customer[]> = new ReplaySubject<Customer[]>(1);
-  data$: Observable<Customer[]> = this.subject$.asObservable();
+  subject$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  data$: Observable<any[]> = this.subject$.asObservable();
   unsubscribe$ = new Subject();
   @Input()
-  columns: TableColumn<Customer>[] = [
-    // { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
-    { label: "Phone", property: "phone", type: "text", visible: true },
+  columns: TableColumn<any>[] = [
+    { label: "Select", property: "checkbox", type: "checkbox", visible: true },
+    { label: "No", property: "index", type: "text", visible: true },
+    { label: "Number", property: "phone", type: "text", visible: true },
+    { label: "Network", property: "network", type: "text", visible: true },
     {
-      label: "amount",
+      label: "Amount",
       property: "amount",
       type: "text",
       visible: true,
       cssClasses: ["text-secondary", "font-medium"],
     },
+    // { label: "Reason of transaction", property: "purpose", type: "text", visible: true },
+
     {
       label: "Name",
       property: "name",
@@ -71,14 +98,8 @@ export class BulkDisbursementComponent implements OnInit {
       visible: true,
       cssClasses: ["font-medium"],
     },
-    {
-      label: "Network Provider",
-      property: "operator",
-      type: "text",
-      visible: true,
-      cssClasses: ["font-medium"],
-    },
-    ];
+    { label: "Actions", property: "actions", type: "button", visible: true },
+  ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   layoutCtrl = new FormControl("boxed");
@@ -112,7 +133,16 @@ export class BulkDisbursementComponent implements OnInit {
 
   statusLabels = TRANSACTION_TABLE_LABELS;
 
-  displayedColumns: string[] = ["phone", "amount", "network", "name"];
+  displayedColumns: string[] = [
+    "Select",
+    "No",
+    "Number",
+    "Network",
+    "Amount",
+    "Reason of transaction",
+    "Name",
+    "Actions",
+  ];
 
   statuses = [
     { name: "Pending", value: 1 },
@@ -122,6 +152,11 @@ export class BulkDisbursementComponent implements OnInit {
     { name: "Processing", value: 2 },
     { name: "Cancelled", value: 0 },
   ];
+  operators = [
+    { name: "MTN", value: "mtn" },
+    { name: "VODAFONE", value: "vodafone" },
+    { name: "AIRTEL-TIGO", value: "airtel-tigo" },
+  ];
   countries = COUNTRIES;
   availableCountries = ["GH", "BJ", "CI"];
   networkProviders = ["mtn", "orange"];
@@ -130,7 +165,8 @@ export class BulkDisbursementComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
+  @ViewChild("disbursementFile")
+  disbursermentListFile: ElementRef;
   @ViewChild(MatTableExporterDirective)
   matTableExporter: MatTableExporterDirective;
 
@@ -156,16 +192,26 @@ export class BulkDisbursementComponent implements OnInit {
   filelist: any[];
   hasData: boolean;
   isDisbursing: boolean;
-  disbursementData: unknown[];
+  disbursementData = [];
   totalAmount = 0;
+  totalTransactions: number;
+  isFetchingName: boolean;
+  noNameErrorMessage: string;
+  verifyingCount: number = 0;
+  verificationCountMessage: string;
+  tempName: string;
+  moduleData: any;
+  verifyingIndex = 0;
 
   constructor(
     private authService: AuthserviceService,
+    private businessService: BusinessService,
     private router: Router,
     private fb: FormBuilder,
     private transactionService: TransactionsService,
     private snackBar: MatSnackBar,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dialog: MatDialog
   ) {
     const user = localStorage.getItem("current_user");
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
@@ -196,7 +242,7 @@ export class BulkDisbursementComponent implements OnInit {
    * We are simulating this request here.
    */
   getData() {
-    return of(aioTableData.map((customer) => new Customer(customer)));
+    return of(aioTableData.map((customer) => customer));
   }
 
   get hasExceededFreeTransfers(): boolean {
@@ -235,6 +281,8 @@ export class BulkDisbursementComponent implements OnInit {
     // this.getData().subscribe(customers => {
     //   this.subject$.next(customers);
     // });
+    this.dataSource = new MatTableDataSource();
+
     this.form = this.fb.group({
       country: ["", Validators.required],
       currency: ["", Validators.required],
@@ -260,6 +308,26 @@ export class BulkDisbursementComponent implements OnInit {
     });
   }
 
+  setCurrency(country) {
+    let currency;
+    switch (country) {
+      case "GH":
+        currency = "GHS";
+        break;
+      case "BJ":
+        currency = "XOF";
+        break;
+      case "CI":
+        currency = "XOF";
+        break;
+      case "SG":
+        currency = "XOF";
+        break;
+    }
+
+    this.form.get("currency").setValue(currency);
+  }
+
   addfile(event) {
     this.file = event.target.files[0];
     let fileReader = new FileReader();
@@ -277,27 +345,48 @@ export class BulkDisbursementComponent implements OnInit {
       const disbursementData = XLSX.utils.sheet_to_json(worksheet, {
         raw: true,
       });
-      this.disbursementData = disbursementData;
+      this.disbursementData = disbursementData.map((disbursement, index) => {
+        disbursement["index"] = index + 1;
+        return disbursement;
+      });
       const amounts = disbursementData.map((data: any) => data.amount);
-      this.totalAmount = amounts.reduce((sum, carr) => sum + carr);
-      this.dataSource = new MatTableDataSource(disbursementData);
+      (this.totalAmount = amounts.reduce(
+        (sum, carr) => parseInt(sum, 10) + carr
+      )),
+        (this.totalTransactions = disbursementData?.length);
+      this.subject$.next(this.disbursementData);
+      this.dataSource = new MatTableDataSource(this.disbursementData);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.hasData = true;
+      this.disbursementData.forEach((data) => {
+        const transferData = {
+          currency: this.form.value.currency,
+          user_id: this.userData.user_id,
+          charges: 0,
+          phone_no: data.phone,
+          country: this.form.value.country,
+          operator: data.network,
+        };
 
+        this.getClientData(transferData, data.index);
+      });
+      if (this.disbursementData.length) {
+        this.disbursermentListFile.nativeElement.value = "";
+      }
     };
   }
 
   get isFormReady(): boolean {
     return true;
-    // return !!this.users && !!this.customers;
+    // return !!this.users && !!this.disbursementData;
   }
 
   getCountryName(countryCode: string): string {
     const countryData = this.countries.find(
       (country) => country.code === countryCode
     );
-    return countryData.name;
+    return countryData?.name;
   }
 
   getSalesRepName(user_id) {
@@ -319,9 +408,8 @@ export class BulkDisbursementComponent implements OnInit {
       horizontalPosition: "right",
     });
   }
- 
-  disburse() {
 
+  disburse() {
     this.isDisbursing = true;
     this.transactionService
       .createBulkTransfer(
@@ -341,13 +429,15 @@ export class BulkDisbursementComponent implements OnInit {
           } else {
             this.hasError = true;
             this.errorMessage = response["message"];
+            this.openSnackbar(response["message"]);
           }
         },
         (erro) => {
           this.isDisbursing = false;
           this.hasError = true;
           this.errorMessage =
-            "No data Found for the specified search criteria. Please try with different data";
+            "Something went wrong please try again or contact support";
+          this.openSnackbar(this.errorMessage);
         }
       );
   }
@@ -360,30 +450,180 @@ export class BulkDisbursementComponent implements OnInit {
     return this.statusLabels.find((label) => label.text === status);
   }
 
-  deleteOrder(order: any) {
+  deleteDisbursements(disbursements: any[]) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    // this.orders.splice(this.orders.findIndex((existingCustomer) => existingCustomer.id === order.id), 1);
-    // this.selection.deselect(order);
-    // this.subject$.next(this.orders);
-    // this.ordersService
-    //   .deleteOrder(this.userSessionData?.user_id, order.id)
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((response) => {
-    //     if (response["data"] === true) {
-    //       this.getTransactionsList();
-    //     }
-    //   });
+    disbursements.forEach((d) => this.deleteDisbursement(d));
   }
 
-  deleteCustomers(customers: Customer[]) {
+  addDisbursement() {
+    this.dialog
+      .open(AddUpdateDisbursementModalComponent)
+      .afterClosed()
+      .subscribe((disbursement: any) => {
+        /**
+         * any is the updated customer (if the user pressed Save - otherwise it's null)
+         */
+        if (disbursement) {
+          /**
+           * Here we are updating our local array.
+           * You would probably make an HTTP request here.
+           */
+          this.updateDataSource();
+
+          const amounts = this.disbursementData.length
+            ? this.disbursementData?.map((data: any) => +data?.amount)
+            : [0];
+          const sum = amounts.reduce((sum, carr) => sum + carr);
+
+          this.totalAmount = sum + +disbursement.amount;
+          this.totalTransactions = this.disbursementData?.length + 1;
+
+          this.disbursementData.unshift(disbursement);
+
+          const transferData = {
+            currency: this.form.value.currency,
+            user_id: this.userData.user_id,
+            charges: 0,
+            phone_no: disbursement.phone,
+            operator: disbursement.network,
+            country: this.form.value.country,
+          };
+          this.updateDataSource();
+          this.getClientData(transferData, this.disbursementData?.length);
+        }
+      });
+  }
+
+  updateDataSource(disbursementData = null) {
+    if (disbursementData) {
+      this.disbursementData = disbursementData;
+    }
+    this.disbursementData = this.disbursementData?.map(
+      (disbursement, index) => {
+        disbursement["index"] = index + 1;
+        return disbursement;
+      }
+    );
+
+    this.subject$.next(this.disbursementData);
+    this.dataSource = new MatTableDataSource(this.disbursementData);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  getClientData(transferData, index) {
+    this.disbursementData = this.disbursementData.map((data) => {
+      if (data["phone"] === transferData["phone_no"]) {
+        this.tempName = data["name"];
+        data["name"] = "verifying....";
+      }
+      return data;
+    });
+    this.updateDataSource();
+    this.verifyingIndex = this.verifyingIndex;
+    this.verificationCountMessage = `${this.verifyingIndex}/${this.disbursementData.length}`;
+    this.isFetchingName = true;
+    this.businessService
+      .getClientDetails(transferData, this.credentials)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response) => {
+        this.isFetchingName = false;
+        this.verifyingIndex = +1;
+        this.verificationCountMessage = `${index}/${this.disbursementData.length}`;
+
+        if (response && response["status"] === true) {
+          const disbursementData = this.disbursementData.map((data) => {
+            if (`${data["phone"]}` === response["data"].phone_no) {
+              data["name"] = response["data"].full_name;
+            }
+            return data;
+          });
+          this.updateDataSource(disbursementData);
+        } else {
+          const currentIndex = this.disbursementData.findIndex(
+            (existingany) => existingany["phone"] === transferData.phone_no
+          );
+          this.disbursementData[currentIndex][
+            "name"
+          ] = `${this.tempName} (not verified)`;
+
+          this.updateDataSource();
+        }
+      }),
+      (error) => {
+        this.verifyingIndex = +1;
+        // this.verificationCountMessage = `${this.verifyingIndex}/${this.disbursementData.length}`;
+        this.isFetchingName = false;
+        this.noNameErrorMessage =
+          "Failed to retreive client name assotiated to this phone number";
+        // console.warn(error);
+        const currentIndex = this.disbursementData.findIndex(
+          (existingany) => existingany["phone"] === transferData.phone_no
+        );
+        this.disbursementData[currentIndex][
+          "name"
+        ] = `${this.tempName} (not verified)`;
+
+        this.updateDataSource();
+      };
+  }
+
+  updateDisbursement(customer: any) {
+    this.dialog
+      .open(AddUpdateDisbursementModalComponent, {
+        data: customer,
+      })
+      .afterClosed()
+      .subscribe((updatedDisbursement) => {
+        /**
+         * any is the updated customer (if the user pressed Save - otherwise it's null)
+         */
+        if (updatedDisbursement) {
+          /**
+           * Here we are updating our local array.
+           * You would probably make an HTTP request here.
+           */
+
+          console.log("[updatedDisbursement]", updatedDisbursement);
+
+          const index = this.disbursementData.findIndex(
+            (existingany) => existingany["phone"] === updatedDisbursement.phone
+          );
+          this.disbursementData[index] = updatedDisbursement;
+          const amounts = this.disbursementData.length
+            ? this.disbursementData?.map((data: any) => +data?.amount)
+            : [0];
+          const sum = amounts.reduce((sum, carr) => sum + carr);
+
+          this.totalAmount = sum;
+          this.updateDataSource(this.disbursementData);
+        }
+      });
+  }
+
+  deleteDisbursement(disbursement: any) {
     /**
      * Here we are updating our local array.
      * You would probably make an HTTP request here.
      */
-    customers.forEach((c) => this.deleteOrder(c));
+    this.disbursementData.splice(
+      this.disbursementData.findIndex(
+        (existingany) => existingany["phone"] === disbursement.phone
+      ),
+      1
+    );
+    const amounts = this.disbursementData.length
+      ? this.disbursementData?.map((data: any) => +data?.amount)
+      : [0];
+    const sum = amounts.reduce((sum, carr) => sum + carr);
+
+    this.totalAmount = sum;
+    this.totalTransactions = this.disbursementData?.length;
+    this.selection.deselect(disbursement);
+    this.updateDataSource();
   }
 
   onFilterChange(value: string) {
@@ -419,7 +659,7 @@ export class BulkDisbursementComponent implements OnInit {
     return column.property;
   }
 
-  onLabelChange(change: MatSelectChange, row: Customer) {
+  onLabelChange(change: MatSelectChange, row: any) {
     // const index = this.orders.findIndex(c => c === row);
     // this.orders[index].labels = change.value;
     // this.subject$.next(this.orders);
@@ -433,11 +673,23 @@ export class BulkDisbursementComponent implements OnInit {
     TableUtil.exportTableToExcel("ExampleNormalTable");
   }
 
+  getModulesData(credentials) {
+    this.transactionService
+      .getModulesData(credentials)
+      .pipe(take(1))
+      .subscribe((data) => {
+        this.moduleData = data;
+        this.networkProviders = this.moduleData.map(
+          (data: any) => data.operator
+        );
+      });
+  }
+
   exportArray() {
     const onlyNameAndSymbolArr: Partial<any>[] = this.dataSource.data.map(
       (x) => ({
-        name: x.name,
-        status: x.status,
+        name: x?.name,
+        status: x?.status,
       })
     );
     TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, "ExampleArray");

@@ -32,7 +32,7 @@ export const environment = {
     updateBusinessUrl: `https://api-test.pals.africa/api/updatebusiness/`,
     getModulesDataUrl: `https://api-test.pals.africa/api/getmodulesdata`,
     createTransferUrl: `https://api-test.pals.africa/api/createtransfer`,
-    createBulkTransferUrl: `http://api-test.pals.africa/api/createbulktransfer`,
+    createBulkTransferUrl: `https://api-test.pals.africa/api/createbulktransfer`,
     requestTopUpUrl: `https://api-test.pals.africa/api/requesttopup`,
     getUserTopUpsUrl: `https://api-test.pals.africa/api/getusertopups/`,
     getUserBalancesUrl: `https://api-test.pals.africa/api/getbusinessuserbalances/`,
@@ -44,7 +44,8 @@ export const environment = {
     getTransactionsReportUrl: `https://api-test.pals.africa/api/gettransactionsreport/`,
   
     getClientDetailsUrl: `https://api-test.pals.africa/api/getmomoclientdata`,
-  
+    getBulkClientDetailsUrl: `https://api-test.pals.africa/api/getbulkmomoclientdata`,
+
   };
   /*
    * For easier debugging in development mode, you can import the following file

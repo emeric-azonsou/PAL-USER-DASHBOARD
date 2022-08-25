@@ -168,13 +168,13 @@ export class TransactionsService {
     type: string
   ) {
     let params = new HttpParams();
-    const { object, country, currency } = formData;
+    const { purpose, country, currency } = formData;
     const body = {
       user_id: userId,
       country: country,
       currency: currency,
       data: transferData,
-      object:object
+      purpose: purpose
     }
  
     const headers = new HttpHeaders({
