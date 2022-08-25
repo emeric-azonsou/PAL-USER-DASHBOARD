@@ -316,6 +316,8 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
     //   this.orders = customers;
     //   this.dataSource.data = customers;
     // });
+    this.dataSource = new MatTableDataSource();
+
     this.search();
 
     this.searchCtrl.valueChanges

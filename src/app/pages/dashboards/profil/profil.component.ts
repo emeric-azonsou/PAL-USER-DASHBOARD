@@ -343,7 +343,6 @@ export class ProfilComponent implements OnInit {
     businessData.business_logo = this.companyLogoFile;
     businessData.user_id = this.userData.user_id;
     businessData.business_email = this.userData.email;
-    businessData.website = this.businessForm.value["website"];
     businessData.business_phone =
       this.updateBusinessForm.value["business_phone"];
     this.businessService

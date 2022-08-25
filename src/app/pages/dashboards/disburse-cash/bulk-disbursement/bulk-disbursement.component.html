@@ -19,35 +19,7 @@
     fxLayoutAlign="center start"
   >
     <form (ngSubmit)="disburse()" [formGroup]="form">
-      <div fxLayout="row" fxLayoutAlign="start center">
-        <div fxLayout="column" class="card" fxFlex="auto">
-          <div class="flex file-input">
-            <label
-              for="dropzone-file"
-              class="flex flex-col shadow-md w-32 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
-            >
-              <div class="flex flex-col justify-center pt-5 pb-6">
-                <mat-icon>cloud_upload</mat-icon>
-                <p class="mb-8 text-gray-500">
-                  <span class="font-semibold">upload Exel</span>
-                </p>
-              </div>
-              <input
-                [disabled]="form.invalid"
-                #disbursementFile
-                (change)="addfile($event)"
-                id="dropzone-file"
-                type="file"
-                class="hidden"
-              />
-             
-            </label>
-          </div>
-          <mat-error class="no-country-error" *ngIf="form.invalid"> Please select a country before uploading a file.               
-          </mat-error>
-  
-        </div>
-      </div>
+
       <div fxLayout="row" fxLayoutAlign="start center">
         <div fxLayout="column" class="card" fxFlex="auto">
           <div class="flex flex-col sm:flex-row">
@@ -115,6 +87,35 @@
               />
             </mat-form-field>
           </div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="column" class="card" fxFlex="auto">
+          <div class="flex file-input">
+            <label
+              for="dropzone-file"
+              class="flex flex-col shadow-md w-32 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
+            >
+              <div class="flex flex-col justify-center pt-5 pb-6">
+                <mat-icon>cloud_upload</mat-icon>
+                <p class="mb-8 text-gray-500">
+                  <span class="font-semibold">upload Exel</span>
+                </p>
+              </div>
+              <input
+                [disabled]="form.invalid"
+                #disbursementFile
+                (change)="addfile($event)"
+                id="dropzone-file"
+                type="file"
+                class="hidden"
+              />
+             
+            </label>
+          </div>
+          <mat-error class="no-country-error" *ngIf="form.invalid"> Please select a country before uploading a file or adding a disbursement            
+          </mat-error>
+  
         </div>
       </div>
     </form>
@@ -200,6 +201,7 @@
         </button>
 
         <button
+          [disabled]="form.invalid"
           (click)="addDisbursement()"
           class="ml-4"
           color="primary"

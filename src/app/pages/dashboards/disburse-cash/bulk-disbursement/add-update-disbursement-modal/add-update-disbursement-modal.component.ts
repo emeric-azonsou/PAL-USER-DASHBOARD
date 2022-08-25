@@ -1,26 +1,43 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { USER_SESSION_KEY, SUMMARY_DATA_KEY, BUSINESS_DATA_KEY } from 'src/app/Models/constants';
-import { User, MerchantData, SummaryData } from 'src/app/Models/models.interface';
-import { SharedDataService } from 'src/app/services/shared-data.service';
-import { TransactionsService } from 'src/app/services/transactions.service';
-import { ConfirmTransfersComponent } from '../../../confirm-transfers/confirm-transfers.component';
-import { DisburseCashComponent } from '../../disburse-cash.component';
+import { Component, Inject, OnInit } from "@angular/core";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+} from "@angular/forms";
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialog,
+} from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { Router } from "@angular/router";
+import { Subject } from "rxjs";
+import { take } from "rxjs/operators";
+import {
+  USER_SESSION_KEY,
+  SUMMARY_DATA_KEY,
+  BUSINESS_DATA_KEY,
+} from "src/app/Models/constants";
+import {
+  User,
+  MerchantData,
+  SummaryData,
+} from "src/app/Models/models.interface";
+import { SharedDataService } from "src/app/services/shared-data.service";
+import { TransactionsService } from "src/app/services/transactions.service";
+import { ConfirmTransfersComponent } from "../../../confirm-transfers/confirm-transfers.component";
+import { DisburseCashComponent } from "../../disburse-cash.component";
 
 import icClose from "@iconify/icons-ic/twotone-close";
 
 @Component({
-  selector: 'vex-add-update-disbursement-modal',
-  templateUrl: './add-update-disbursement-modal.component.html',
-  styleUrls: ['./add-update-disbursement-modal.component.scss']
+  selector: "vex-add-update-disbursement-modal",
+  templateUrl: "./add-update-disbursement-modal.component.html",
+  styleUrls: ["./add-update-disbursement-modal.component.scss"],
 })
 export class AddUpdateDisbursementModalComponent implements OnInit {
-  mode: 'create' | 'update' = 'create';
+  mode: "create" | "update" = "create";
   operators = [
     { name: "MTN", value: "mtn" },
     { name: "VODAFONE", value: "vodafone" },
@@ -123,21 +140,19 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
 
- 
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
 
     this.initForm();
-
   }
 
   ngOnInit() {
+    console.log("[defaults]", this.defaults);
     this.initForm();
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
     this.userBusinessData = JSON.parse(businessData);
-    console.log('[defaults]', this.defaults);
-    this.mode = this.defaults ? 'update' : 'create';
-   this.initForm();
+    this.mode = this.defaults ? "update" : "create";
+    this.initForm();
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
     this.getModulesData(this.credentials);
@@ -166,7 +181,11 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
           Validators.min(8),
         ],
       ],
-      amount: [this.defaults?.amount || "", [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      name: [this.defaults?.name || ""],
+      amount: [
+        this.defaults?.amount || "",
+        [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)],
+      ],
       operator: [this.defaults?.network || "mtn", Validators.required],
     });
   }
@@ -287,7 +306,6 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
     this.module_id = selectedModule["id"];
   }
 
-
   close() {
     this.dialogRef.close();
   }
@@ -313,23 +331,22 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
   }
 
   save() {
-    if (this.mode === 'create') {
+    if (this.mode === "create") {
       this.addDisbursement();
-    } else if (this.mode === 'update') {
+    } else if (this.mode === "update") {
       this.updateDisbursement();
     }
   }
-
 
   addDisbursement() {
     const disbursement = this.transferForm.value;
     const filteredDisbursement = {
       phone: disbursement.phone_no,
       amount: disbursement.amount,
-      name: this.defaults?.client_name,
+      name: this.defaults?.name,
       network: disbursement.operator,
-      index: this.defaults?.index
-    }
+      index: this.defaults?.index,
+    };
 
     this.dialogRef.close(filteredDisbursement);
   }
@@ -337,23 +354,21 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
   updateDisbursement() {
     const disbursement = this.transferForm.value;
     const filteredDisbursement = {
-      phone: disbursement.phone,
+      phone: disbursement.phone_no,
       amount: disbursement.amount,
-      name: this.defaults?.client_name,
+      name: this.defaults?.name,
       network: disbursement.operator,
-      index: this.defaults?.index
-    }
+      index: this.defaults?.index,
+    };
 
     this.dialogRef.close(filteredDisbursement);
   }
 
   get isCreateMode() {
-    return this.mode === 'create';
+    return this.mode === "create";
   }
 
   get isUpdateMode() {
-    return this.mode === 'update';
+    return this.mode === "update";
   }
-
-
 }
