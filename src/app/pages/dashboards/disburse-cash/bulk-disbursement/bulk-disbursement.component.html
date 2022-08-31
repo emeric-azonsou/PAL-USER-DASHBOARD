@@ -1,94 +1,161 @@
-<!-- 
-  page with native  version
- -->
-
-<div class="bulk-group">
-  <div class="group">
-    <h3>BULK DISBURSEMENT</h3>
-    <!-- <div class="element">
-      <mat-icon class="exit">highlight_off</mat-icon>
-    </div> -->
-  </div>
-</div>
-<hr />
-
-<vex-page-layout>
-  <vex-page-layout-header
-    class="pb-16"
-    fxLayout="column"
-    fxLayoutAlign="center start"
-  >
-    <form (ngSubmit)="disburse()" [formGroup]="form">
-
-      <div fxLayout="row" fxLayoutAlign="start center">
+<div style="margin-top: 100px" class="grid  two-cards grid-cols-2 gap-4">
+  <div>
+    <div
+      class="p-2  max-w-md py-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
+    >
+    <div class="cards">
+      <div class="card-circle">
+        <span>1</span>
+      </div>
+      <span class="text">
+        Download the excel file and add many recipients payment information as
+        you wish
+      </span>
+    </div>
+     
+     
+   <div fxLayout="row"  class="flex file-input" fxLayoutAlign="start center">
         <div fxLayout="column" class="card" fxFlex="auto">
-          <div class="flex flex-col sm:flex-row">
-            <mat-form-field class="sm:ml-6 flex-auto">
-              <mat-label>Country</mat-label>
-
-              <mat-select
-                (ngModelChange)="setCurrency($event)"
-                placeholder="Country"
-                formControlName="country"
-                required
-              >
-                <mat-option [country]=""> Select Country </mat-option>
-                <mat-option
-                  *ngFor="let country of availableCountries"
-                  id="newAttributeProduct"
-                  [value]="country"
-                >
-                  {{ country }}
-                </mat-option>
-              </mat-select>
-              <!-- <mat-icon
-              [icIcon]="icBook"
-              class="mr-3"
-              matPrefix
-            ></mat-icon> -->
-            </mat-form-field>
-
-            <!-- <mat-form-field class="sm:ml-6 flex-auto">
-              <mat-label>Currency</mat-label>
-
-              <mat-select placeholder="Currency" formControlName="currency">
-                <mat-option [value]=""> Select Currency </mat-option>
-                <mat-option
-                  *ngFor="let currency of currencies"
-                  id="newAttributeCurrencies"
-                  [value]="currency"
-                >
-                  {{ currency }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field> -->
-            <mat-form-field appearance="fill" class="sm:ml-6 flex-auto">
-              <mat-label>Currency</mat-label>
+          <div >
+            <label
+              for="dropzone-file"
+              class="flex flex-col  shadow-md w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
+            >
+              <div class="flex flex-col justify-center pt-5 pb-6">
+                <mat-icon>cloud_download</mat-icon>
+                <p class="mb-8 text-gray-500">
+                  <span class="font-semibold">Download Exel file</span>
+                </p>
+              </div>
               <input
-                matInput
-                formControlName="currency"
-                #input
-                type="text"
-                placeholder="Currency"
-                readonly
-                disabled
+                [disabled]="form.invalid"
+                #disbursementFile
+                (change)="addfile($event)"
+                id="dropzone-file"
+                type="file"
+                class="hidden"
               />
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="sm:ml-6 flex-auto">
-              <mat-label>Purpose</mat-label>
-              <input
-                matInput
-                formControlName="purpose"
-                #input
-                type="text"
-                placeholder="Purpose"
-                maxlength="50"
-              />
-            </mat-form-field>
+            </label>
           </div>
         </div>
       </div>
+    </div>
+   
+  </div>
+  <div class="two-cards" >
+    <div
+      class="p-2 cards max-w-md py-18 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
+    >
+      <div class="card-circle2">
+        <span>2</span>
+      </div>
+      <span class="text">
+        Select the country for the bulk disbursement and upload the excel file
+        filed with recipients' payment information.
+        <div fxLayout="row" class="" fxLayoutAlign="start center">
+          <div  class="card  cardss" >
+            <div>
+              <mat-form-field class="sm:ml-6 flex-auto">
+                <mat-label>Country</mat-label>
+                <mat-select
+                  (ngModelChange)="setCurrency($event)"
+                  placeholder="Country"
+                  formControlName="country"
+                  required
+                >
+                  <mat-option [country]=""> Select Country </mat-option>
+                  <mat-option
+                    *ngFor="let country of availableCountries"
+                    id="newAttributeProduct"
+                    [value]="country"
+                  >
+                    {{ country }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex file-input">
+              <label
+                for="dropzone-file"
+                class="flex flex-col shadow-md w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
+              >
+                <div class="flex flex-col justify-center pt-5 pb-6">
+                  <mat-icon>cloud_upload</mat-icon>
+                  <p class="mb-8 text-gray-500">
+                    <span class="font-semibold">upload Exel file</span>
+                  </p>
+                </div>
+                <input
+                  [disabled]="form.invalid"
+                  #disbursementFile
+                  (change)="addfile($event)"
+                  id="dropzone-file"
+                  type="file"
+                  class="hidden"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+</div>
+
+<vex-page-layout>
+  <!-- <form  (ngSubmit)="disburse()" [formGroup]="form">
+      <div   class="grid xs:grid-rows-3 md:grid-rows-1 grid-flow-col gap-2">
+        <div>
+          <mat-form-field class="sm:ml-6 flex-auto">
+            <mat-label>Country</mat-label>
+            <mat-select
+              (ngModelChange)="setCurrency($event)"
+              placeholder="Country"
+              formControlName="country"
+              required
+            >
+              <mat-option [country]=""> Select Country </mat-option>
+              <mat-option
+                *ngFor="let country of availableCountries"
+                id="newAttributeProduct"
+                [value]="country"
+              >
+                {{ country }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill" class="sm:ml-6 flex-auto">
+            <mat-label>Currency</mat-label>
+            <input
+              matInput
+              formControlName="currency"
+              #input
+              type="text"
+              placeholder="Currency"
+              readonly
+              disabled
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill" class="sm:ml-6 flex-auto">
+            <mat-label>Purpose</mat-label>
+            <input
+              matInput
+              formControlName="purpose"
+              #input
+              type="text"
+              placeholder="Purpose"
+              maxlength="50"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+
+
       <div fxLayout="row" fxLayoutAlign="start center">
         <div fxLayout="column" class="card" fxFlex="auto">
           <div class="flex file-input">
@@ -110,37 +177,19 @@
                 type="file"
                 class="hidden"
               />
-             
             </label>
           </div>
-          <mat-error class="no-country-error" *ngIf="form.invalid"> Please select a country before uploading a file or adding a disbursement            
+          <mat-error class="no-country-error" *ngIf="form.invalid">
+            Please select a country before uploading a file or adding a
+            disbursement
           </mat-error>
-  
         </div>
       </div>
     </form>
-
-    <!-- <div
-      [class.container]="layoutCtrl.value === 'boxed'"
-      [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
-      class="w-full flex flex-col sm:flex-row justify-between"
-    > -->
-    <!-- <div>
-        <h1 class="title mt-0 mb-1">Transactions Report</h1>
-        <vex-breadcrumbs
-          [crumbs]="['Dashboards', 'reports', 'transactions']"
-        ></vex-breadcrumbs>
-      </div> -->
-
-    <!-- <mat-button-toggle-group [formControl]="layoutCtrl" class="mt-4 sm:mt-0">
-        <mat-button-toggle value="boxed">BOXED</mat-button-toggle>
-        <mat-button-toggle value="fullwidth">FULL-WIDTH</mat-button-toggle>
-      </mat-button-toggle-group> -->
-    <!-- </div> -->
-  </vex-page-layout-header>
+   -->
 
   <vex-page-layout-content class="-mt-6">
-    <div class="card overflow-auto -mt-16">
+    <div style="margin-top: 30px" class="card overflow-auto -mt-16">
       <div
         class="bg-app-bar px-6 h-16 border-b sticky left-0"
         fxLayout="row"
@@ -186,19 +235,35 @@
           <label class="py-3 px-6" for=""
             >Total Amount: {{ totalAmount || 0 }}</label
           >
-          <label class="py-3 px-6" for="">Name verification: {{ verificationCountMessage || 'N/A' }}</label>
+          <label class="py-3 px-6" for=""
+            >Name verification: {{ verificationCountMessage || "N/A" }}</label
+          >
         </div>
 
-        <button
-          [matMenuTriggerFor]="columnFilterMenu"
-          class="ml-4"
-          fxFlex="none"
-          mat-icon-button
-          matTooltip="Filter Columns"
-          type="button"
-        >
-          <mat-icon [icIcon]="icFilterList"></mat-icon>
-        </button>
+        <form  (ngSubmit)="disburse()" [formGroup]="form">
+          <div   class="grid xs:grid-rows-3 md:grid-rows-1 grid-flow-col gap-2">
+            <div>
+              <mat-form-field class="sm:ml-6 flex-auto">
+                <mat-label>Country</mat-label>
+                <mat-select
+                  (ngModelChange)="setCurrency($event)"
+                  placeholder="Country"
+                  formControlName="country"
+                  required
+                >
+                  <mat-option [country]=""> Select Country </mat-option>
+                  <mat-option
+                    *ngFor="let country of availableCountries"
+                    id="newAttributeProduct"
+                    [value]="country"
+                  >
+                    {{ country }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
 
         <button
           [disabled]="form.invalid"
@@ -360,10 +425,6 @@
 
 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
   <ng-template let-disbursement="disbursement" matMenuContent>
-    <!-- <button (click)="updateDisbursement(disbursement)" mat-menu-item>
-      <mat-icon [icIcon]="icEdit"></mat-icon>
-      <span>Modify</span>
-    </button> -->
     <button (click)="deleteDisbursement(disbursement)" mat-menu-item>
       <mat-icon [icIcon]="icDelete"></mat-icon>
       <span>Delete</span>
@@ -383,281 +444,3 @@
     Send cash
   </button>
 </div>
-
-<!-- page with library version 
-
-
-
-
-
-
-
-<div class="bulk-group">
-  <div class="group">
-    <h3>BULK DISBURSEMENT</h3>
-  <div class="element">
-    <mat-icon class="exit">highlight_off</mat-icon>
-  </div>
-  </div>
-  <hr />
-</div>
-
-<div class="flex  file-input">
-  <label
-    for="dropzone-file"
-    class="flex flex-col shadow-md w-32 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
-  >
-    <div class="flex flex-col justify-center pt-5 pb-6">
-      <mat-icon>cloud_upload</mat-icon>
-      <p class="mb-8  text-gray-500">
-        <span class="font-semibold">upload Exel</span>
-      </p>
-    </div>
-    <input id="dropzone-file" type="file" class="hidden" />
-  </label>
-</div>
-
-<form action="">
-  <div class="grid   sm:grid-cols-1  md:grid-cols-6 lg:grid-cols-6  gap-2   send-cash-form">
-    <div   class="marg-col"   >
-      <label
-        for="countries"
-        class="block mb-2   text-gray-900 dark:text-gray-400"
-        >Select country</label
-      >
-      <select
-        id="countries"
-        class="bg-gray-50   text-gray-900  rounded-lg    p-1"
-      >
-        <option selected>Choose</option>
-        <option value="FR">Benin</option>
-        <option value="DE">Ghana</option>
-      </select>
-    </div>
-    <div class="marg-col" >
-      <label
-        for="countries"
-        class="block mb-2   text-gray-900 dark:text-gray-400"
-        >Select network</label
-      >
-      <select
-        id="countries"
-        class="bg-gray-50   text-gray-900  rounded-lg    p-1"
-      >
-        <option selected>Choose</option>
-        <option value="US">mtn</option>
-        <option value="CA">Canada</option>
-      </select>
-    </div>
-    <div class="marg-col" >
-      <label
-        for="first_name"
-        class="block mb-2   text-gray-900 dark:text-gray-300"
-        >Mobile wallet number</label
-      >
-      <input
-        type="text"
-        id="first_name"
-        class="bg-gray-50   text-gray-900  rounded-lg    p-1 "
-        placeholder="96453423"
-        required
-      />
-    </div>
-    <div class="marg-col" >
-      <label
-        for="first_name"
-        class="block mb-2   text-gray-900 dark:text-gray-300"
-        > Repeat mobile  number</label
-      >
-      <input
-        type="text"
-        id="first_name"
-        class="bg-gray-50   text-gray-900  rounded-lg    p-1 "
-        placeholder="96453423"
-        required
-      />
-    </div>
-    <div  class="marg-col" >
-      <label
-        for="first_name"
-        class="block mb-2   text-gray-900 dark:text-gray-300"
-        >Amount to disburse?</label
-      >
-      <div class="flex">
-        <input
-        type="text"
-        id="first_name"
-        class="bg-gray-50 speci   text-gray-900     p-1 "
-        placeholder="96453"
-        required
-      />
-      <span class="inline-flex speci2 items-center border0-gray-300 px-3 text-sm text-gray-900    ">
-        XOF
-      </span>
-      </div>
-    </div>
-    <div class="marg-col" >
-      <label
-        for="first_name"
-        class="block mb-2   text-gray-900 dark:text-gray-300"
-        >Reason of transaction</label
-      >
-      <input
-        type="text"
-        id="first_name"
-        class="bg-gray-50   text-gray-900  rounded-lg    p-1 "
-        placeholder="salary"
-        required
-      />
-    </div >
-    <button
-      type="button"
-      class="text-white  marg-col"
-       (click)="disburse()"
-    >
-      Add 
-    </button>
-  </div>
-</form>
-
-
-<thead
-  class="text-xs t-head text-gray-700 "
->
-  <tr>
-    <th scope="col" class="py-3 px-6"><label for="">Total transaction:1500</label></th>
-    <th scope="col" class="py-3 px-6">  <label for="">Total Amount:8562.005 X0F</label></th>
-    <th scope="col" class="py-3 px-6">  <label for="">Name verification:781/2000</label></th>
-  </tr>
-</thead>
-
-<div class="overflow-x-auto table-full relative">
-  <table class="w-full   text-left text-gray-500">
-    <thead
-      class="text-xs bg-white  w-full  text-gray-700"
-    >
-      <tr>
-        <th scope="col" class="py-3 px-6">  <label for="">No</label></th>
-        <th scope="col" class="py-3 px-6"> <label for="">Number</label></th>
-        <th scope="col" class="py-3 px-6">  <label for="">Network</label></th>
-        <th scope="col" class="py-3 px-6">  <label for="">Amount</label></th>
-        <th scope="col" class="py-3 px-6">  <label for="">Reason of transaction</label></th>
-        <th scope="col" class="py-3 px-6">  <label for="">Name</label></th>
-        <th scope="col" class="py-3 px-6">  <label for=""></label></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="bg-white border-b ">
-        <th
-          scope="row"
-          class="py-4 px-6 "
-        >
-          1
-        </th>
-        <td class="py-4 px-6">96932166</td>
-        <td class="py-4 px-6">mtn</td>
-        <td class="py-4 px-6">45</td>
-        <td class="py-4 px-6">Jannuary salary</td>
-
-        <td class="py-4 px-6">Robert nkuan</td>
-
-        <td class="py-4 px-6"><mat-icon class="delect-icon">delete</mat-icon></td>
-      </tr>
-    </tbody>
-  </table>
-  <nav
-    class="flex justify-between items-center pt-4"
-    aria-label="Table navigation"
-  >
-    <span class=" font-normal text-gray-500 dark:text-gray-400">
-      <span class="font-semibold text-gray-900 dark:text-white"></span>
-      <span class="font-semibold text-gray-900 dark:text-white"></span
-    ></span>
-    <ul class="inline-flex items-center -space-x-px">
-      <li>
-        <a
-          href="#"
-          class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-        >
-          <span class="sr-only">Previous</span>
-          <svg
-            class="w-5 h-5"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </a>
-      </li>
-      <li>
-        <a
-          href="#"
-          class="py-2 px-3 leading-tight text-gray-500 bg-white   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >1</a
-        >
-      </li>
-      <li>
-        <a
-          href="#"
-          class="py-2 px-3 leading-tight text-gray-500 bg-white   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >2</a
-        >
-      </li>
-      <li>
-        <a
-          href="#"
-          aria-current="page"
-          class="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50  -blue-300 hover:bg-blue-100 hover:text-blue-700 dark:-gray-700 dark:bg-gray-700 dark:text-white"
-          >3</a
-        >
-      </li>
-      <li>
-        <a
-          href="#"
-          class="py-2 px-3 leading-tight text-gray-500 bg-white   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >...</a
-        >
-      </li>
-      <li>
-        <a
-          href="#"
-          class="py-2 px-3 leading-tight text-gray-500 bg-white   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-          >100</a
-        >
-      </li>
-      <li>
-        <a
-          href="#"
-          class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg   hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-        >
-          <span class="sr-only">Next</span>
-          <svg
-            class="w-5 h-5"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <button
-  type="button"
-  class="text-white "
->
-  Send cash 
-</button>
-</div> -->
