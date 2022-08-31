@@ -1,25 +1,24 @@
-<div style="margin-top: 100px" class="grid  two-cards grid-cols-2 gap-4">
+<div style="margin-top: 100px" class="grid two-cards grid-cols-2 gap-4">
   <div>
     <div
-      class="p-2  max-w-md py-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
+      class="p-2 max-w-md py-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
     >
-    <div class="cards">
-      <div class="card-circle">
-        <span>1</span>
+      <div class="cards">
+        <div class="card-circle">
+          <span>1</span>
+        </div>
+        <span class="text">
+          Download the excel file and add many recipients payment information as
+          you wish
+        </span>
       </div>
-      <span class="text">
-        Download the excel file and add many recipients payment information as
-        you wish
-      </span>
-    </div>
-     
-     
-   <div fxLayout="row"  class="flex file-input" fxLayoutAlign="start center">
+
+      <div fxLayout="row" class="flex file-input" fxLayoutAlign="start center">
         <div fxLayout="column" class="card" fxFlex="auto">
-          <div >
+          <div>
             <label
               for="dropzone-file"
-              class="flex flex-col  shadow-md w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
+              class="flex flex-col shadow-md w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
             >
               <div class="flex flex-col justify-center pt-5 pb-6">
                 <mat-icon>cloud_download</mat-icon>
@@ -28,11 +27,9 @@
                 </p>
               </div>
               <input
-                [disabled]="form.invalid"
                 #disbursementFile
-                (change)="addfile($event)"
+                (click)="onDownloadExelFile()"
                 id="dropzone-file"
-                type="file"
                 class="hidden"
               />
             </label>
@@ -40,9 +37,8 @@
         </div>
       </div>
     </div>
-   
   </div>
-  <div class="two-cards" >
+  <div class="two-cards">
     <div
       class="p-2 cards max-w-md py-18 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
     >
@@ -53,7 +49,7 @@
         Select the country for the bulk disbursement and upload the excel file
         filed with recipients' payment information.
         <div fxLayout="row" class="" fxLayoutAlign="start center">
-          <div  class="card  cardss" >
+          <div class="card cardss">
             <div>
               <mat-form-field class="sm:ml-6 flex-auto">
                 <mat-label>Country</mat-label>
@@ -240,8 +236,8 @@
           >
         </div>
 
-        <form  (ngSubmit)="disburse()" [formGroup]="form">
-          <div   class="grid xs:grid-rows-3 md:grid-rows-1 grid-flow-col gap-2">
+        <form (ngSubmit)="disburse()" [formGroup]="form">
+          <div class="grid xs:grid-rows-3 md:grid-rows-1 grid-flow-col gap-2">
             <div>
               <mat-form-field class="sm:ml-6 flex-auto">
                 <mat-label>Country</mat-label>

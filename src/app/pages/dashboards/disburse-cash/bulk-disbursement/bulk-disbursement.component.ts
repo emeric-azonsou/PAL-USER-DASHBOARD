@@ -694,4 +694,14 @@ export class BulkDisbursementComponent implements OnInit {
     );
     TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, "ExampleArray");
   }
+
+  onDownloadExelFile() {
+    let link = document.createElement('a');
+    link.setAttribute('type', 'hidden');
+    link.href = 'assets\exel-file\disbursment.xlsx';
+    link.download ='src\assets\exel-file\disbursment.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
 }
