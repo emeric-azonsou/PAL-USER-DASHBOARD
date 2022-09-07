@@ -1,7 +1,7 @@
-<div style="margin-top: 100px" class="grid two-cards grid-cols-2 gap-4">
-  <div>
+<div style="margin-top: 100px" class="grid two-cards xs:grid-cols-1  md:grid-cols-2 gap-4">
+  <div  class="card1">
     <div
-      class="p-2 max-w-md py-4 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
+      class="p-2 max-w-md py-4 bg-white rounded-lg border border-gray-200  dark:bg-gray-800 dark:border-gray-700"
     >
       <div class="cards">
         <div class="card-circle">
@@ -18,7 +18,8 @@
           <div>
             <label
               for="dropzone-file"
-              class="flex flex-col shadow-md w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
+              (click)="onDownloadExelFile()"
+              class="flex flex-col  w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
             >
               <div class="flex flex-col justify-center pt-5 pb-6">
                 <mat-icon>cloud_download</mat-icon>
@@ -27,9 +28,7 @@
                 </p>
               </div>
               <input
-                #disbursementFile
-                (click)="onDownloadExelFile()"
-                id="dropzone-file"
+                type="file"
                 class="hidden"
               />
             </label>
@@ -40,7 +39,7 @@
   </div>
   <div class="two-cards">
     <div
-      class="p-2 cards max-w-md py-18 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
+      class="p-2 cards max-w-md py-18 bg-white rounded-lg border border-gray-200  dark:bg-gray-800 dark:border-gray-700"
     >
       <div class="card-circle2">
         <span>2</span>
@@ -49,53 +48,72 @@
         Select the country for the bulk disbursement and upload the excel file
         filed with recipients' payment information.
         <div fxLayout="row" class="" fxLayoutAlign="start center">
-          <div class="card cardss">
-            <div>
-              <mat-form-field class="sm:ml-6 flex-auto">
-                <mat-label>Country</mat-label>
-                <mat-select
-                  (ngModelChange)="setCurrency($event)"
-                  placeholder="Country"
-                  formControlName="country"
-                  required
-                >
-                  <mat-option [country]=""> Select Country </mat-option>
-                  <mat-option
-                    *ngFor="let country of availableCountries"
-                    id="newAttributeProduct"
-                    [value]="country"
-                  >
-                    {{ country }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="flex file-input">
-              <label
-                for="dropzone-file"
-                class="flex flex-col shadow-md w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
-              >
-                <div class="flex flex-col justify-center pt-5 pb-6">
-                  <mat-icon>cloud_upload</mat-icon>
-                  <p class="mb-8 text-gray-500">
-                    <span class="font-semibold">upload Exel file</span>
-                  </p>
+          <form (ngSubmit)="onUploadExelFile()" [formGroup]="form" >
+
+
+
+            <div class="card cardss">
+                <div>
+                  <mat-form-field class="sm:ml-6 flex-auto">
+                    <mat-label>Country</mat-label>
+                    <mat-select
+                      (ngModelChange)="setCurrency($event)"
+                      placeholder="Country"
+                      formControlName="country"
+                      required
+                    >
+                      <mat-option [country]=""> Select Country </mat-option>
+                      <mat-option
+                        *ngFor="let country of availableCountries"
+                        id="newAttributeProduct"
+                        [value]="country"
+                      >
+                        {{ country }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </div>
-                <input
-                  [disabled]="form.invalid"
-                  #disbursementFile
-                  (change)="addfile($event)"
-                  id="dropzone-file"
-                  type="file"
-                  class="hidden"
-                />
-              </label>
             </div>
-          </div>
+          </form>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="column" class="card" fxFlex="auto">
+              <div class="flex file-input">
+                <label
+                  for="dropzone-file"
+                  class="flex flex-col w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
+                >
+                  <div class="flex flex-col justify-center pt-5 pb-6">
+                    <mat-icon>cloud_upload</mat-icon>
+                    <p class="mb-8 text-gray-500">
+                      <span class="font-semibold">upload Exel File</span>
+                    </p>
+                  </div>
+                  <input
+                    [disabled]="form.invalid"
+                    #disbursementFile
+                    (change)="addfile($event)"
+                    id="dropzone-file"
+                    type="file"
+                    class="hidden"
+                  />
+                </label>
+               
+              </div>
+              
+            </div>
+            
+          </div>   
+          
         </div>
+        
       </span>
     </div>
+    <mat-error class="no-country-error" *ngIf="form.invalid">
+      Please select a country before uploading a file or adding a
+      disbursement
+    </mat-error>
   </div>
+ 
 </div>
 
 <vex-page-layout>
@@ -224,7 +242,7 @@
 
         <span fxFlex></span>
 
-        <div>
+        <div class="info">
           <label class="py-3 px-6" for=""
             >Total transactions: {{ totalTransactions || 0 }}</label
           >
@@ -236,8 +254,8 @@
           >
         </div>
 
-        <form (ngSubmit)="disburse()" [formGroup]="form">
-          <div class="grid xs:grid-rows-3 md:grid-rows-1 grid-flow-col gap-2">
+        <form (ngSubmit)="disburse()" [formGroup]="uploadFileForm">
+          <div class="grid xs:grid-rows-1 md:grid-rows-1 grid-flow-col gap-2">
             <div>
               <mat-form-field class="sm:ml-6 flex-auto">
                 <mat-label>Country</mat-label>
@@ -262,7 +280,7 @@
         </form>
 
         <button
-          [disabled]="form.invalid"
+          [disabled]="uploadFileForm.invalid"
           (click)="addDisbursement()"
           class="ml-4"
           color="primary"

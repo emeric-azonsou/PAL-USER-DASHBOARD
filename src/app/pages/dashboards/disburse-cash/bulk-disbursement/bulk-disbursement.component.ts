@@ -130,6 +130,7 @@ export class BulkDisbursementComponent implements OnInit {
   icRefresh = icRefresh;
   icCloudDownload = icCloudDownload;
   form: FormGroup;
+  uploadFileForm:FormGroup;
 
   statusLabels = TRANSACTION_TABLE_LABELS;
 
@@ -285,9 +286,14 @@ export class BulkDisbursementComponent implements OnInit {
 
     this.form = this.fb.group({
       country: ["", Validators.required],
-      currency: ["", Validators.required],
-      purpose: [""],
     });
+
+      this.uploadFileForm=this.fb.group({
+        country:["",Validators.required] 
+      })
+
+
+
     // this.data$.pipe(
     //   filter<OrderSession[]>(Boolean)
     // ).subscribe(customers => {
@@ -324,8 +330,7 @@ export class BulkDisbursementComponent implements OnInit {
         currency = "XOF";
         break;
     }
-
-    this.form.get("currency").setValue(currency);
+    this.form.get("currency").setValue(currency); 
   }
 
   addfile(event) {
@@ -704,4 +709,15 @@ export class BulkDisbursementComponent implements OnInit {
     link.click();
     link.remove();
   }
+
+
+  onUploadExelFile(){
+  return null;
+  }
+
+  
+
+
+
+
 }

@@ -7,9 +7,9 @@ import {
   HostBinding,
   Input,
   OnInit,
-  EventEmitter, 
-  HostListener, 
-  Output
+  EventEmitter,
+  HostListener,
+  Output,
 } from "@angular/core";
 import { LayoutService } from "../../services/layout.service";
 import icBookmarks from "@iconify/icons-ic/twotone-bookmarks";
@@ -25,7 +25,7 @@ import icDescription from "@iconify/icons-ic/twotone-description";
 import icAssignment from "@iconify/icons-ic/twotone-assignment";
 import icReceipt from "@iconify/icons-ic/twotone-receipt";
 import icDoneAll from "@iconify/icons-ic/twotone-done-all";
-import permIdentity   from "@iconify/icons-ic/perm-identity"
+import permIdentity from "@iconify/icons-ic/perm-identity";
 import { NavigationService } from "../../services/navigation.service";
 import icArrowDropDown from "@iconify/icons-ic/twotone-arrow-drop-down";
 import { PopoverService } from "../../components/popover/popover.service";
@@ -44,8 +44,9 @@ import { MerchantData } from "src/app/Models/models.interface";
 })
 export class ToolbarComponent implements OnInit {
   isOpen: boolean = false;
-  isOpenDisbursePopup:boolean;
-  
+  isOpenDisbursePopup: boolean;
+  currentPage: any;
+
   @Input() mobileQuery: boolean;
 
   @Input()
@@ -79,8 +80,8 @@ export class ToolbarComponent implements OnInit {
   icAssignment = icAssignment;
   icReceipt = icReceipt;
   icDoneAll = icDoneAll;
-  perm_identity=permIdentity;
-  peapole=peopole;
+  perm_identity = permIdentity;
+  peapole = peopole;
   icArrowDropDown = icArrowDropDown;
   userBusinessData: any;
   userData: any;
@@ -97,12 +98,16 @@ export class ToolbarComponent implements OnInit {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
-    if(businessData !== 'undefined') {
+    if (businessData !== "undefined") {
       this.businessData = JSON.parse(businessData);
     }
   }
 
   ngOnInit() {
+    // this.catchCurrentPage()
+    const targetEl = document.getElementById('disburse-popup');
+    console.log(targetEl);
+    
   }
 
   openQuickpanel() {
@@ -140,7 +145,7 @@ export class ToolbarComponent implements OnInit {
   openDisbursePopup() {
     if (this.userData.hasBusiness || !!this.businessData) {
       this.dialog.open(DisburseCashComponent);
-      this.isOpenDisbursePopup=false;
+      this.isOpenDisbursePopup = false;
     } else {
       this.dialog.open(NoBusinessModalComponent);
     }
@@ -162,10 +167,25 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-   toggleMenu() {
+  toggleMenu() {
     this.isOpen = !this.isOpen;
   }
-  toggleDisbursePopup(){
-    this.isOpenDisbursePopup=!this.isOpenDisbursePopup;
+  toggleDisbursePopup() {
+    this.isOpenDisbursePopup = !this.isOpenDisbursePopup;
   }
+
+  // catchCurrentPage() {
+  //   this.currentPage = document.getElementById("vex-splash-screen");
+  // }
+
+  // set the modal menu element
+
+
+// options with default values
+
+
+
+
+
+  
 }

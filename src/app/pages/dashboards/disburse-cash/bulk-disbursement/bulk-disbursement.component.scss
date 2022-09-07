@@ -74,27 +74,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 mat-error.no-country-error {
   padding-left: 25px;
 }
@@ -138,9 +117,23 @@ mat-error.no-country-error {
 
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 960px) {
+.card1{
+  margin-left: 20px;
+}
+
 
 }
+
+@media screen and (max-width: 1034px) {
+  .info{
+    display: none;
+
+  }
+  
+
+  }
+  
 
 
 @media screen and (max-width: 360px) {
@@ -262,6 +255,7 @@ mat-error.no-country-error {
   .send-cash-form{
    display: block;
    margin-left: auto;
+
    margin-right: auto;
    width: 30%;
   }
