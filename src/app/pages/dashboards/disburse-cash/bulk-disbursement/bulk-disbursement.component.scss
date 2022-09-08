@@ -1,21 +1,78 @@
-.bulk-group {
-  h3 {
+.two-cards{
+  margin-left: 18px;
+}
+.cards{
+  display: flex;
+   .text{
     position: relative;
-    font-size: 20px;
-    color: #010d4a;
-    left: 24px;
-    top: 10px;
-    padding-bottom: 25px
-  }
-  hr{
+    left: 15px;
+   }
+}
+
+
+
+.card-circle{
+  width:35px;
+  height: 25px;
+  position: relative;
+  top: 6px;
+  border-radius: 40px;
+  background-color: rgb(245, 245, 248);
+  span{
     position: relative;
-    top: 12px;
+    left: 9px;
+    top: 2px;
+    color: #2BB996;
+    font-weight: 500;
   }
 }
-label{
+.card-circle2{
+  position: relative;
+  width:43px;
+  height: 24px;
+  top: 6px;
+  border-radius: 45px;
+  background-color: rgb(245, 245, 248);
+  opacity: 2;
+  span{
+    position: relative;
+    left: 7px;
+    top: 2px;
+    color: #2BB996;
+    font-weight: 500;
+  }
+}
+
+.file-input{
+ margin-top: 20px;
+ .font-semibold{
   font-size: small;
-  font-weight: 400
+  text-decoration: underline;
+ }
+
 }
+
+.cardss{
+  display: flex;
+  mat-form-field{
+    position: relative;
+    right: 20px;
+  }
+  .file-input{
+    position: relative;
+    left: 30px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
 
 mat-error.no-country-error {
   padding-left: 25px;
@@ -37,22 +94,8 @@ mat-error.no-country-error {
   }
 }
 
-.send-cash-form {
-  position: relative;
-  left: 24px;
-  top: -25px;
-  button {
-    position: relative;
-    top: -6px;
-    left: 2px;
-    color: #2bb996;
-    border: #2bb996 1px solid;
-    border-radius:4px;
-    font-weight: 500;
-    width: 80px;
-    height: 25px;
-  }
-}
+
+
 .t-head {
   position: relative;
   top: 6px;
@@ -71,27 +114,26 @@ mat-error.no-country-error {
     // height: 30px;
   }
 }
-.delect-icon{
-  font-size:medium;
-  color: red;
-  cursor: pointer;
+
+
+
+@media screen and (max-width: 960px) {
+.card1{
+  margin-left: 20px;
 }
 
-.group{
-  .element{
-    display: flex;
-    justify-content: end;
-  }
- 
-  .exit{
-    color: red;
-    cursor: pointer;
-    position: relative;
-    right: 3px;
-  }
 
 }
 
+@media screen and (max-width: 1034px) {
+  .info{
+    display: none;
+
+  }
+  
+
+  }
+  
 
 
 @media screen and (max-width: 360px) {
@@ -213,6 +255,7 @@ mat-error.no-country-error {
   .send-cash-form{
    display: block;
    margin-left: auto;
+
    margin-right: auto;
    width: 30%;
   }
