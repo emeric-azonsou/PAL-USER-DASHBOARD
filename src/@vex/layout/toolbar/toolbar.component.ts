@@ -81,7 +81,7 @@ export class ToolbarComponent implements OnInit {
   icReceipt = icReceipt;
   icDoneAll = icDoneAll;
   perm_identity = permIdentity;
-  peapole = peopole;
+  icon_peapole = peopole;
   icArrowDropDown = icArrowDropDown;
   userBusinessData: any;
   userData: any;
@@ -103,11 +103,7 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    // this.catchCurrentPage()
-    const targetEl = document.getElementById('disburse-popup');
-    console.log(targetEl);
-    
+  ngOnInit() { 
   }
 
   openQuickpanel() {
@@ -174,18 +170,4 @@ export class ToolbarComponent implements OnInit {
     this.isOpenDisbursePopup = !this.isOpenDisbursePopup;
   }
 
-  // catchCurrentPage() {
-  //   this.currentPage = document.getElementById("vex-splash-screen");
-  // }
-
-  // set the modal menu element
-
-
-// options with default values
-
-
-
-
-
-  
 }

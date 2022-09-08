@@ -48,7 +48,7 @@
         Select the country for the bulk disbursement and upload the excel file
         filed with recipients' payment information.
         <div fxLayout="row" class="" fxLayoutAlign="start center">
-          <form (ngSubmit)="onUploadExelFile()" [formGroup]="form" >
+          <form  [formGroup]="form" >
 
 
 
@@ -91,7 +91,7 @@
                   <input
                     [disabled]="form.invalid"
                     #disbursementFile
-                    (change)="addfile($event)"
+                    (change)="onUploadExelFile($event)"
                     id="dropzone-file"
                     type="file"
                     class="hidden"

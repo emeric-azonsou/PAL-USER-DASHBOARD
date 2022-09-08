@@ -130,7 +130,7 @@ export class BulkDisbursementComponent implements OnInit {
   icRefresh = icRefresh;
   icCloudDownload = icCloudDownload;
   form: FormGroup;
-  uploadFileForm:FormGroup;
+  uploadFileForm: FormGroup;
 
   statusLabels = TRANSACTION_TABLE_LABELS;
 
@@ -189,6 +189,7 @@ export class BulkDisbursementComponent implements OnInit {
   userBusinessData: any;
   credentials: string;
   file: any;
+  loadedExelFile: File;
   arrayBuffer: string | ArrayBuffer | any;
   filelist: any[];
   hasData: boolean;
@@ -288,11 +289,9 @@ export class BulkDisbursementComponent implements OnInit {
       country: ["", Validators.required],
     });
 
-      this.uploadFileForm=this.fb.group({
-        country:["",Validators.required] 
-      })
-
-
+    this.uploadFileForm = this.fb.group({
+      country: ["", Validators.required],
+    });
 
     // this.data$.pipe(
     //   filter<OrderSession[]>(Boolean)
@@ -330,7 +329,7 @@ export class BulkDisbursementComponent implements OnInit {
         currency = "XOF";
         break;
     }
-    this.form.get("currency").setValue(currency); 
+    this.form.get("currency").setValue(currency);
   }
 
   addfile(event) {
@@ -701,23 +700,17 @@ export class BulkDisbursementComponent implements OnInit {
   }
 
   onDownloadExelFile() {
-    let link = document.createElement('a');
-    link.setAttribute('type', 'hidden');
-    link.href = 'assets\exel-file\disbursment.xlsx';
-    link.download ='src\assets\exel-file\disbursment.xlsx';
+    let link = document.createElement("a");
+    link.setAttribute("type", "hidden");
+    link.href = "assetsexel-filedisbursment.xlsx";
+    link.download = "srcassetsexel-filedisbursment.xlsx";
     document.body.appendChild(link);
     link.click();
     link.remove();
   }
 
-
-  onUploadExelFile(){
-  return null;
+  onUploadExelFile($e) {
+    this.loadedExelFile = $e.target.files[0];
+    // cette partie servirra a envoyer le fichier sur un server ou a faire un autre traitement particulier.
   }
-
-  
-
-
-
-
 }
