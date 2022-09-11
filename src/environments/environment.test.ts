@@ -14,7 +14,7 @@ export const environment = {
     createTransactionUrl: `https://api-test.pals.africa/api/newtransaction`,
     deleteAccountUrl: `https://api-test.pals.africa/api/deleteduseraccount`,
     getTransactionByIdUrl: `https://api-test.pals.africa/api/getusertransaction`,
-  
+
     getTransactionsListUrl: `https://api-test.pals.africa/api/getmerchanttransactions/`,
     verifyReleaseCodeUrl: `https://api-test.pals.africa/api/verifycode`,
     cancelTransactionUrl: `https://api-test.pals.africa/api/cancelescrowtransaction`,
@@ -24,8 +24,8 @@ export const environment = {
     getUserAccountDetailsUrl: `https://api-test.pals.africa/api/getbusinessuseraccountdetails`,
     registerPalUserUrl: `https://api-test.pals.africa/api/registerpaluser`,
     registerUserUrl: `https://api-test.pals.africa/api/register`,
-    loginUrl:`https://api-test.pals.africa/api/login`,
-  
+    loginUrl: `https://api-test.pals.africa/api/login`,
+
     getBusinessSummaryUrl: `https://api-test.pals.africa/api/getmerchantusersummary/`,
     getBusinessDataUrl: `https://api-test.pals.africa/api/getuserbusiness/`,
     addBusinessUrl: `https://api-test.pals.africa/api/addbusiness`,
@@ -40,9 +40,9 @@ export const environment = {
     sendOTPtoEmailUrl: `https://api-test.pals.africa/api/sendotptoemailforgotpassword`,
     updatePasswordUrl:  `https://api-test.pals.africa/api/forgotpassupdate`,
     verifyEmailUrl: `https://api-test.pals.africa/api/verifyemail`,
-  
+
     getTransactionsReportUrl: `https://api-test.pals.africa/api/gettransactionsreport/`,
-  
+
     getClientDetailsUrl: `https://api-test.pals.africa/api/getmomoclientdata`,
     getBulkClientDetailsUrl: `https://api-test.pals.africa/api/getbulkmomoclientdata`,
 

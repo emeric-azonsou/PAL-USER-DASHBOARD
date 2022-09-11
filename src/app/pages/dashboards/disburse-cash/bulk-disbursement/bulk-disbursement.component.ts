@@ -1,114 +1,124 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { DatePipe } from "@angular/common";
-import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
   FormBuilder,
   Validators,
-} from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSelectChange } from "@angular/material/select";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { Router } from "@angular/router";
-import { MatTableExporterDirective } from "mat-table-exporter";
-import moment from "moment";
-import { ReplaySubject, Observable, Subject, of } from "rxjs";
-import { TableColumn } from "src/@vex/interfaces/table-column.interface";
+} from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { MatTableExporterDirective } from 'mat-table-exporter';
+import moment from 'moment';
+import { ReplaySubject, Observable, Subject, of } from 'rxjs';
+import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
 import {
   TRANSACTION_TABLE_LABELS,
   COUNTRIES,
   USER_SESSION_KEY,
   SUMMARY_DATA_KEY,
   BUSINESS_DATA_KEY,
-} from "src/app/Models/constants";
-import { SummaryData } from "src/app/Models/models.interface";
-import { AuthserviceService } from "src/app/services/authservice.service";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { aioTableLabels, aioTableData } from "src/static-data/aio-table-data";
-import { TableUtil } from "../../reports/transactions-report/tableUtil";
+} from 'src/app/Models/constants';
+import { SummaryData } from 'src/app/Models/models.interface';
+import { AuthserviceService } from 'src/app/services/authservice.service';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { aioTableLabels, aioTableData } from 'src/static-data/aio-table-data';
+import { TableUtil } from '../../reports/transactions-report/tableUtil';
 
-import icEdit from "@iconify/icons-ic/twotone-edit";
-import icDelete from "@iconify/icons-ic/twotone-delete";
-import icSearch from "@iconify/icons-ic/twotone-search";
-import icAdd from "@iconify/icons-ic/twotone-add";
-import icFilterList from "@iconify/icons-ic/twotone-filter-list";
-import icPhone from "@iconify/icons-ic/twotone-phone";
-import icMail from "@iconify/icons-ic/twotone-mail";
-import icMap from "@iconify/icons-ic/twotone-map";
-import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
-import icFolder from "@iconify/icons-ic/twotone-folder";
-import icDateRange from "@iconify/icons-ic/twotone-date-range";
-import icPerson from "@iconify/icons-ic/twotone-person";
-import icRefresh from "@iconify/icons-ic/twotone-refresh";
-import icBook from "@iconify/icons-ic/twotone-book";
-import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
-import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
-import * as XLSX from "xlsx";
-import { AddUpdateDisbursementModalComponent } from "./add-update-disbursement-modal/add-update-disbursement-modal.component";
-import { MatDialog } from "@angular/material/dialog";
+import icEdit from '@iconify/icons-ic/twotone-edit';
+import icDelete from '@iconify/icons-ic/twotone-delete';
+import icSearch from '@iconify/icons-ic/twotone-search';
+import icAdd from '@iconify/icons-ic/twotone-add';
+import icFilterList from '@iconify/icons-ic/twotone-filter-list';
+import icPhone from '@iconify/icons-ic/twotone-phone';
+import icMail from '@iconify/icons-ic/twotone-mail';
+import icMap from '@iconify/icons-ic/twotone-map';
+import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
+import icFolder from '@iconify/icons-ic/twotone-folder';
+import icDateRange from '@iconify/icons-ic/twotone-date-range';
+import icPerson from '@iconify/icons-ic/twotone-person';
+import icRefresh from '@iconify/icons-ic/twotone-refresh';
+import icBook from '@iconify/icons-ic/twotone-book';
+import icCloudDownload from '@iconify/icons-ic/twotone-cloud-download';
+import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
+import * as XLSX from 'xlsx';
+import { AddUpdateDisbursementModalComponent } from './add-update-disbursement-modal/add-update-disbursement-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormFieldDefaultOptions,
-} from "@angular/material/form-field";
-import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
-import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { BusinessService } from "src/app/services/business.service";
-import { take, takeUntil } from "rxjs/operators";
+} from '@angular/material/form-field';
+import { fadeInUp400ms } from 'src/@vex/animations/fade-in-up.animation';
+import { stagger40ms } from 'src/@vex/animations/stagger.animation';
+import { BusinessService } from 'src/app/services/business.service';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: "vex-bulk-disbursement",
-  templateUrl: "./bulk-disbursement.component.html",
-  styleUrls: ["./bulk-disbursement.component.scss"],
+  selector: 'vex-bulk-disbursement',
+  templateUrl: './bulk-disbursement.component.html',
+  styleUrls: ['./bulk-disbursement.component.scss'],
   animations: [fadeInUp400ms, stagger40ms],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: {
-        appearance: "standard",
+        appearance: 'standard',
       } as MatFormFieldDefaultOptions,
     },
   ],
 })
-export class BulkDisbursementComponent implements OnInit {
+export class BulkDisbursementComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   subject$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   data$: Observable<any[]> = this.subject$.asObservable();
   unsubscribe$ = new Subject();
   @Input()
   columns: TableColumn<any>[] = [
-    { label: "Select", property: "checkbox", type: "checkbox", visible: true },
-    { label: "No", property: "index", type: "text", visible: true },
-    { label: "Number", property: "phone", type: "text", visible: true },
-    { label: "Network", property: "network", type: "text", visible: true },
+    { label: 'Select', property: 'checkbox', type: 'checkbox', visible: true },
+    { label: 'No', property: 'index', type: 'text', visible: true },
+    { label: 'Number', property: 'phone', type: 'text', visible: true },
+    { label: 'Network', property: 'network', type: 'text', visible: true },
     {
-      label: "Amount",
-      property: "amount",
-      type: "text",
+      label: 'Amount',
+      property: 'amount',
+      type: 'text',
       visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
+      cssClasses: ['text-secondary', 'font-medium'],
     },
     // { label: "Reason of transaction", property: "purpose", type: "text", visible: true },
 
     {
-      label: "Name",
-      property: "name",
-      type: "text",
+      label: 'Name',
+      property: 'name',
+      type: 'text',
       visible: true,
-      cssClasses: ["font-medium"],
+      cssClasses: ['font-medium'],
     },
-    { label: "Actions", property: "actions", type: "button", visible: true },
+    { label: 'Actions', property: 'actions', type: 'button', visible: true },
   ];
   pageSize = 10;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  layoutCtrl = new FormControl("boxed");
+  layoutCtrl = new FormControl('boxed');
   searchCtrl = new FormControl();
   dataSource: MatTableDataSource<any> | null;
   selection = new SelectionModel<any>(true, []);
   exportOptions = {
-    fileName: "test",
-    sheet: { reportsProps: { Author: "PAL" } },
+    fileName: 'test',
+    sheet: { reportsProps: { Author: 'PAL' } },
   };
 
   labels = aioTableLabels;
@@ -134,40 +144,39 @@ export class BulkDisbursementComponent implements OnInit {
 
   statusLabels = TRANSACTION_TABLE_LABELS;
 
-
   displayedColumns: string[] = [
-    "Select",
-    "No",
-    "Number",
-    "Network",
-    "Amount",
-    "Reason of transaction",
-    "Name",
-    "Actions",
+    'Select',
+    'No',
+    'Number',
+    'Network',
+    'Amount',
+    'Reason of transaction',
+    'Name',
+    'Actions',
   ];
 
   statuses = [
-    { name: "Pending", value: 1 },
-    { name: "Completed", value: 3 },
-    { name: "Error", value: 4 },
-    { name: "Networ Error", value: 6 },
-    { name: "Processing", value: 2 },
-    { name: "Cancelled", value: 0 },
+    { name: 'Pending', value: 1 },
+    { name: 'Completed', value: 3 },
+    { name: 'Error', value: 4 },
+    { name: 'Networ Error', value: 6 },
+    { name: 'Processing', value: 2 },
+    { name: 'Cancelled', value: 0 },
   ];
   operators = [
-    { name: "MTN", value: "mtn" },
-    { name: "VODAFONE", value: "vodafone" },
-    { name: "AIRTEL-TIGO", value: "airtel-tigo" },
+    { name: 'MTN', value: 'mtn' },
+    { name: 'VODAFONE', value: 'vodafone' },
+    { name: 'AIRTEL-TIGO', value: 'airtel-tigo' },
   ];
   countries = COUNTRIES;
-  availableCountries = ["GH", "BJ", "CI"];
-  networkProviders = ["mtn", "orange"];
-  currencies = ["GHS", "XOF", "XAF", "NGN"];
+  availableCountries = ['GH', 'BJ', 'CI'];
+  networkProviders = ['mtn', 'orange'];
+  currencies = ['GHS', 'XOF', 'XAF', 'NGN'];
   userData: any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild("disbursementFile")
+  @ViewChild('disbursementFile')
   disbursermentListFile: ElementRef;
   @ViewChild(MatTableExporterDirective)
   matTableExporter: MatTableExporterDirective;
@@ -180,7 +189,7 @@ export class BulkDisbursementComponent implements OnInit {
   merchantSummaryData: SummaryData;
 
   userSessionData: any;
-  hasError: boolean = false;
+  hasError = false;
   errorMessage: string;
 
   customers: any;
@@ -200,7 +209,7 @@ export class BulkDisbursementComponent implements OnInit {
   totalTransactions: number;
   isFetchingName: boolean;
   noNameErrorMessage: string;
-  verifyingCount: number = 0;
+  verifyingCount = 0;
   verificationCountMessage: string;
   tempName: string;
   moduleData: any;
@@ -216,21 +225,21 @@ export class BulkDisbursementComponent implements OnInit {
     private datePipe: DatePipe,
     private dialog: MatDialog
   ) {
-    const user = localStorage.getItem("current_user");
+    const user = localStorage.getItem('current_user');
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
 
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
-    if (businessData !== "undefined") {
+    if (businessData !== 'undefined') {
       this.userBusinessData = JSON.parse(businessData);
     }
 
     this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
 
     if (!sessionData) {
-      router.navigate(["/auth/login"]);
+      router.navigate(['/auth/login']);
     }
   }
 
@@ -253,19 +262,19 @@ export class BulkDisbursementComponent implements OnInit {
   }
 
   exportAsXlsx() {
-    this.matTableExporter.exportTable("xlsx", {
-      fileName: "Transactions Report",
-      sheet: "report",
-      Props: { Author: "PAL Africa" },
+    this.matTableExporter.exportTable('xlsx', {
+      fileName: 'Transactions Report',
+      sheet: 'report',
+      Props: { Author: 'PAL Africa' },
     });
   }
 
   getPalFee(amount, country: string): number {
     if (this.hasExceededFreeTransfers) {
       switch (country) {
-        case "GH":
+        case 'GH':
           return (amount * 0.5) / 100;
-        case "BJ":
+        case 'BJ':
           return (amount * 1) / 100;
         default:
           return 0;
@@ -287,11 +296,15 @@ export class BulkDisbursementComponent implements OnInit {
     this.dataSource = new MatTableDataSource();
 
     this.form = this.fb.group({
-      country: ["", Validators.required],
+      country: ['', Validators.required],
+      currency: [''],
+      purpose: ['']
     });
 
     this.uploadFileForm = this.fb.group({
-      country: ["", Validators.required],
+      country: ['', Validators.required],
+      currency: [''],
+      purpose: ['']
     });
 
     // this.data$.pipe(
@@ -304,56 +317,67 @@ export class BulkDisbursementComponent implements OnInit {
     this.searchCtrl.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((value) => this.onFilterChange(value));
+
+    this.uploadFileForm.get('country').valueChanges.subscribe(value => {
+        this.form.get('country').setValue(value);
+        this.setCurrency(value);
+     });
+    this.uploadFileForm.get('purpose').valueChanges.subscribe(value => {
+      this.form.get('purpose').setValue(value);
+   });
   }
 
   resetForm() {
     this.form = this.fb.group({
-      country: [""],
-      currency: [""],
-      purpose: [""],
+      country: [''],
+      currency: [''],
+      purpose: [''],
     });
   }
 
-  setCurrency(country) {
+  setCurrency(country: string) {
     let currency;
     switch (country) {
-      case "GH":
-        currency = "GHS";
+      case 'GH':
+        currency = 'GHS';
         break;
-      case "BJ":
-        currency = "XOF";
+      case 'BJ':
+        currency = 'XOF';
         break;
-      case "CI":
-        currency = "XOF";
+      case 'CI':
+        currency = 'XOF';
         break;
-      case "SG":
-        currency = "XOF";
+      case 'SG':
+        currency = 'XOF';
         break;
     }
-    this.form.get("currency").setValue(currency);
+    this.form.get('currency').setValue(currency);
+    this.uploadFileForm.get('currency').setValue(currency);
   }
 
   addfile(event) {
     this.file = event.target.files[0];
-    let fileReader = new FileReader();
+    const fileReader = new FileReader();
     fileReader.readAsArrayBuffer(this.file);
     fileReader.onload = (e) => {
       this.arrayBuffer = fileReader.result;
       const data = new Uint8Array(this.arrayBuffer);
       const arr = new Array();
-      for (let i = 0; i != data.length; ++i)
+      for (let i = 0; i !== data.length; ++i) {
         arr[i] = String.fromCharCode(data[i]);
-      const bstr = arr.join("");
-      const workbook = XLSX.read(bstr, { type: "binary" });
+      }
+      const bstr = arr.join('');
+      const workbook = XLSX.read(bstr, { type: 'binary' });
       const first_sheet_name = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[first_sheet_name];
       const disbursementData = XLSX.utils.sheet_to_json(worksheet, {
         raw: true,
       });
       this.disbursementData = disbursementData.map((disbursement, index) => {
-        disbursement["index"] = index + 1;
+        disbursement['index'] = index + 1;
         return disbursement;
       });
+      // tslint:disable-next-line:no-shadowed-variable
       const amounts = disbursementData.map((data: any) => data.amount);
       (this.totalAmount = amounts.reduce(
         (sum, carr) => parseInt(sum, 10) + carr
@@ -364,6 +388,7 @@ export class BulkDisbursementComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.hasData = true;
+      // tslint:disable-next-line:no-shadowed-variable
       this.disbursementData.forEach((data) => {
         const transferData = {
           currency: this.form.value.currency,
@@ -376,9 +401,9 @@ export class BulkDisbursementComponent implements OnInit {
         this.getClientData(transferData, data.index);
       });
       if (this.disbursementData.length) {
-        this.disbursermentListFile.nativeElement.value = "";
+        this.disbursermentListFile.nativeElement.value = '';
       }
-    };    
+    };
   }
 
   get isFormReady(): boolean {
@@ -393,12 +418,12 @@ export class BulkDisbursementComponent implements OnInit {
     return countryData?.name;
   }
 
-  getSalesRepName(user_id) {
-    const salesRep = this.users?.find((user) => user.user_id === user_id);
+  getSalesRepName(userID) {
+    const salesRep = this.users?.find((user) => user.user_id === userID);
     if (salesRep) {
       return salesRep.full_name;
     } else {
-      return "N/A";
+      return 'N/A';
     }
   }
 
@@ -407,13 +432,19 @@ export class BulkDisbursementComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
   openSnackbar(message) {
-    this.snackBar.open(message, "CLOSE", {
-      duration: 3000,
-      horizontalPosition: "right",
+    this.snackBar.open(message, 'CLOSE', {
+      duration: 5000,
+      horizontalPosition: 'right',
     });
   }
 
   disburse() {
+    if (this.uploadFileForm.value.country) {
+      this.setCurrency(this.uploadFileForm.value.country);
+      this.form.get('country').setValue(this.uploadFileForm.value.country);
+    } else if (this.form.value.country) {
+      this.setCurrency(this.form.value.country);
+    }
     this.isDisbursing = true;
     this.transactionService
       .createBulkTransfer(
@@ -421,33 +452,32 @@ export class BulkDisbursementComponent implements OnInit {
         this.userBusinessData?.user_id,
         this.disbursementData,
         this.form.value,
-        "mobile_transfers"
+        'mobile_transfers'
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (response) => {
           this.isDisbursing = false;
-          if (response && response["status"] === true) {
-            this.openSnackbar(response["message"]);
+          if (response && response['status'] === true) {
+            this.openSnackbar(response['message']);
             window.location.reload();
           } else {
             this.hasError = true;
-            this.errorMessage = response["message"];
-            this.openSnackbar(response["message"]);
+            this.errorMessage = response['message'];
+            this.openSnackbar(response['message']);
           }
         },
-        (erro) => {
+        (error) => {
           this.isDisbursing = false;
           this.hasError = true;
-          this.errorMessage =
-            "Something went wrong please try again or contact support";
+          this.errorMessage = error.message || 'Something went wrong please try again or contact support';
           this.openSnackbar(this.errorMessage);
         }
       );
   }
 
   viewOrderDetails(order: any) {
-    this.router.navigate(["/dashboards/orders/order-details/" + order.id]);
+    this.router.navigate(['/dashboards/orders/order-details/' + order.id]);
   }
 
   getStatusLabel(status: string) {
@@ -507,7 +537,7 @@ export class BulkDisbursementComponent implements OnInit {
     }
     this.disbursementData = this.disbursementData?.map(
       (disbursement, index) => {
-        disbursement["index"] = index + 1;
+        disbursement['index'] = index + 1;
         return disbursement;
       }
     );
@@ -520,9 +550,9 @@ export class BulkDisbursementComponent implements OnInit {
 
   getClientData(transferData, index) {
     this.disbursementData = this.disbursementData.map((data) => {
-      if (data["phone"] === transferData["phone_no"]) {
-        this.tempName = data["name"];
-        data["name"] = "verifying....";
+      if (data['phone'] === transferData['phone_no']) {
+        this.tempName = data['name'];
+        data['name'] = 'verifying....';
       }
       return data;
     });
@@ -538,20 +568,20 @@ export class BulkDisbursementComponent implements OnInit {
         this.verifyingIndex = +1;
         this.verificationCountMessage = `${index}/${this.disbursementData.length}`;
 
-        if (response && response["status"] === true) {
+        if (response && response['status'] === true) {
           const disbursementData = this.disbursementData.map((data) => {
-            if (`${data["phone"]}` === response["data"].phone_no) {
-              data["name"] = response["data"].full_name;
+            if (`${data['phone']}` === response['data'].phone_no) {
+              data['name'] = response['data'].full_name;
             }
             return data;
           });
           this.updateDataSource(disbursementData);
         } else {
           const currentIndex = this.disbursementData.findIndex(
-            (existingany) => existingany["phone"] === transferData.phone_no
+            (existingany) => existingany['phone'] === transferData.phone_no
           );
           this.disbursementData[currentIndex][
-            "name"
+            'name'
           ] = `${this.tempName} (not verified)`;
 
           this.updateDataSource();
@@ -562,13 +592,13 @@ export class BulkDisbursementComponent implements OnInit {
         // this.verificationCountMessage = `${this.verifyingIndex}/${this.disbursementData.length}`;
         this.isFetchingName = false;
         this.noNameErrorMessage =
-          "Failed to retreive client name assotiated to this phone number";
+          'Failed to retreive client name assotiated to this phone number';
         // console.warn(error);
         const currentIndex = this.disbursementData.findIndex(
-          (existingany) => existingany["phone"] === transferData.phone_no
+          (existingany) => existingany['phone'] === transferData.phone_no
         );
         this.disbursementData[currentIndex][
-          "name"
+          'name'
         ] = `${this.tempName} (not verified)`;
 
         this.updateDataSource();
@@ -591,10 +621,9 @@ export class BulkDisbursementComponent implements OnInit {
            * You would probably make an HTTP request here.
            */
 
-          console.log("[updatedDisbursement]", updatedDisbursement);
 
           const index = this.disbursementData.findIndex(
-            (existingany) => existingany["phone"] === updatedDisbursement.phone
+            (existingany) => existingany['phone'] === updatedDisbursement.phone
           );
           this.disbursementData[index] = updatedDisbursement;
           const amounts = this.disbursementData.length
@@ -615,7 +644,7 @@ export class BulkDisbursementComponent implements OnInit {
      */
     this.disbursementData.splice(
       this.disbursementData.findIndex(
-        (existingany) => existingany["phone"] === disbursement.phone
+        (existingany) => existingany['phone'] === disbursement.phone
       ),
       1
     );
@@ -670,11 +699,11 @@ export class BulkDisbursementComponent implements OnInit {
   }
 
   exportTable() {
-    TableUtil.exportTableToExcel("ExampleMaterialTable");
+    TableUtil.exportTableToExcel('ExampleMaterialTable');
   }
 
   exportNormalTable() {
-    TableUtil.exportTableToExcel("ExampleNormalTable");
+    TableUtil.exportTableToExcel('ExampleNormalTable');
   }
 
   getModulesData(credentials) {
@@ -696,6 +725,6 @@ export class BulkDisbursementComponent implements OnInit {
         status: x?.status,
       })
     );
-    TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, "ExampleArray");
+    TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, 'ExampleArray');
   }
 }

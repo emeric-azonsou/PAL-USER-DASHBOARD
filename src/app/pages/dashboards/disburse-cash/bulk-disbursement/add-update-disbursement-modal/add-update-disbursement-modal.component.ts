@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import {
   FormGroup,
   FormBuilder,
@@ -36,7 +36,7 @@ import icClose from "@iconify/icons-ic/twotone-close";
   templateUrl: "./add-update-disbursement-modal.component.html",
   styleUrls: ["./add-update-disbursement-modal.component.scss"],
 })
-export class AddUpdateDisbursementModalComponent implements OnInit {
+export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
   mode: "create" | "update" = "create";
   operators = [
     { name: "MTN", value: "mtn" },
@@ -147,7 +147,6 @@ export class AddUpdateDisbursementModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("[defaults]", this.defaults);
     this.initForm();
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
     this.userBusinessData = JSON.parse(businessData);

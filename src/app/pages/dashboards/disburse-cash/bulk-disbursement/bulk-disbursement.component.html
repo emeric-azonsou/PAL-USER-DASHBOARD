@@ -256,6 +256,19 @@
           <div class="grid xs:grid-rows-1 md:grid-rows-1 grid-flow-col gap-2">
             <div>
               <mat-form-field class="sm:ml-6 flex-auto">
+                <mat-label>Purpose</mat-label>
+                <input
+                  matInput
+                  formControlName="purpose"
+                  #input
+                  type="text"
+                  placeholder="Purpose"
+                  maxlength="50"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="sm:ml-6 flex-auto">
                 <mat-label>Country</mat-label>
                 <mat-select
                   (ngModelChange)="setCurrency($event)"

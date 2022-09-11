@@ -19,7 +19,7 @@ export const environment = {
   getUserAccountDetailsUrl: `https://api.pals.africa/api/getbusinessuseraccountdetails/`,
   registerPalUserUrl: `https://api.pals.africa/api/registerpaluser`,
   registerUserUrl: `https://api.pals.africa/api/register`,
-  loginUrl:`https://api.pals.africa/api/login`,
+  loginUrl: `https://api.pals.africa/api/login`,
 
   addBusinessUrl: `https://api.pals.africa/api/addbusiness`,
   updateBusinessUrl: `https://api.pals.africa/api/updatebusiness/`,
