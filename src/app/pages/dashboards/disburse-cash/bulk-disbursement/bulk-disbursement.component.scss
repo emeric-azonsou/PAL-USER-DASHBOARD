@@ -121,9 +121,19 @@ mat-error.no-country-error {
 .card1{
   margin-left: 20px;
 }
+@media screen and (max-width: 488px) {
+//   .card1{
+//      width: 22rem;
+//   }
+//   .two-cards{
+//     max-width: 28rem;
+//  }
+  
+  }
+  
+ 
+ }
 
-
-}
 
 @media screen and (max-width: 1034px) {
   .info{

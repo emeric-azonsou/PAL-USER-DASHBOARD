@@ -29,26 +29,26 @@ form {
     }
   }
   .button {
-    h6{
-      text-align:left;
+    h6 {
+      text-align: left;
     }
     .cancel-button {
-        background-color: #484848;
-        font: Segoe UI;
-        font-weight: bold;
-        letter-spacing: 0px;
-        color: white;
-        opacity: 1;
+      background-color: #484848;
+      font: Segoe UI;
+      font-weight: bold;
+      letter-spacing: 0px;
+      color: white;
+      opacity: 1;
     }
     .send-button {
-        background-color:#2bb996;
-        font: Segoe UI;
-        font-weight: bold;
-        letter-spacing: 0px;
-        color: white;
-        opacity: 1;
+      background-color: #2bb996;
+      font: Segoe UI;
+      font-weight: bold;
+      letter-spacing: 0px;
+      color: white;
+      opacity: 1;
     }
-}
+  }
 }
 
 .how-much {
@@ -60,46 +60,71 @@ form {
   font-size: 11px;
   text-align: center;
 }
-
-@media screen and (max-width: 600px) {
-  mat-form-field {
-   min-width: 500%;
+@media screen and (max-width: 959px) {
+  .wallet-number1 {
+    position: relative;
+    top: 8rem;
+  }
+  .mobile-number1 {
+    position: relative;
+    bottom: 13rem;
+  }
+  .mobile-number2 {
+    position: relative;
+    bottom: 6rem;
   }
 
-  .field{
+  .network {
+    position: relative;
+
+    bottom: 16rem;
+  }
+  .amount {
+    position: relative;
+    top: 18rem;
+  }
+  .purpose{
+    position: relative;
+    top: 2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  
+
+  mat-form-field {
+    min-width: 10%;
+  }
+
+  .field {
     min-width: 90%;
   }
 
   .icon {
     font-size: small;
   }
-  .respon {
-    .label {
-      min-width: 20rem;
-    }
-  }
 
   .button {
     display: flex;
     justify-content: center;
-    h6{
-      display:none;
+    h6 {
+      display: none;
     }
     .cancel-button {
-        background-color: #484848;
-        font: Segoe UI;
-        font-weight: bold;
-        letter-spacing: 0px;
-        color: white;
-        opacity: 1;
+      background-color: #484848;
+      font: Segoe UI;
+      font-weight: bold;
+      letter-spacing: 0px;
+      color: white;
+      opacity: 1;
     }
     .send-button {
-        background-color:#2bb996;
-        font: Segoe UI;
-        font-weight: bold;
-        letter-spacing: 0px;
-        color: white;
-        opacity: 1;
+      background-color: #2bb996;
+      font: Segoe UI;
+      font-weight: bold;
+      letter-spacing: 0px;
+      color: white;
+      opacity: 1;
     }
-}
+  }
 }

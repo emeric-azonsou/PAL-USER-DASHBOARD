@@ -18,13 +18,14 @@
           <div>
             <label
               for="dropzone-file"
-              (click)="onDownloadExelFile()"
-              class="flex flex-col  w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
+              class="flex flex-col w-40 h-10 bg-gray-50 rounded-lg -2 -dashed cursor-pointer"
             >
               <div class="flex flex-col justify-center pt-5 pb-6">
                 <mat-icon>cloud_download</mat-icon>
                 <p class="mb-8 text-gray-500">
-                  <span class="font-semibold">Download Exel file</span>
+                  <a href='assets\exel-file\PAL bulk disbursement.xlsx' download>
+                    Download Exel file
+                  </a>
                 </p>
               </div>
               <input
@@ -49,9 +50,6 @@
         filed with recipients' payment information.
         <div fxLayout="row" class="" fxLayoutAlign="start center">
           <form  [formGroup]="form" >
-
-
-
             <div class="card cardss">
                 <div>
                   <mat-form-field class="sm:ml-6 flex-auto">
@@ -91,7 +89,7 @@
                   <input
                     [disabled]="form.invalid"
                     #disbursementFile
-                    (change)="onUploadExelFile($event)"
+                    (change)="addfile($event)"
                     id="dropzone-file"
                     type="file"
                     class="hidden"

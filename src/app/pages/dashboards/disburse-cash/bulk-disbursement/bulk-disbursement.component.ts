@@ -134,6 +134,7 @@ export class BulkDisbursementComponent implements OnInit {
 
   statusLabels = TRANSACTION_TABLE_LABELS;
 
+
   displayedColumns: string[] = [
     "Select",
     "No",
@@ -372,13 +373,12 @@ export class BulkDisbursementComponent implements OnInit {
           country: this.form.value.country,
           operator: data.network,
         };
-
         this.getClientData(transferData, data.index);
       });
       if (this.disbursementData.length) {
         this.disbursermentListFile.nativeElement.value = "";
       }
-    };
+    };    
   }
 
   get isFormReady(): boolean {
@@ -697,20 +697,5 @@ export class BulkDisbursementComponent implements OnInit {
       })
     );
     TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, "ExampleArray");
-  }
-
-  onDownloadExelFile() {
-    let link = document.createElement("a");
-    link.setAttribute("type", "hidden");
-    link.href = "assetsexel-filedisbursment.xlsx";
-    link.download = "srcassetsexel-filedisbursment.xlsx";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  }
-
-  onUploadExelFile($e) {
-    this.loadedExelFile = $e.target.files[0];
-    // cette partie servirra a envoyer le fichier sur un server ou a faire un autre traitement particulier.
   }
 }
