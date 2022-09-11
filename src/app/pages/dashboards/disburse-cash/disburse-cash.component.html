@@ -16,9 +16,9 @@
   <mat-divider class="-mx-6 text-border"></mat-divider>
   <mat-dialog-content fxLayout="column" class="content-part mx-50">
     <div
-      class="grid respon grid-flow-col xs:grid-cols-4 xs:grid-rows-4 sm:grid-rows-3 sm:grid-cols-2 md:grid-cols-2 md:grid-rows-3 gap-8"
+      class="grid respon xs:grid-flow-col xs:grid-cols-1 xs:grid-rows-6 md:grid-cols-2 md:grid-rows-3 gap-4"
     >
-      <div>
+      <div  class="country" >
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
             <label for="">Select Country You're disbursing to</label>
@@ -37,7 +37,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div>
+      <div class="wallet-number1">
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
             <label for="" class="label"> Mobile wallet number</label>
@@ -65,7 +65,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div>
+      <div class="amount" >
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
             <label for="" class="label">How much are you disbursing?</label>
@@ -86,7 +86,7 @@
         </mat-form-field>
       </div>
 
-      <div>
+      <div class="network">
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
             <label for="">Select the Mobile network</label>
@@ -109,7 +109,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div>
+      <div class="mobile-number2">
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
             <label for="" class="label">Repeat Mobile wallet number</label>
@@ -144,7 +144,7 @@
         </mat-error>
       </div>
 
-      <div>
+      <div class="purpose">
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
             <label for="" class="label">Purpose of disbursement</label>
