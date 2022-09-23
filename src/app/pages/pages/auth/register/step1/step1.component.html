@@ -1,30 +1,57 @@
-<div class="w-full h-full bg-pattern" fxLayout="column" fxLayoutAlign="center center">
-    <div @fadeInUp class="w-full max-w-xs overflow-hidden card">
-      <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
-        <div class="text-center fill-current">
-          <img class="w-16" src="assets\logo\logo_pal-removebg-preview.png">
-        </div>
+<div
+  class="w-full h-full bg-pattern"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+>
+  <div @fadeInUp class="w-full max-w-xs overflow-hidden card">
+    <div class="p-6 pb-0" fxLayout="column" fxLayoutAlign="center center">
+      <div class="text-center fill-current">
+        <img class="w-16" src="assets\logo\logo_pal-removebg-preview.png" />
       </div>
-  
-      <div class="mt-4 text-center">
-        <h2 class="m-0 title">SIGN UP</h2>
-       
-      </div>
-  
-      <div [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px">
-        <div fxFlex="auto" fxLayout="column">
-          <mat-form-field fxFlex="grow">
-            <mat-label>Phone number </mat-label>
-            <input formControlName="phoneNumber" matInput required>
-            <span matPrefix>{{ prefixCountryCode }}</span>
-            <mat-error>
-              <span *ngFor="let error of form.get('phoneNumber').errors | keyvalue">
-                {{ validationMessages.phoneNumber[error.key] }}
-              </span>
-            </mat-error>
-          </mat-form-field>
-  
-          <!-- <mat-form-field fxFlex="grow">
+    </div>
+
+    <div class="mt-4 text-center">
+      <h2 class="m-0 title">SIGN UP</h2>
+    </div>
+
+    <div [formGroup]="form" class="p-6" fxLayout="column" fxLayoutGap="16px">
+      <div fxFlex="auto" fxLayout="column">
+        <mat-form-field fxFlex="grow">
+          <mat-label>Country</mat-label>
+          <mat-select formControlName="country" matInput required>
+            <mat-option
+              *ngFor="let country of countries"
+              [value]="country.code"
+            >
+              {{ country.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="grow">
+          <mat-label>Phone number </mat-label>
+          <input formControlName="phoneNumber" matInput required />
+          <span matPrefix>
+            {{ prefixCountryCode }}
+            <!-- <mat-select formControlName="prefixCountryCode"  [formControl]="prefixCountryCode" required>
+              <mat-option
+                *ngFor="let countryCode of countryCodes"
+                [value]="countryCode.dial_code"
+              >
+                {{ countryCode.dial_code }}
+              </mat-option>
+            </mat-select> -->
+            </span>
+          <mat-error>
+            <span
+              *ngFor="let error of form.get('phoneNumber').errors | keyvalue"
+            >
+              {{ validationMessages.phoneNumber[error.key] }}
+            </span>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- <mat-form-field fxFlex="grow">
             <mat-label>Company legal name </mat-label>
             <input formControlName="companyName" matInput required>
             <mat-error>
@@ -33,22 +60,14 @@
               </span>
             </mat-error>
           </mat-form-field> -->
-  
-          <mat-form-field fxFlex="grow">
-            <mat-label>Country</mat-label>
-            <mat-select formControlName="country" matInput required>
-              <mat-option *ngFor="let country of countries" [value]="country.code">
-                {{country.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
 
-          <!-- <mat-form-field fxFlex="grow">
+
+        <!-- <mat-form-field fxFlex="grow">
             <mat-label>Country of the establishment</mat-label>
             <input formControlName="country" matInput required>
           </mat-form-field> -->
 
-          <!-- <mat-form-field fxFlex="grow">
+        <!-- <mat-form-field fxFlex="grow">
             <mat-label>Describe what your company does</mat-label>
             <input style="height: 40px;" formControlName="description" matInput required>
             <mat-error>
@@ -57,16 +76,26 @@
               </span>
             </mat-error>
           </mat-form-field> -->
-          <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-checkbox formControlName="terms" class="caption">I accept the <a>terms and conditions.</a></mat-checkbox>
-          </div>
-          <button (click)="send()" [disabled]="form.invalid" class="createAccount" color="primary" mat-raised-button type="button">
-            CONTINUE
-          </button>
-          <p class="text-center text-secondary">
-            Already have an account?<br />
-            <a [routerLink]="['/auth/login']">Sign in here</a>
-          </p>
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <mat-checkbox formControlName="terms" class="caption"
+            >I accept the <a>terms and conditions.</a></mat-checkbox
+          >
         </div>
+        <button
+          (click)="send()"
+          [disabled]="form.invalid"
+          class="createAccount"
+          color="primary"
+          mat-raised-button
+          type="button"
+        >
+          CONTINUE
+        </button>
+        <p class="text-center text-secondary">
+          Already have an account?<br />
+          <a [routerLink]="['/auth/login']">Sign in here</a>
+        </p>
       </div>
     </div>
+  </div>
+</div>

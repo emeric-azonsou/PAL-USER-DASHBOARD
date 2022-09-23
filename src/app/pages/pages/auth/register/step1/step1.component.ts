@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthserviceService } from 'src/app/services/authservice.service';
 import { COUNTRIES, GeoLocationService } from 'src/app/services/geo-location.service';
 import { take } from 'rxjs/operators';
+import { COUNTRY_CODES } from 'src/app/Models/constants';
 
 
 
@@ -17,9 +18,11 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./step1.component.scss']
 })
 export class Step1Component implements OnInit {
+  countryCodes = COUNTRY_CODES;
+
   form: FormGroup;
   phoneNumberPattern = /^\d+$/;
-  inputType = "password";
+  inputType = 'password';
   visible = false;
   step1data: any;
   processedPhoneNo: any;
@@ -38,21 +41,21 @@ export class Step1Component implements OnInit {
   isButtonActive: boolean;
   isLoadingButton: boolean;
   errorMessage: string;
-  countries = COUNTRIES;
+  countries = COUNTRY_CODES;
   validationMessages = {
     companyName: {
-      required: "First name  is required.",
+      required: 'First name  is required.',
     },
     description: {
-      required: "Description is required",
+      required: 'Description is required',
     },
     country: {
-      required: "Country is required",
-      pattern: "Please enter a valid Country name",
+      required: 'Country is required',
+      pattern: 'Please enter a valid Country name',
     },
     phoneNumber: {
-      required: "Phone number  is required.",
-      pattern: "Please enter a valid phone number",
+      required: 'Phone number  is required.',
+      pattern: 'Please enter a valid phone number',
     },
   };
 
@@ -72,8 +75,12 @@ export class Step1Component implements OnInit {
       country: ['', Validators.required],
       // description: ['', Validators.required],
       terms: ['', Validators.required],
+      // prefixCountryCode: ['']
     });
     this.getLocationData();
+    this.form.get('country').valueChanges.subscribe(value => {
+      this.prefixCountryCode = this.countries.find(country => country.code === value).dial_code;
+    });
   }
 
   getLocationData() {
@@ -83,17 +90,19 @@ export class Step1Component implements OnInit {
       });
     })
       .then(() => {
-           this.prefixCountryCode=this.locationData.country_calling_code;
-      })
+        console.log('[location]', this.locationData);
+          this.form.get('country').setValue(this.locationData.country);
+          this.prefixCountryCode = this.locationData.country_calling_code;
+      });
 
   }
 
   processPhoneNumber() {
-    let rawPhoneNumber = this.form.value["phoneNumber"];
+    let rawPhoneNumber = this.form.value['phoneNumber'];
 
-    let phoneNumberWithoutSpace = rawPhoneNumber.split(/\s/).join("");
+    let phoneNumberWithoutSpace = rawPhoneNumber.split(/\s/).join('');
     if (phoneNumberWithoutSpace.match(this.phoneNumberPattern)) {
-      if (phoneNumberWithoutSpace.charAt(0) === "0") {
+      if (phoneNumberWithoutSpace.charAt(0) === '0') {
         this.isCorrectPhoneEntry = true;
         this.processedPhoneNo =
           this.prefixCountryCode + phoneNumberWithoutSpace.substr(1);
@@ -109,7 +118,7 @@ export class Step1Component implements OnInit {
  
   openCompose() {
     this.dialog.open(MailComposeComponent, {
-      width: "100%",
+      width: '100%',
       maxWidth: 700,
     });
   }
@@ -133,7 +142,7 @@ export class Step1Component implements OnInit {
       'step1RegData',
       JSON.stringify(userProfilInformation)
     );
-    this.router.navigate(["/auth/register/step2"]);
+    this.router.navigate(['/auth/register/step2']);
 }
 
 }
