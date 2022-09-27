@@ -56,7 +56,10 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     BJ: {
       currency: 'XOF',
       code: '+229',
-      operators: [{ name: 'MTN', value: 'mtn' }],
+      operators: [
+        { name: 'MTN', value: 'mtn' },
+        { name: 'MOOV', value: 'moov' }
+      ],
     },
     CI: {
       currency: 'XOF',
@@ -64,6 +67,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       operators: [
         { name: 'MTN', value: 'mtn' },
         { name: 'ORANGE', value: 'orange' },
+        { name: 'MOOV', value: 'moov' }
       ],
     },
     GH: {
@@ -91,7 +95,10 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     NG: {
       currency: 'NGN',
       code: '+234',
-      operators: [{ name: 'MTN', value: 'MTN' }],
+      operators: [
+        { name: 'MTN', value: 'MTN' },
+        { name: 'AIRTEL-TIGO', value: 'airtel-tigo' },
+      ],
     },
   };
 
@@ -129,7 +136,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       pattern: 'Only number allowed',
       required: 'Amount This Field  is required.',
       amountExceededLimit: 'Amount in XOF should not exceed 1 700 000',
-      hasComma: 'XOF does not support decimals'
+      hasComma: 'XOF does not support decimals',
     },
   };
   merchantSummaryData: SummaryData;
@@ -149,7 +156,6 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   ) {
     const sessionData = localStorage.getItem(USER_SESSION_KEY);
     this.userData = JSON.parse(sessionData);
-
 
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
@@ -182,9 +188,11 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       object: [''],
     });
 
-    this.transferForm.get('amount').valueChanges.subscribe(value => {
+    this.transferForm.get('amount').valueChanges.subscribe((value) => {
       if (this.currency === 'XOF' && value > 1700000) {
-        this.transferForm.get('amount').setErrors({ amountExceededLimit: true });
+        this.transferForm
+          .get('amount')
+          .setErrors({ amountExceededLimit: true });
       }
       if (this.currency === 'XOF' && value.includes('.')) {
         this.transferForm.get('amount').setErrors({ hasComma: true });
