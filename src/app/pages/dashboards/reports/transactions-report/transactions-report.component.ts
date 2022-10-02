@@ -1,72 +1,72 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { DatePipe } from "@angular/common";
-import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
+import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormFieldDefaultOptions,
-} from "@angular/material/form-field";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSelectChange } from "@angular/material/select";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { Router } from "@angular/router";
-import { ReplaySubject, Observable, Subject, of } from "rxjs";
-import { takeUntil, take } from "rxjs/operators";
-import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
-import { stagger40ms } from "src/@vex/animations/stagger.animation";
-import { TableColumn } from "src/@vex/interfaces/table-column.interface";
+} from '@angular/material/form-field';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSelectChange } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { ReplaySubject, Observable, Subject, of } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
+import { fadeInUp400ms } from 'src/@vex/animations/fade-in-up.animation';
+import { stagger40ms } from 'src/@vex/animations/stagger.animation';
+import { TableColumn } from 'src/@vex/interfaces/table-column.interface';
 import {
   BUSINESS_DATA_KEY,
   COUNTRIES,
   SUMMARY_DATA_KEY,
   TRANSACTION_TABLE_LABELS,
   USER_SESSION_KEY,
-} from "src/app/Models/constants";
-import { Customer } from "src/app/pages/apps/aio-table/interfaces/customer.model";
-import { AuthserviceService } from "src/app/services/authservice.service";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { aioTableLabels, aioTableData } from "src/static-data/aio-table-data";
-import { TableUtil } from "./tableUtil";
+} from 'src/app/Models/constants';
+import { Customer } from 'src/app/pages/apps/aio-table/interfaces/customer.model';
+import { AuthserviceService } from 'src/app/services/authservice.service';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { aioTableLabels, aioTableData } from 'src/static-data/aio-table-data';
+import { TableUtil } from './tableUtil';
 
-import icEdit from "@iconify/icons-ic/twotone-edit";
-import icDelete from "@iconify/icons-ic/twotone-delete";
-import icSearch from "@iconify/icons-ic/twotone-search";
-import icAdd from "@iconify/icons-ic/twotone-add";
-import icFilterList from "@iconify/icons-ic/twotone-filter-list";
-import icPhone from "@iconify/icons-ic/twotone-phone";
-import icMail from "@iconify/icons-ic/twotone-mail";
-import icMap from "@iconify/icons-ic/twotone-map";
-import icMoreHoriz from "@iconify/icons-ic/twotone-more-horiz";
-import icFolder from "@iconify/icons-ic/twotone-folder";
-import icDateRange from "@iconify/icons-ic/twotone-date-range";
-import icPerson from "@iconify/icons-ic/twotone-person";
-import icRefresh from "@iconify/icons-ic/twotone-refresh";
-import icBook from "@iconify/icons-ic/twotone-book";
-import icCloudDownload from "@iconify/icons-ic/twotone-cloud-download";
-import icAttachMoney from "@iconify/icons-ic/twotone-attach-money";
+import icEdit from '@iconify/icons-ic/twotone-edit';
+import icDelete from '@iconify/icons-ic/twotone-delete';
+import icSearch from '@iconify/icons-ic/twotone-search';
+import icAdd from '@iconify/icons-ic/twotone-add';
+import icFilterList from '@iconify/icons-ic/twotone-filter-list';
+import icPhone from '@iconify/icons-ic/twotone-phone';
+import icMail from '@iconify/icons-ic/twotone-mail';
+import icMap from '@iconify/icons-ic/twotone-map';
+import icMoreHoriz from '@iconify/icons-ic/twotone-more-horiz';
+import icFolder from '@iconify/icons-ic/twotone-folder';
+import icDateRange from '@iconify/icons-ic/twotone-date-range';
+import icPerson from '@iconify/icons-ic/twotone-person';
+import icRefresh from '@iconify/icons-ic/twotone-refresh';
+import icBook from '@iconify/icons-ic/twotone-book';
+import icCloudDownload from '@iconify/icons-ic/twotone-cloud-download';
+import icAttachMoney from '@iconify/icons-ic/twotone-attach-money';
 
-import { SummaryData } from "src/app/Models/models.interface";
-import moment from "moment";
-import { MatTableExporterDirective } from "mat-table-exporter";
+import { SummaryData } from 'src/app/Models/models.interface';
+import moment from 'moment';
+import { MatTableExporterDirective } from 'mat-table-exporter';
 
 @Component({
-  selector: "vex-transactions-report",
-  templateUrl: "./transactions-report.component.html",
-  styleUrls: ["./transactions-report.component.scss"],
+  selector: 'vex-transactions-report',
+  templateUrl: './transactions-report.component.html',
+  styleUrls: ['./transactions-report.component.scss'],
   animations: [fadeInUp400ms, stagger40ms],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: {
-        appearance: "standard",
+        appearance: 'standard',
       } as MatFormFieldDefaultOptions,
     },
   ],
 })
-export class TransactionsReportComponent implements OnInit, OnDestroy {
-  layoutCtrl = new FormControl("boxed");
+export class TransactionsReportComponent implements OnInit, OnDestroy, AfterViewInit {
+  layoutCtrl = new FormControl('boxed');
 
   /**
    * Simulating a service with HTTP that returns Observables
@@ -78,63 +78,63 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   @Input()
   columns: TableColumn<Customer>[] = [
     // { label: 'Checkbox', property: 'checkbox', type: 'checkbox', visible: true },
-    { label: "ID", property: "reference", type: "text", visible: true },
+    { label: 'ID', property: 'reference', type: 'text', visible: true },
     {
-      label: "date",
-      property: "created_at",
-      type: "text",
+      label: 'date',
+      property: 'created_at',
+      type: 'text',
       visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
+      cssClasses: ['text-secondary', 'font-medium'],
     },
     {
-      label: "Country",
-      property: "country",
-      type: "text",
+      label: 'Country',
+      property: 'country',
+      type: 'text',
       visible: true,
-      cssClasses: ["font-medium"],
+      cssClasses: ['font-medium'],
     },
     {
-      label: "Network Provider",
-      property: "operator",
-      type: "text",
+      label: 'Network Provider',
+      property: 'operator',
+      type: 'text',
       visible: true,
-      cssClasses: ["font-medium"],
+      cssClasses: ['font-medium'],
     },
     {
-      label: "Wallet Number",
-      property: "phone_no",
-      type: "text",
+      label: 'Wallet Number',
+      property: 'phone_no',
+      type: 'text',
       visible: true,
     },
     // { label: "Contact", property: "phone_no", type: "button", visible: true },
     {
-      label: "Pal fee",
-      property: "charges",
-      type: "text",
+      label: 'Pal fee',
+      property: 'charges',
+      type: 'text',
       visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
+      cssClasses: ['text-secondary', 'font-medium'],
     },
 
     {
-      label: "Currency",
-      property: "currency",
-      type: "text",
+      label: 'Currency',
+      property: 'currency',
+      type: 'text',
       visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
+      cssClasses: ['text-secondary', 'font-medium'],
     },
     {
-      label: "Amount Sent",
-      property: "amount",
-      type: "text",
+      label: 'Amount Sent',
+      property: 'amount',
+      type: 'text',
       visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
+      cssClasses: ['text-secondary', 'font-medium'],
     },
     {
-      label: "Status",
-      property: "status",
-      type: "badge",
+      label: 'Status',
+      property: 'status',
+      type: 'badge',
       visible: true,
-      cssClasses: ["text-secondary", "font-medium"],
+      cssClasses: ['text-secondary', 'font-medium'],
     },
     // { label: 'Labels', property: 'labels', type: 'button', visible: true },
     // { label: "Actions", property: "actions", type: "button", visible: true },
@@ -145,8 +145,8 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   selection = new SelectionModel<any>(true, []);
   searchCtrl = new FormControl();
   exportOptions = {
-    fileName: "test",
-    sheet: { reportsProps: { Author: "PAL" } },
+    fileName: 'test',
+    sheet: { reportsProps: { Author: 'PAL' } },
   };
 
   labels = aioTableLabels;
@@ -172,30 +172,30 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   statusLabels = TRANSACTION_TABLE_LABELS;
 
   displayedColumns: string[] = [
-    "id",
-    "created_at",
-    "country",
-    "provider",
-    "wallet",
-    "fee",
-    "currency",
-    "amount",
-    "network_transaction_ref",
-    "status",
+    'id',
+    'created_at',
+    'country',
+    'provider',
+    'wallet',
+    'fee',
+    'currency',
+    'amount',
+    'network_transaction_ref',
+    'status',
   ];
 
   statuses = [
-    { name: "Pending", value: 1 },
-    { name: "Completed", value: 3 },
-    { name: "Error", value: 4 },
-    { name: "Networ Error", value: 6 },
-    { name: "Processing", value: 2 },
-    { name: "Cancelled", value: 0 },
+    { name: 'Pending', value: 1 },
+    { name: 'Completed', value: 3 },
+    { name: 'Error', value: 4 },
+    { name: 'Networ Error', value: 6 },
+    { name: 'Processing', value: 2 },
+    { name: 'Cancelled', value: 0 },
   ];
   countries = COUNTRIES;
-  availableCountries = ["GH", "BJ", "CI"];
-  networkProviders = ["mtn", "orange"];
-  currencies = ["GHS", "XOF", "XAF", "NGN"];
+  availableCountries = ['GH', 'BJ', 'CI'];
+  networkProviders = ['mtn', 'orange'];
+  currencies = ['GHS', 'XOF', 'XAF', 'NGN'];
   userData: any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -212,7 +212,7 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   merchantSummaryData: SummaryData;
 
   userSessionData: any;
-  hasError: boolean = false;
+  hasError = false;
   errorMessage: string;
 
   customers: any;
@@ -230,21 +230,21 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private datePipe: DatePipe
   ) {
-    const user = localStorage.getItem("current_user");
+    const user = localStorage.getItem('current_user');
     const sessionData = JSON.parse(localStorage.getItem(USER_SESSION_KEY));
     this.userData = sessionData;
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
 
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
-    if (businessData !== "undefined") {
+    if (businessData !== 'undefined') {
       this.userBusinessData = JSON.parse(businessData);
     }
 
     this.credentials = `${this.userBusinessData?.api_secret_key_live}:${this.userBusinessData?.api_public_key_live}`;
 
     if (!sessionData) {
-      router.navigate(["/auth/login"]);
+      router.navigate(['/auth/login']);
     }
   }
 
@@ -267,19 +267,19 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   }
 
   exportAsXlsx() {
-    this.matTableExporter.exportTable("xlsx", {
-      fileName: "Transactions Report",
-      sheet: "report",
-      Props: { Author: "PAL Africa" },
+    this.matTableExporter.exportTable('xlsx', {
+      fileName: 'Transactions Report',
+      sheet: 'report',
+      Props: { Author: 'PAL Africa' },
     });
   }
 
   getPalFee(amount, country: string): number {
     if (this.hasExceededFreeTransfers) {
       switch (country) {
-        case "GH":
+        case 'GH':
           return (amount * 0.5) / 100;
-        case "BJ":
+        case 'BJ':
           return (amount * 1) / 100;
         default:
           return 0;
@@ -303,12 +303,12 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
     //   this.subject$.next(customers);
     // });
     this.form = this.fb.group({
-      country: [""],
-      dateFrom: [""],
-      dateTo: [""],
-      currency: [""],
-      operator: [""],
-      status: [""],
+      country: [''],
+      dateFrom: [''],
+      dateTo: [''],
+      currency: [''],
+      operator: [''],
+      status: [''],
     });
     // this.data$.pipe(
     //   filter<OrderSession[]>(Boolean)
@@ -327,12 +327,12 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.form = this.fb.group({
-      country: [""],
-      dateFrom: [""],
-      dateTo: [""],
-      currency: [""],
-      operator: [""],
-      status: [""],
+      country: [''],
+      dateFrom: [''],
+      dateTo: [''],
+      currency: [''],
+      operator: [''],
+      status: [''],
     });
     this.getTransactionsList();
   }
@@ -363,6 +363,7 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
           (transactions) => {
             this.isLoading = false;
             this.transactionsData = transactions.map((details) => {
+              console.log('[details.state]', details.state);
               details.state = this.getStatusLabel(details.state);
               // details.palFee = this.getPalFee(details.amount, details.country);
               details.formatedDate = moment(details.created_at).fromNow();
@@ -400,7 +401,7 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
     if (salesRep) {
       return salesRep.full_name;
     } else {
-      return "N/A";
+      return 'N/A';
     }
   }
 
@@ -410,19 +411,19 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   }
 
   search() {
-    if (this.form.value["dateFrom"] && this.form.value["dateTo"]) {
-      const from = new Date(this.form.value["dateFrom"])
+    if (this.form.value['dateFrom'] && this.form.value['dateTo']) {
+      const from = new Date(this.form.value['dateFrom'])
         .toISOString()
         .slice(0, 19)
-        .replace("T", " ");
-      const to = new Date(this.form.value["dateTo"])
+        .replace('T', ' ');
+      const to = new Date(this.form.value['dateTo'])
         .toISOString()
         .slice(0, 19)
-        .replace("T", " ");
+        .replace('T', ' ');
       // this.form.get("dateFrom").setValue(from);
       // this.form.get("dateTo").setValue(to);
-      this.form.value["dateFrom"] = from;
-      this.form.value["dateTo"] = to;
+      this.form.value['dateFrom'] = from;
+      this.form.value['dateTo'] = to;
     }
 
     this.isLoading = true;
@@ -431,45 +432,46 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
         this.credentials,
         this.userBusinessData?.user_id,
         this.form.value,
-        "mobile_transfers"
+        'mobile_transfers'
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (response) => {
           this.isLoading = false;
-          if (response["status"] === true) {
-            this.transactions = response["data"];
-            this.getTransactionsList(response["data"]);
+          if (response['status'] === true) {
+            this.transactions = response['data'];
+            this.getTransactionsList(response['data']);
             this.dataSource = new MatTableDataSource();
             this.dataSource.data = this.transactions;
             if (!this.dataSource.data.length) {
               this.hasError = true;
               this.errorMessage =
-                "No data Found for the specified search criteria. Please try with different data";
+                'No data Found for the specified search criteria. Please try with different data';
             } else {
               this.hasError = false;
-              this.errorMessage = "";
+              this.errorMessage = '';
             }
           } else {
             this.hasError = true;
             this.errorMessage =
-              "No data Found for the specified search criteria. Please try with different data";
+              'No data Found for the specified search criteria. Please try with different data';
           }
         },
         (erro) => {
           this.isLoading = false;
           this.hasError = true;
           this.errorMessage =
-            "No data Found for the specified search criteria. Please try with different data";
+            'No data Found for the specified search criteria. Please try with different data';
         }
       );
   }
 
   viewOrderDetails(order: any) {
-    this.router.navigate(["/dashboards/orders/order-details/" + order.id]);
+    this.router.navigate(['/dashboards/orders/order-details/' + order.id]);
   }
 
   getStatusLabel(status: string) {
+    console.log('[status]', status);
     return this.statusLabels.find((label) => label.text === status);
   }
 
@@ -539,11 +541,11 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
   }
 
   exportTable() {
-    TableUtil.exportTableToExcel("ExampleMaterialTable");
+    TableUtil.exportTableToExcel('ExampleMaterialTable');
   }
 
   exportNormalTable() {
-    TableUtil.exportTableToExcel("ExampleNormalTable");
+    TableUtil.exportTableToExcel('ExampleNormalTable');
   }
 
   exportArray() {
@@ -553,6 +555,6 @@ export class TransactionsReportComponent implements OnInit, OnDestroy {
         status: x.status,
       })
     );
-    TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, "ExampleArray");
+    TableUtil.exportArrayToExcel(onlyNameAndSymbolArr, 'ExampleArray');
   }
 }

@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
   HttpParams,
-} from "@angular/common/http";
-import { Observable, throwError as observableThrowError } from "rxjs";
-import { map, catchError } from "rxjs/operators";
-import { TransactionsReference } from "./reference-data.interface";
-import { environment } from "src/environments/environment";
+} from '@angular/common/http';
+import { Observable, throwError as observableThrowError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { TransactionsReference } from './reference-data.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class TransactionsService {
   status: string;
@@ -21,49 +21,56 @@ export class TransactionsService {
   getUserTransactions(userId: string, range = null): Observable<any> {
     let params = new HttpParams();
     if (range) {
-      params = params.append("from", range.from);
-      params = params.append("to", range.to);
+      params = params.append('from', range.from);
+      params = params.append('to', range.to);
     } else {
       params = null;
     }
 
     // const url = `http://127.0.0.1:8000/api/getmerchanttransactions/${userId}`;
     const url = `${environment.getTransactionsListUrl}${userId}`;
-    return this.http.get(url, { params: params }).pipe(
+    return this.http.get(url, { params }).pipe(
       map((transaction: any) => {
         const transactions = transaction.data.map((values) => {
+          console.log('[values.status]', values.status);
           if (typeof values.total_price === undefined) {
             values.total_price = values.price;
           }
 
-          if (values.status) values.status = parseInt(values.status);
-          if (values.status === 0) {
-            values.state = "Cancelled";
-            values.status = "Cancelled";
-          } else if (values.status === 1) {
-            values.state = "Pending";
-            values.status = "Pending";
-          } else if (values.status === 2) {
-            values.state = "Processing";
-            values.status = "Processing";
-          } else if (values.status === 3) {
-            values.state = "Completed";
-            values.status = "Completed";
-          } else if (values.status === 4) {
-            values.state = "Error";
-            values.status = "Error";
-          } else if (values.status === 5) {
-            values.state = "Re-Processing";
-            values.status = "Re-Processing";
-          } else if (values.status === 6) {
-            values.state = "Network Error";
-            values.status = "Network Error";
+          if (values.status) {
+            values.status = parseInt(values.status, 10);
+            if (values.status === 10) {
+              values.state = 'Refunded';
+              values.status = 'Refunded';
+            } else if (values.status === 0) {
+              values.state = 'Cancelled';
+              values.status = 'Cancelled';
+            } else if (values.status === 1) {
+              values.state = 'Pending';
+              values.status = 'Pending';
+            } else if (values.status === 2) {
+              values.state = 'Processing';
+              values.status = 'Processing';
+            } else if (values.status === 3) {
+              values.state = 'Completed';
+              values.status = 'Completed';
+            } else if (values.status === 4) {
+              values.state = 'Error';
+              values.status = 'Error';
+            } else if (values.status === 5) {
+              values.state = 'Re-Processing';
+              values.status = 'Re-Processing';
+            } else if (values.status === 6) {
+              values.state = 'Network Error';
+              values.status = 'Network Error';
+            }
           }
+
           return values;
         });
 
         const filteredTransactions = transactions.filter(
-          (transaction) =>
+          (transaction: any) =>
             transaction.status !== 200 &&
             transaction.status !== 8 &&
             transaction.satus !== 7
@@ -77,7 +84,7 @@ export class TransactionsService {
         return formattedTransactions;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -92,19 +99,19 @@ export class TransactionsService {
     let params = new HttpParams();
     const { object, status, dateFrom, dateTo, country, currency, operator } = data;
     // if(from & to) {
-    params = params.append("dateFrom", dateFrom);
-    params = params.append("dateTo", dateTo);
+    params = params.append('dateFrom', dateFrom);
+    params = params.append('dateTo', dateTo);
 
     // }
 
-    params = params.append("country", country);
-    params = params.append("currency", currency);
-    params = params.append("operator", operator);
-    params = params.append("status", status);
-    params = params.append("object", object);
+    params = params.append('country', country);
+    params = params.append('currency', currency);
+    params = params.append('operator', operator);
+    params = params.append('status', status);
+    params = params.append('object', object);
 
     const headers = new HttpHeaders({
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${credentials}`,
     });
 
@@ -118,24 +125,33 @@ export class TransactionsService {
           }
 
           if (values.status) values.status = parseInt(values.status);
-          if (values.status === 0) {
-            values.state = "Cancelled";
-            values.status = "Cancelled";
-          } else if (values.status === 1) {
-            values.state = "Pending";
-            values.status = "Pending";
-          } else if (values.status === 2) {
-            values.state = "Processing";
-            values.status = "Processing";
-          } else if (values.status === 3) {
-            values.state = "Completed";
-            values.status = "Completed";
-          } else if (values.status === 4) {
-            values.state = "Error";
-            values.status = "Error";
-          } else if (values.status === 5) {
-            values.state = "Re-Processing";
-            values.status = "Re-Processing";
+          if (values.status) {
+            values.status = parseInt(values.status, 10);
+            if (values.status === 10) {
+              values.state = 'Refunded';
+              values.status = 'Refunded';
+            } else if (values.status === 0) {
+              values.state = 'Cancelled';
+              values.status = 'Cancelled';
+            } else if (values.status === 1) {
+              values.state = 'Pending';
+              values.status = 'Pending';
+            } else if (values.status === 2) {
+              values.state = 'Processing';
+              values.status = 'Processing';
+            } else if (values.status === 3) {
+              values.state = 'Completed';
+              values.status = 'Completed';
+            } else if (values.status === 4) {
+              values.state = 'Error';
+              values.status = 'Error';
+            } else if (values.status === 5) {
+              values.state = 'Re-Processing';
+              values.status = 'Re-Processing';
+            } else if (values.status === 6) {
+              values.state = 'Network Error';
+              values.status = 'Network Error';
+            }
           }
           return values;
         });
@@ -154,7 +170,7 @@ export class TransactionsService {
         return formattedTransactions;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -178,7 +194,7 @@ export class TransactionsService {
     }
  
     const headers = new HttpHeaders({
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${credentials}`,
     });
 
@@ -188,7 +204,7 @@ export class TransactionsService {
         return data;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -202,25 +218,25 @@ export class TransactionsService {
         return data;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
   }
 
   processPayment(body): Observable<any> {
-    const url = "https://api.pals.africa/api/makecardpayment";
+    const url = 'https://api.pals.africa/api/makecardpayment';
     let params = new HttpParams();
     const amount = body.paymentDetails.amount.toString();
 
-    params = params.append("amount", amount);
+    params = params.append('amount', amount);
     // , { responseType: 'json', params: params}
     return this.http.post(url, body).pipe(
       map((response) => {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -233,7 +249,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -246,7 +262,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -255,7 +271,7 @@ export class TransactionsService {
   processBusinessPayout(data) {
     const url = `${environment.processPayoutUrl}`;
 
-    return this.http.post(url, data, { responseType: "json" }).pipe(
+    return this.http.post(url, data, { responseType: 'json' }).pipe(
       map((response: any) => {
         const releaseFundsData = response.data;
         // if (releaseFundsData) {
@@ -264,7 +280,7 @@ export class TransactionsService {
         return releaseFundsData;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -273,15 +289,15 @@ export class TransactionsService {
   initiateWithdrawal(data) {
     const url = `${environment.payStackReleaseUrl}${data.transactionID}`;
     let params = new HttpParams();
-    params = params.append("source", "balance");
-    params = params.append("reason", "Noworri Payment Release");
-    params = params.append("amount", data.amount);
-    params = params.append("recipient", data.recipient);
-    params = params.append("currency", data.currency);
-    params = params.append("user_id", data.user_id);
+    params = params.append('source', 'balance');
+    params = params.append('reason', 'Noworri Payment Release');
+    params = params.append('amount', data.amount);
+    params = params.append('recipient', data.recipient);
+    params = params.append('currency', data.currency);
+    params = params.append('user_id', data.user_id);
 
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response: any) => {
           const releaseFundsData = response.data;
@@ -291,7 +307,7 @@ export class TransactionsService {
           return releaseFundsData;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
@@ -300,20 +316,20 @@ export class TransactionsService {
   initiateRefundPaystack(data) {
     const url = `https://api.pals.africa/api/initiaterefund`;
     let params = new HttpParams();
-    params = params.append("transaction", data.transaction_ref);
-    params = params.append("customer_note", "Transaction cancelled");
-    params = params.append("amount", data.amount);
-    params = params.append("currency", data.currency);
+    params = params.append('transaction', data.transaction_ref);
+    params = params.append('customer_note', 'Transaction cancelled');
+    params = params.append('amount', data.amount);
+    params = params.append('currency', data.currency);
 
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response: any) => {
           const releaseFundsData = response.data;
           return releaseFundsData;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
@@ -322,16 +338,16 @@ export class TransactionsService {
   finalizeReleasePaystack(data) {
     const url = `https://api.pals.africa/api/paystackrelease/test`;
     let params = new HttpParams();
-    params = params.append("transfer_code", data.transfer_code);
+    params = params.append('transfer_code', data.transfer_code);
 
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response: any) => {
           return response.data;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
@@ -340,14 +356,14 @@ export class TransactionsService {
   cancelOrder(data) {
     const url = `${environment.cancelTransactionUrl}`;
     let params = new HttpParams();
-    params = params.append("id", data.id);
-    params = params.append("canceled_by", data.canceled_by);
+    params = params.append('id', data.id);
+    params = params.append('canceled_by', data.canceled_by);
     return this.http.get(url, { params }).pipe(
       map((response) => {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -360,7 +376,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -373,7 +389,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -382,17 +398,17 @@ export class TransactionsService {
   verifyReleaseCode(data) {
     const url = environment.verifyReleaseCodeUrl;
     let params = new HttpParams();
-    params = params.append("id", data.transaction_id);
-    params = params.append("release_code", data.release_code);
+    params = params.append('id', data.transaction_id);
+    params = params.append('release_code', data.release_code);
 
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
@@ -401,8 +417,8 @@ export class TransactionsService {
   updateDeliveryPhone(transaction_id, delivery_phone) {
     const url = environment.updateDeliveyUrl;
     let params = new HttpParams();
-    params = params.append("deliver", delivery_phone);
-    params = params.append("id", transaction_id);
+    params = params.append('deliver', delivery_phone);
+    params = params.append('id', transaction_id);
     const body = {
       deliver: delivery_phone,
       id: transaction_id,
@@ -413,7 +429,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -422,19 +438,19 @@ export class TransactionsService {
   payStackPayment(paymentData) {
     const url = environment.payStackCheckoutUrl;
     let params = new HttpParams();
-    params = params.append("email", paymentData.email);
-    params = params.append("amount", paymentData.amount);
-    params = params.append("currency", paymentData.currency);
-    params = params.append("callback_url", paymentData.callback_url);
+    params = params.append('email', paymentData.email);
+    params = params.append('amount', paymentData.amount);
+    params = params.append('currency', paymentData.currency);
+    params = params.append('callback_url', paymentData.callback_url);
 
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response: any) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
@@ -447,9 +463,9 @@ export class TransactionsService {
       transaction_key: transaction_key,
     };
     let params = new HttpParams();
-    params = params.append("payment_id", transactionData.payment_id);
-    params = params.append("transaction_key", transactionData.transaction_key);
-    return this.http.get(url, { responseType: "json", params: params }).pipe(
+    params = params.append('payment_id', transactionData.payment_id);
+    params = params.append('transaction_key', transactionData.transaction_key);
+    return this.http.get(url, { responseType: 'json', params: params }).pipe(
       map((response: any) => {
         if (response.data) {
           this.status = response.data.status;
@@ -462,20 +478,20 @@ export class TransactionsService {
   addNewAccount(accountDetails) {
     const url = `https://api.pals.africa/api/adduseraccounttest/${accountDetails.userId}`;
     let params = new HttpParams();
-    params = params.append("bank_name", accountDetails.bankName);
-    params = params.append("bank_code", accountDetails.bankCode);
-    params = params.append("name", accountDetails.holderName);
-    params = params.append("account_number", accountDetails.accountNo);
-    params = params.append("type", accountDetails.type);
+    params = params.append('bank_name', accountDetails.bankName);
+    params = params.append('bank_code', accountDetails.bankCode);
+    params = params.append('name', accountDetails.holderName);
+    params = params.append('account_number', accountDetails.accountNo);
+    params = params.append('type', accountDetails.type);
 
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error:", error.message);
+          console.error('Error:', error.message);
           return observableThrowError(error);
         })
       );
@@ -483,12 +499,12 @@ export class TransactionsService {
 
   deleteUserAccount(accountDetails) {
     const url = environment.deleteAccountUrl;
-    return this.http.post(url, accountDetails, { responseType: "json" }).pipe(
+    return this.http.post(url, accountDetails, { responseType: 'json' }).pipe(
       map((response) => {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error:", error.message);
+        console.error('Error:', error.message);
         return observableThrowError(error);
       })
     );
@@ -501,7 +517,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error: ", error.message);
+        console.error('Error: ', error.message);
         return observableThrowError(error);
       })
     );
@@ -511,30 +527,30 @@ export class TransactionsService {
     const url = environment.getModulesDataUrl;
     // const url = 'http://127.0.0.1:8000/api/getmodulesdata';
     const headers = new HttpHeaders({
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${credentials}`,
     });
     return this.http.get(url, { headers: headers }).pipe(
       map((response) => {
-        return response["data"];
+        return response['data'];
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error: ", error.message);
+        console.error('Error: ', error.message);
         return observableThrowError(error);
       })
     );
   }
 
   getBanks(country) {
-    const url = "https://api.paystack.co/bank";
+    const url = 'https://api.paystack.co/bank';
     let params = new HttpParams();
-    params = params.append("country", country);
-    return this.http.get(url, { responseType: "json", params: params }).pipe(
+    params = params.append('country', country);
+    return this.http.get(url, { responseType: 'json', params: params }).pipe(
       map((response: any) => {
         return response.data;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error: ", error.message);
+        console.error('Error: ', error.message);
         return observableThrowError(error);
       })
     );
@@ -546,14 +562,14 @@ export class TransactionsService {
     // let params = new HttpParams();
     // params = params.append('file', files);
     const formData: FormData = new FormData();
-    formData.append("fichier", file);
+    formData.append('fichier', file);
 
-    return this.http.post(url, formData, { responseType: "json" }).pipe(
+    return this.http.post(url, formData, { responseType: 'json' }).pipe(
       map((response: any) => {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -562,30 +578,30 @@ export class TransactionsService {
   mapUploadedFiles(transaction_id, paths) {
     const url = `https://api.pals.africa/api/matchtransactionupload`;
     let params = new HttpParams();
-    params = params.append("path", paths);
-    params = params.append("transaction_id", transaction_id);
+    params = params.append('path', paths);
+    params = params.append('transaction_id', transaction_id);
 
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response: any) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
   }
 
   makeMomoPayment() {
-    const url = "https://api.pals.africa/api/paywithmomo";
+    const url = 'https://api.pals.africa/api/paywithmomo';
     return this.http.post(url, null).pipe(
       map((response) => {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -599,7 +615,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -608,20 +624,20 @@ export class TransactionsService {
   createRecipient(details, userId) {
     const url = `${environment.addAccountUrl}${userId}`;
     let params = new HttpParams();
-    params = params.append("type", details.type);
-    params = params.append("name", details.name);
-    params = params.append("description", details.description);
-    params = params.append("account_number", details.account_number);
-    params = params.append("bank_code", details.bank_code);
-    params = params.append("currency", details.currency);
+    params = params.append('type', details.type);
+    params = params.append('name', details.name);
+    params = params.append('description', details.description);
+    params = params.append('account_number', details.account_number);
+    params = params.append('bank_code', details.bank_code);
+    params = params.append('currency', details.currency);
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response: any) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
@@ -630,22 +646,22 @@ export class TransactionsService {
   updateRecipient(details, userId) {
     const url = `${environment.updateAccountUrl}${userId}`;
     let params = new HttpParams();
-    params = params.append("type", details.type);
-    params = params.append("name", details.name);
-    params = params.append("description", details.description);
-    params = params.append("account_number", details.account_number);
-    params = params.append("bank_code", details.bank_code);
-    params = params.append("currency", details.currency);
-    params = params.append("recipient_code", details.recipient_code);
+    params = params.append('type', details.type);
+    params = params.append('name', details.name);
+    params = params.append('description', details.description);
+    params = params.append('account_number', details.account_number);
+    params = params.append('bank_code', details.bank_code);
+    params = params.append('currency', details.currency);
+    params = params.append('recipient_code', details.recipient_code);
 
     return this.http
-      .post(url, null, { responseType: "json", params: params })
+      .post(url, null, { responseType: 'json', params: params })
       .pipe(
         map((response: any) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
@@ -655,17 +671,17 @@ export class TransactionsService {
     const url = environment.createTransferUrl;
     // const url = 'http://127.0.0.1:8000/api/createtransfer';
     const headers = new HttpHeaders({
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${credentials}`,
     });
     return this.http
-      .post(url, transactionDetails, { headers, responseType: "json" })
+      .post(url, transactionDetails, { headers, responseType: 'json' })
       .pipe(
         map((response) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
@@ -678,7 +694,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -686,13 +702,13 @@ export class TransactionsService {
 
   getUserTransactionSummary(user_id, credentials, range = null) {
     const headers = new HttpHeaders({
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${credentials}`,
     });
     let params = new HttpParams();
     if (range) {
-      params = params.append("from", range.from);
-      params = params.append("to", range.to);
+      params = params.append('from', range.from);
+      params = params.append('to', range.to);
     } else {
       params = null;
     }
@@ -703,7 +719,7 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
@@ -716,32 +732,32 @@ export class TransactionsService {
         return response;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error", error.message);
+        console.error('Error', error.message);
         return observableThrowError(error);
       })
     );
   }
 
   setStepTransaction(stepDetails) {
-    const url = "https://api.pals.africa/api/createsteptrans";
+    const url = 'https://api.pals.africa/api/createsteptrans';
     let params = new HttpParams();
     if (!stepDetails.accepted) {
       stepDetails.accepted = 0;
     }
 
-    params = params.append("transaction_id", stepDetails.transaction_id);
-    params = params.append("step", stepDetails.step);
-    params = params.append("description", stepDetails.description);
-    params = params.append("accepted", stepDetails.accepted);
+    params = params.append('transaction_id', stepDetails.transaction_id);
+    params = params.append('step', stepDetails.step);
+    params = params.append('description', stepDetails.description);
+    params = params.append('accepted', stepDetails.accepted);
 
     return this.http
-      .put(url, stepDetails, { responseType: "json", params: params })
+      .put(url, stepDetails, { responseType: 'json', params: params })
       .pipe(
         map((response) => {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          console.error("Error", error.message);
+          console.error('Error', error.message);
           return observableThrowError(error);
         })
       );
