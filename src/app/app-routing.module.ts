@@ -1,12 +1,12 @@
 import { ApiComponent } from './pages/dashboards/api/api.component';
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { CustomLayoutComponent } from "./custom-layout/custom-layout.component";
-import { VexRoutes } from "../@vex/interfaces/vex-route.interface";
-import { QuicklinkModule, QuicklinkStrategy } from "ngx-quicklink";
-import { HomeComponent } from "./pages/dashboards/home/home.component";
-import { TopUpTransactionComponent } from "./pages/dashboards/top-up-transaction/top-up-transaction.component";
-import { ProfilComponent } from "./pages/dashboards/profil/profil.component";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CustomLayoutComponent } from './custom-layout/custom-layout.component';
+import { VexRoutes } from '../@vex/interfaces/vex-route.interface';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
+import { HomeComponent } from './pages/dashboards/home/home.component';
+import { TopUpTransactionComponent } from './pages/dashboards/top-up-transaction/top-up-transaction.component';
+import { ProfilComponent } from './pages/dashboards/profil/profil.component';
 import { TransactionsComponent } from './pages/dashboards/transactions/transactions.component';
 import { ReportsComponent } from './pages/dashboards/reports/reports.component';
 import { DashboardAnalyticsComponent } from './pages/dashboards/dashboard-analytics/dashboard-analytics.component';
@@ -15,148 +15,148 @@ import { BulkDisbursementComponent } from './pages/dashboards/disburse-cash/bulk
 
 const routes: VexRoutes = [
   {
-    path: "",
-    redirectTo: "auth/login",
-    pathMatch: "full",
+    path: '',
+    redirectTo: 'auth/login',
+    pathMatch: 'full',
   },
 
   {
-    path: "auth",
+    path: 'auth',
     children: [
       {
-        path: "login",
+        path: 'login',
         loadChildren: () =>
-          import("./pages/pages/auth/login/login.module").then(
+          import('./pages/pages/auth/login/login.module').then(
             (m) => m.LoginModule
           ),
       },
       {
-        path: "register",
+        path: 'register',
         loadChildren: () =>
-          import("./pages/pages/auth/register/register.module").then(
+          import('./pages/pages/auth/register/register.module').then(
             (m) => m.RegisterModule
           ),
       },
       {
-        path: "forgot-password",
+        path: 'forgot-password',
         loadChildren: () =>
           import(
-            "./pages/pages/auth/forgot-password/forgot-password.module"
+            './pages/pages/auth/forgot-password/forgot-password.module'
           ).then((m) => m.ForgotPasswordModule),
       },
     ],
   },
 
   {
-    path: "login",
+    path: 'login',
     loadChildren: () =>
-      import("./pages/pages/auth/login/login.module").then(
+      import('./pages/pages/auth/login/login.module').then(
         (m) => m.LoginModule
       ),
   },
   {
-    path: "register",
+    path: 'register',
     loadChildren: () =>
-      import("./pages/pages/auth/register/register.module").then(
+      import('./pages/pages/auth/register/register.module').then(
         (m) => m.RegisterModule
       ),
   },
   {
-    path: "forgot-password",
+    path: 'forgot-password',
     loadChildren: () =>
-      import("./pages/pages/auth/forgot-password/forgot-password.module").then(
+      import('./pages/pages/auth/forgot-password/forgot-password.module').then(
         (m) => m.ForgotPasswordModule
       ),
   },
   {
-    path: "coming-soon",
+    path: 'coming-soon',
     loadChildren: () =>
-      import("./pages/pages/coming-soon/coming-soon.module").then(
+      import('./pages/pages/coming-soon/coming-soon.module').then(
         (m) => m.ComingSoonModule
       ),
   },
 
   {
-    path: "dashboards",
+    path: 'dashboards',
     component: CustomLayoutComponent,
     children: [
       {
-        path: "analytics",
+        path: 'analytics',
         component: DashboardAnalyticsComponent,
       },
       {
-        path: "home",
+        path: 'home',
         component: HomeComponent,
       },
       {
-        path: "balance",
+        path: 'balance',
         component: TopUpTransactionComponent,
       },
       {
-        path: "cash-out-transactions",
+        path: 'cash-out-transactions',
         component: ReportsComponent,
       },
       {
-        path: "cash-in-transactions",
+        path: 'cash-in-transactions',
         component: CollectionsReportComponent,
       },
       {
-        path: "profile",
+        path: 'profile',
         component: ProfilComponent,
       },
       {
-        path:'bulk-disbursement',
-        component:BulkDisbursementComponent
+        path: 'bulk-disbursement',
+        component: BulkDisbursementComponent
       },
       {
-        path:'api',
-        component:ApiComponent
+        path: 'api',
+        component: ApiComponent
       },
       {
-        path: "",
+        path: '',
         loadChildren: () =>
           import(
-            "./pages/dashboards/dashboard-analytics/dashboard-analytics.module"
+            './pages/dashboards/dashboard-analytics/dashboard-analytics.module'
           ).then((m) => m.DashboardAnalyticsModule),
       },
       {
-        path: "apps",
+        path: 'apps',
         children: [
           {
-            path: "chat",
+            path: 'chat',
             loadChildren: () =>
-              import("./pages/apps/chat/chat.module").then((m) => m.ChatModule),
+              import('./pages/apps/chat/chat.module').then((m) => m.ChatModule),
             data: {
               toolbarShadowEnabled: true,
             },
           },
           {
-            path: "mail",
+            path: 'mail',
             loadChildren: () =>
-              import("./pages/apps/mail/mail.module").then((m) => m.MailModule),
+              import('./pages/apps/mail/mail.module').then((m) => m.MailModule),
             data: {
               toolbarShadowEnabled: true,
               scrollDisabled: true,
             },
           },
           {
-            path: "social",
+            path: 'social',
             loadChildren: () =>
-              import("./pages/apps/social/social.module").then(
+              import('./pages/apps/social/social.module').then(
                 (m) => m.SocialModule
               ),
           },
           {
-            path: "contacts",
+            path: 'contacts',
             loadChildren: () =>
-              import("./pages/apps/contacts/contacts.module").then(
+              import('./pages/apps/contacts/contacts.module').then(
                 (m) => m.ContactsModule
               ),
           },
           {
-            path: "calendar",
+            path: 'calendar',
             loadChildren: () =>
-              import("./pages/apps/calendar/calendar.module").then(
+              import('./pages/apps/calendar/calendar.module').then(
                 (m) => m.CalendarModule
               ),
             data: {
@@ -164,104 +164,104 @@ const routes: VexRoutes = [
             },
           },
           {
-            path: "aio-table",
+            path: 'aio-table',
             loadChildren: () =>
-              import("./pages/apps/aio-table/aio-table.module").then(
+              import('./pages/apps/aio-table/aio-table.module').then(
                 (m) => m.AioTableModule
               ),
           },
           {
-            path: "help-center",
+            path: 'help-center',
             loadChildren: () =>
-              import("./pages/apps/help-center/help-center.module").then(
+              import('./pages/apps/help-center/help-center.module').then(
                 (m) => m.HelpCenterModule
               ),
           },
           {
-            path: "scrumboard",
+            path: 'scrumboard',
             loadChildren: () =>
-              import("./pages/apps/scrumboard/scrumboard.module").then(
+              import('./pages/apps/scrumboard/scrumboard.module').then(
                 (m) => m.ScrumboardModule
               ),
           },
           {
-            path: "editor",
+            path: 'editor',
             loadChildren: () =>
-              import("./pages/apps/editor/editor.module").then(
+              import('./pages/apps/editor/editor.module').then(
                 (m) => m.EditorModule
               ),
           },
         ],
       },
       {
-        path: "pages",
+        path: 'pages',
         children: [
           {
-            path: "pricing",
+            path: 'pricing',
             loadChildren: () =>
-              import("./pages/pages/pricing/pricing.module").then(
+              import('./pages/pages/pricing/pricing.module').then(
                 (m) => m.PricingModule
               ),
           },
           {
-            path: "faq",
+            path: 'faq',
             loadChildren: () =>
-              import("./pages/pages/faq/faq.module").then((m) => m.FaqModule),
+              import('./pages/pages/faq/faq.module').then((m) => m.FaqModule),
           },
           {
-            path: "guides",
+            path: 'guides',
             loadChildren: () =>
-              import("./pages/pages/guides/guides.module").then(
+              import('./pages/pages/guides/guides.module').then(
                 (m) => m.GuidesModule
               ),
           },
           {
-            path: "invoice",
+            path: 'invoice',
             loadChildren: () =>
-              import("./pages/pages/invoice/invoice.module").then(
+              import('./pages/pages/invoice/invoice.module').then(
                 (m) => m.InvoiceModule
               ),
           },
           {
-            path: "error-404",
+            path: 'error-404',
             loadChildren: () =>
-              import("./pages/pages/errors/error-404/error-404.module").then(
+              import('./pages/pages/errors/error-404/error-404.module').then(
                 (m) => m.Error404Module
               ),
           },
           {
-            path: "error-500",
+            path: 'error-500',
             loadChildren: () =>
-              import("./pages/pages/errors/error-500/error-500.module").then(
+              import('./pages/pages/errors/error-500/error-500.module').then(
                 (m) => m.Error500Module
               ),
           },
         ],
       },
       {
-        path: "ui",
+        path: 'ui',
         children: [
           {
-            path: "components",
+            path: 'components',
             loadChildren: () =>
-              import("./pages/ui/components/components.module").then(
+              import('./pages/ui/components/components.module').then(
                 (m) => m.ComponentsModule
               ),
           },
           {
-            path: "forms/form-elements",
+            path: 'forms/form-elements',
             loadChildren: () =>
               import(
-                "./pages/ui/forms/form-elements/form-elements.module"
+                './pages/ui/forms/form-elements/form-elements.module'
               ).then((m) => m.FormElementsModule),
             data: {
               containerEnabled: true,
             },
           },
           {
-            path: "forms/form-wizard",
+            path: 'forms/form-wizard',
             loadChildren: () =>
-              import("./pages/ui/forms/form-wizard/form-wizard.module").then(
+              import('./pages/ui/forms/form-wizard/form-wizard.module').then(
                 (m) => m.FormWizardModule
               ),
             data: {
@@ -269,32 +269,32 @@ const routes: VexRoutes = [
             },
           },
           {
-            path: "icons",
+            path: 'icons',
             loadChildren: () =>
-              import("./pages/ui/icons/icons.module").then(
+              import('./pages/ui/icons/icons.module').then(
                 (m) => m.IconsModule
               ),
           },
           {
-            path: "page-layouts",
+            path: 'page-layouts',
             loadChildren: () =>
-              import("./pages/ui/page-layouts/page-layouts.module").then(
+              import('./pages/ui/page-layouts/page-layouts.module').then(
                 (m) => m.PageLayoutsModule
               ),
           },
         ],
       },
       {
-        path: "documentation",
+        path: 'documentation',
         loadChildren: () =>
-          import("./pages/documentation/documentation.module").then(
+          import('./pages/documentation/documentation.module').then(
             (m) => m.DocumentationModule
           ),
       },
       {
-        path: "**",
+        path: '**',
         loadChildren: () =>
-          import("./pages/pages/errors/error-404/error-404.module").then(
+          import('./pages/pages/errors/error-404/error-404.module').then(
             (m) => m.Error404Module
           ),
       },
@@ -306,9 +306,9 @@ const routes: VexRoutes = [
   imports: [
     RouterModule.forRoot(routes, {
       preloadingStrategy: QuicklinkStrategy,
-      scrollPositionRestoration: "enabled",
-      relativeLinkResolution: "corrected",
-      anchorScrolling: "enabled",
+      scrollPositionRestoration: 'enabled',
+      relativeLinkResolution: 'corrected',
+      anchorScrolling: 'enabled',
     }),
   ],
   exports: [RouterModule, QuicklinkModule],

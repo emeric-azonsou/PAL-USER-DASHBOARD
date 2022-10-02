@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -8,16 +8,16 @@ import { takeUntil, take } from 'rxjs/operators';
 import { USER_SESSION_KEY, BUSINESS_DATA_KEY } from 'src/app/Models/constants';
 import { TransactionsService } from 'src/app/services/transactions.service';
 import { CustomerCreateUpdateComponent } from '../../apps/aio-table/customer-create-update/customer-create-update.component';
-import icMoreVert from "@iconify/icons-ic/twotone-more-vert";
-import icClose from "@iconify/icons-ic/twotone-close";
-import icPrint from "@iconify/icons-ic/twotone-print";
-import icDownload from "@iconify/icons-ic/twotone-cloud-download";
-import icDelete from "@iconify/icons-ic/twotone-delete";
-import icPhone from "@iconify/icons-ic/twotone-phone";
-import icPerson from "@iconify/icons-ic/twotone-person";
-import icMyLocation from "@iconify/icons-ic/twotone-my-location";
-import icLocationCity from "@iconify/icons-ic/twotone-location-city";
-import icEditLocation from "@iconify/icons-ic/twotone-edit-location";
+import icMoreVert from '@iconify/icons-ic/twotone-more-vert';
+import icClose from '@iconify/icons-ic/twotone-close';
+import icPrint from '@iconify/icons-ic/twotone-print';
+import icDownload from '@iconify/icons-ic/twotone-cloud-download';
+import icDelete from '@iconify/icons-ic/twotone-delete';
+import icPhone from '@iconify/icons-ic/twotone-phone';
+import icPerson from '@iconify/icons-ic/twotone-person';
+import icMyLocation from '@iconify/icons-ic/twotone-my-location';
+import icLocationCity from '@iconify/icons-ic/twotone-location-city';
+import icEditLocation from '@iconify/icons-ic/twotone-edit-location';
 import { BusinessService } from 'src/app/services/business.service';
 
 @Component({
@@ -25,34 +25,34 @@ import { BusinessService } from 'src/app/services/business.service';
   templateUrl: './recharge-account.component.html',
   styleUrls: ['./recharge-account.component.scss']
 })
-export class RechargeAccountComponent implements OnInit {
+export class RechargeAccountComponent implements OnInit, OnDestroy {
   countryData = {
-    BJ: { currency: "XOF", code: "+229" },
-    CI: { currency: "XOF", code: "+225" },
-    GH: { currency: "GHS", code: "+233" },
-    TG: { currency: "XOF", code: "+227" },
-    SN: { currency: "XOF", code: "+221" },
-    NG: { currency: "NGN", code: "+234" },
+    BJ: { currency: 'XOF', code: '+229' },
+    CI: { currency: 'XOF', code: '+225' },
+    GH: { currency: 'GHS', code: '+233' },
+    TG: { currency: 'XOF', code: '+227' },
+    SN: { currency: 'XOF', code: '+221' },
+    NG: { currency: 'NGN', code: '+234' },
   };
 
   icClose = icClose;
   topUpForm: FormGroup;
-  currency: string = "XOF";
-  dailingCode: string = "+229";
-  module_id: any = 102;
+  currency = 'XOF';
+  dailingCode = '+229';
+  module_id = 102;
   data: any;
   userData: any;
   moduleData: Object[];
   userBusinessData: any;
   isProcessing: boolean;
-  unsubscribe$= new Subject();
+  unsubscribe$ = new Subject();
   credentials: string;
   hasError: boolean;
   errorMessage: string;
   validationMessages = {
     amount: {
       pattern: 'Only digits allowed',
-      required: "Amount This Field  is required.",
+      required: 'Amount This Field  is required.',
     }
   };
   constructor(
@@ -73,9 +73,9 @@ export class RechargeAccountComponent implements OnInit {
 
   ngOnInit() {
     this.topUpForm = this.fb.group({
-      country: ["BJ", Validators.required],
-      amount: ["", [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      operator: ["mtn", Validators.required],
+      country: ['BJ', Validators.required],
+      amount: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      operator: ['mtn', Validators.required],
     });
 
     this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
@@ -88,7 +88,7 @@ export class RechargeAccountComponent implements OnInit {
   }
 
   rechargeAccount() {
-    this.isProcessing = true
+    this.isProcessing = true;
     this.data = {
       ...this.topUpForm.value,
       currency: this.currency,
@@ -138,17 +138,17 @@ export class RechargeAccountComponent implements OnInit {
     this.currency = this.countryData[option.value].currency;
     const selectedModule = this.moduleData.find((data) => {
       return (
-        data["country"] === option.value && data["currency"] === this.currency
+        data['country'] === option.value && data['currency'] === this.currency
       );
     });
-    this.module_id = selectedModule["id"];
+    this.module_id = selectedModule['id'];
   }
 
   createCustomer() {
     const customer = this.topUpForm.value;
 
     if (!customer.imageSrc) {
-      customer.imageSrc = "assets/img/avatars/1.jpg";
+      customer.imageSrc = 'assets/img/avatars/1.jpg';
     }
 
     this.dialogRef.close(customer);
