@@ -46,6 +46,8 @@ export const environment = {
   getClientDetailsUrl: `http://127.0.0.1:8000/api/getmomoclientdata`,
   getBulkClientDetailsUrl: `http://127.0.0.1:8000/api/getbulkmomoclientdata`,
 
+  getOperatorsDataUrl: 'http://127.0.0.1:8000/api/getoperatorsdata',
+
 };
 /*
  * For easier debugging in development mode, you can import the following file
