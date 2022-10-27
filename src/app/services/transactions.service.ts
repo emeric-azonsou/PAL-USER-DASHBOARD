@@ -530,9 +530,26 @@ export class TransactionsService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${credentials}`,
     });
-    return this.http.get(url, { headers: headers }).pipe(
+    return this.http.get(url, { headers }).pipe(
       map((response) => {
         return response['data'];
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error: ', error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
+  getOperatorDailingPrefixes(credentials) {
+    const url = environment.getOperatorsDataUrl;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${credentials}`,
+    });
+    return this.http.get(url, { responseType: 'json', headers }).pipe(
+      map((response: any) => {
+        return response;
       }),
       catchError((error: HttpErrorResponse) => {
         console.error('Error: ', error.message);

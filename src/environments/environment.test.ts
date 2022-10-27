@@ -46,6 +46,8 @@ export const environment = {
     getClientDetailsUrl: `https://api-test.pals.africa/api/getmomoclientdata`,
     getBulkClientDetailsUrl: `https://api-test.pals.africa/api/getbulkmomoclientdata`,
 
+    getOperatorsDataUrl: 'https://api-test.pals.africa/api/getoperatorsdata',
+
   };
   /*
    * For easier debugging in development mode, you can import the following file

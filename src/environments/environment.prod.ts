@@ -41,4 +41,6 @@ export const environment = {
   getClientDetailsUrl: `https://api.pals.africa/api/getmomoclientdata`,
   getBulkClientDetailsUrl: `https://api.pals.africa/api/getbulkmomoclientdata`,
 
+  getOperatorsDataUrl: 'https://api.pals.africa/api/getoperatorsdata',
+
 };

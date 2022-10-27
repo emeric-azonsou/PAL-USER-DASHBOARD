@@ -57,7 +57,7 @@
           <mat-error>
             <span
               *ngFor="
-                let error of transferForm.get('phone_no').errors | keyvalue
+                let error of transferForm?.get('phone_no').errors | keyvalue
               "
             >
               {{ validationMessages.phone_no[error.key] }}
