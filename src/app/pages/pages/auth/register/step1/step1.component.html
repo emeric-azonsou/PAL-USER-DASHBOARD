@@ -30,7 +30,7 @@
 
         <mat-form-field fxFlex="grow">
           <mat-label>Phone number </mat-label>
-          <input formControlName="phoneNumber" matInput required />
+          <input formControlName="phoneNumber" matInput required maxlength="15"/>
           <span matPrefix>
             {{ prefixCountryCode }}
             <!-- <mat-select formControlName="prefixCountryCode"  [formControl]="prefixCountryCode" required>

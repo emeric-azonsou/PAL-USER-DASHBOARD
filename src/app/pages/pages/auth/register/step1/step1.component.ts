@@ -1,21 +1,27 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import icVisibility from '@iconify/icons-ic/twotone-visibility';
 import icVisibilityOff from '@iconify/icons-ic/twotone-visibility-off';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MailComposeComponent } from '../../../../apps/mail/components/mail-compose/mail-compose.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthserviceService } from 'src/app/services/authservice.service';
-import { COUNTRIES, GeoLocationService } from 'src/app/services/geo-location.service';
+import {
+  COUNTRIES,
+  GeoLocationService,
+} from 'src/app/services/geo-location.service';
 import { take } from 'rxjs/operators';
 import { COUNTRY_CODES } from 'src/app/Models/constants';
-
-
 
 @Component({
   selector: 'vex-step1',
   templateUrl: './step1.component.html',
-  styleUrls: ['./step1.component.scss']
+  styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit {
   countryCodes = COUNTRY_CODES;
@@ -26,7 +32,7 @@ export class Step1Component implements OnInit {
   visible = false;
   step1data: any;
   processedPhoneNo: any;
-  prefixCountryCode = '+233';
+  prefixCountryCode = '+229';
   isCorrectPhoneEntry: boolean;
   locationData: any;
   countryData: {
@@ -59,27 +65,32 @@ export class Step1Component implements OnInit {
     },
   };
 
-
-  constructor(private router: Router,
-              private fb: FormBuilder,
-              private cd: ChangeDetectorRef,
-              private dialog: MatDialog,
-              private geoLocationService: GeoLocationService,
-              private authService: AuthserviceService,
-  ) { }
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private geoLocationService: GeoLocationService,
+    private authService: AuthserviceService
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
-      phoneNumber: ['', [Validators.required, Validators.pattern(this.phoneNumberPattern)] ],
+      phoneNumber: [
+        '',
+        [Validators.required, Validators.pattern(this.phoneNumberPattern)],
+      ],
       // companyName: ['', Validators.required],
-      country: ['', Validators.required],
+      country: ['BJ', Validators.required],
       // description: ['', Validators.required],
       terms: ['', Validators.required],
       // prefixCountryCode: ['']
     });
     this.getLocationData();
-    this.form.get('country').valueChanges.subscribe(value => {
-      this.prefixCountryCode = this.countries.find(country => country.code === value).dial_code;
+    this.form.get('country').valueChanges.subscribe((value) => {
+      this.prefixCountryCode = this.countries.find(
+        (country) => country.code === value
+      ).dial_code;
     });
   }
 
@@ -88,19 +99,18 @@ export class Step1Component implements OnInit {
       this.geoLocationService.getLocation().subscribe((data) => {
         resolve((this.locationData = data));
       });
-    })
-      .then(() => {
-        console.log('[location]', this.locationData);
-          this.form.get('country').setValue(this.locationData.country);
-          this.prefixCountryCode = this.locationData.country_calling_code;
-      });
-
+    }).then(() => {
+      if (this.locationData && this.locationData.country) {
+        this.form.get('country').setValue(this.locationData.country);
+        this.prefixCountryCode = this.locationData.country_calling_code;
+      }
+    });
   }
 
   processPhoneNumber() {
-    let rawPhoneNumber = this.form.value['phoneNumber'];
+    const rawPhoneNumber = this.form.value['phoneNumber'];
 
-    let phoneNumberWithoutSpace = rawPhoneNumber.split(/\s/).join('');
+    const phoneNumberWithoutSpace = rawPhoneNumber.split(/\s/).join('');
     if (phoneNumberWithoutSpace.match(this.phoneNumberPattern)) {
       if (phoneNumberWithoutSpace.charAt(0) === '0') {
         this.isCorrectPhoneEntry = true;
@@ -108,14 +118,14 @@ export class Step1Component implements OnInit {
           this.prefixCountryCode + phoneNumberWithoutSpace.substr(1);
       } else {
         this.isCorrectPhoneEntry = true;
-        this.processedPhoneNo = this.prefixCountryCode + phoneNumberWithoutSpace;
+        this.processedPhoneNo =
+          this.prefixCountryCode + phoneNumberWithoutSpace;
       }
     } else {
       this.isCorrectPhoneEntry = false;
     }
   }
 
- 
   openCompose() {
     this.dialog.open(MailComposeComponent, {
       width: '100%',
@@ -124,18 +134,16 @@ export class Step1Component implements OnInit {
   }
 
   send() {
-    this.processPhoneNumber()
+    this.processPhoneNumber();
     //  le flow de l'auth en deux en deux etape n'est plus valide Yoan. Le signin est seulement  en 1 step//
-  
-        const userProfilInformation = {
-          mobile_phone: this.processedPhoneNo,
-          country_code: this.form.value['country'],
-          dailing_code : this.prefixCountryCode
-      };
-       this.saveUserData(userProfilInformation);
-    }
-  
 
+    const userProfilInformation = {
+      mobile_phone: this.processedPhoneNo,
+      country_code: this.form.value['country'],
+      dailing_code: this.prefixCountryCode,
+    };
+    this.saveUserData(userProfilInformation);
+  }
 
   saveUserData(userProfilInformation) {
     sessionStorage.setItem(
@@ -143,6 +151,5 @@ export class Step1Component implements OnInit {
       JSON.stringify(userProfilInformation)
     );
     this.router.navigate(['/auth/register/step2']);
-}
-
+  }
 }
