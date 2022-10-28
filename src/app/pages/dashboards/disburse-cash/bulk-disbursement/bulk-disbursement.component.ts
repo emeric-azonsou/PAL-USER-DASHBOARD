@@ -300,13 +300,13 @@ export class BulkDisbursementComponent
     this.form = this.fb.group({
       country: ['', Validators.required],
       currency: [''],
-      purpose: [''],
+      object: [''],
     });
 
     this.uploadFileForm = this.fb.group({
       country: ['', Validators.required],
       currency: [''],
-      purpose: [''],
+      object: [''],
     });
 
     // this.data$.pipe(
@@ -326,8 +326,8 @@ export class BulkDisbursementComponent
       this.form.get('country').setValue(value);
       this.setCurrency(value);
     });
-    this.uploadFileForm.get('purpose').valueChanges.subscribe((value) => {
-      this.form.get('purpose').setValue(value);
+    this.uploadFileForm.get('object').valueChanges.subscribe((value) => {
+      this.form.get('object').setValue(value);
     });
   }
 
@@ -335,7 +335,7 @@ export class BulkDisbursementComponent
     this.form = this.fb.group({
       country: [''],
       currency: [''],
-      purpose: [''],
+      object: [''],
     });
   }
 
@@ -451,6 +451,10 @@ export class BulkDisbursementComponent
     } else if (this.form.value.country) {
       this.setCurrency(this.form.value.country);
     }
+
+    if (!this.form.value.object || this.form.value.object === '') {
+      this.form.get('object').setValue(this.uploadFileForm.value.object);
+    }
     this.isDisbursing = true;
     this.transactionService
       .createBulkTransfer(
@@ -528,7 +532,7 @@ export class BulkDisbursementComponent
   addDisbursement() {
     this.dialog
       .open(AddUpdateDisbursementModalComponent, {
-        data: { country: this.form.value.country },
+        data: { country: this.form.value.country, object: this.form.value.object || this.uploadFileForm.value.object },
       })
       .afterClosed()
       .subscribe((disbursement: any) => {
@@ -559,7 +563,9 @@ export class BulkDisbursementComponent
             phone_no: disbursement.phone,
             operator: disbursement.network,
             country: this.form.value.country,
+            object: this.uploadFileForm.value.object || this.form.value.object
           };
+
           this.updateDataSource();
           this.getClientData(transferData, this.disbursementData?.length);
         }
@@ -643,7 +649,7 @@ export class BulkDisbursementComponent
   updateDisbursement(customer: any) {
     this.dialog
       .open(AddUpdateDisbursementModalComponent, {
-        data: { customer: customer },
+        data: { customer, object: this.form.value.object || this.uploadFileForm.value.object },
       })
       .afterClosed()
       .subscribe((updatedDisbursement) => {

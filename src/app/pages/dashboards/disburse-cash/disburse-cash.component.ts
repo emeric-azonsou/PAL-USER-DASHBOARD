@@ -284,6 +284,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     // this.isDisbursing = true;
     this.transferData = {
       ...this.transferForm.value,
+      object: this.transferForm.value['object'],
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
