@@ -192,6 +192,7 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)],
       ],
       operator: [this.defaults?.network || 'mtn', Validators.required],
+      Object: [this.defaults.object || '']
     });
 
     this.transferForm.get('phone_no').valueChanges.subscribe((value) => {
@@ -395,6 +396,7 @@ setOperatorDialingCodes() {
       name: this.defaults?.name,
       network: disbursement.operator,
       index: this.defaults?.index,
+      object: this.defaults.object
     };
 
     this.dialogRef.close(filteredDisbursement);
@@ -408,6 +410,7 @@ setOperatorDialingCodes() {
       name: this.defaults?.name,
       network: disbursement.operator,
       index: this.defaults?.index,
+      object: this.defaults.object
     };
 
     this.dialogRef.close(filteredDisbursement);
