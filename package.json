@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points --tsconfig './tsconfig.app.json'"
+    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points --tsconfig './tsconfig.app.json'",
+    "i18n:extract": "ng xi18n --output-path src/locale"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "@angular/core": "~11.2.5",
     "@angular/flex-layout": "11.0.0-beta.33",
     "@angular/forms": "~11.2.5",
+    "@angular/localize": "^11.2.14",
     "@angular/material": "~11.2.4",
     "@angular/platform-browser": "~11.2.5",
     "@angular/platform-browser-dynamic": "~11.2.5",

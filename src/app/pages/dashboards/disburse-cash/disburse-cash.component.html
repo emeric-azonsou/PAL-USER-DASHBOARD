@@ -18,10 +18,10 @@
     <div
       class="grid respon xs:grid-flow-col xs:grid-cols-1 xs:grid-rows-6 md:grid-cols-2 md:grid-rows-3 gap-4"
     >
-      <div  class="country" >
+      <div class="country">
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
-            <label for="">Select Country You're disbursing to</label>
+            <label for="">Select Country</label>
           </div>
         </div>
         <mat-form-field appearance="fill">
@@ -64,8 +64,14 @@
             </span>
           </mat-error>
         </mat-form-field>
+        <p class="net"><span class="dot">.</span>MTN</p>
       </div>
-      <div class="amount" >
+      
+      <div class="">
+        <div class="grid grid-flow-col gap-4 grid-cols grid-rows"></div>
+      </div>
+
+      <div class="network">
         <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
           <div class="label">
             <label for="" class="label">How much are you disbursing?</label>
@@ -83,30 +89,6 @@
               {{ validationMessages.amount[error.key] }}
             </span>
           </mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="network">
-        <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
-          <div class="label">
-            <label for="">Select the Mobile network</label>
-          </div>
-        </div>
-        <mat-form-field appearance="fill">
-          <mat-select
-            (selectionChange)="setSelectedModule($event)"
-            formControlName="operator"
-          >
-            <mat-option
-              *ngFor="
-                let provider of getNetworkProviders(
-                  transferForm.get('country').value
-                )
-              "
-              [value]="provider.value"
-              >{{ provider.name }}</mat-option
-            >
-          </mat-select>
         </mat-form-field>
       </div>
       <div class="mobile-number2">
@@ -143,19 +125,19 @@
           </span>
         </mat-error>
       </div>
-
-      <div class="purpose">
-        <div class="grid grid-flow-col gap-4 grid-cols grid-rows">
-          <div class="label">
-            <label for="" class="label">Purpose of disbursement</label>
-          </div>
-        </div>
-        <mat-form-field appearance="fill">
-          <input matInput maxlength="15" formControlName="object" #input />
-        </mat-form-field>
-      </div>
+      
     </div>
-    
+
+    <div class="grid amount grid-flow-row-dense grid-cols grid-rows ...">
+      <div class="col-span">
+        <div class="label">
+          <label for="" class="label">Purpose of disbursement</label>
+        </div>
+      </div>
+      <mat-form-field appearance="fill">
+        <input matInput maxlength="15" formControlName="object" #input />
+      </mat-form-field>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end" class="button">
     <!-- <mat-error  align="start" *ngIf="hasError || transferForm.invalid" class="fiel-requierd">
