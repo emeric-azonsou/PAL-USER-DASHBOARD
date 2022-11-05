@@ -1,100 +1,103 @@
-import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   AbstractControl,
-} from "@angular/forms";
+  ValidatorFn,
+} from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialog,
-} from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { Router } from "@angular/router";
-import { Subject } from "rxjs";
-import { take } from "rxjs/operators";
+} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import {
   USER_SESSION_KEY,
   SUMMARY_DATA_KEY,
   BUSINESS_DATA_KEY,
-} from "src/app/Models/constants";
+} from 'src/app/Models/constants';
 import {
   User,
   MerchantData,
   SummaryData,
-} from "src/app/Models/models.interface";
-import { SharedDataService } from "src/app/services/shared-data.service";
-import { TransactionsService } from "src/app/services/transactions.service";
-import { ConfirmTransfersComponent } from "../../../confirm-transfers/confirm-transfers.component";
-import { DisburseCashComponent } from "../../disburse-cash.component";
+} from 'src/app/Models/models.interface';
+import { SharedDataService } from 'src/app/services/shared-data.service';
+import { TransactionsService } from 'src/app/services/transactions.service';
+import { ConfirmTransfersComponent } from '../../../confirm-transfers/confirm-transfers.component';
+import { DisburseCashComponent } from '../../disburse-cash.component';
 
-import icClose from "@iconify/icons-ic/twotone-close";
+import icClose from '@iconify/icons-ic/twotone-close';
 
 @Component({
-  selector: "vex-add-update-disbursement-modal",
-  templateUrl: "./add-update-disbursement-modal.component.html",
-  styleUrls: ["./add-update-disbursement-modal.component.scss"],
+  selector: 'vex-add-update-disbursement-modal',
+  templateUrl: './add-update-disbursement-modal.component.html',
+  styleUrls: ['./add-update-disbursement-modal.component.scss'],
 })
 export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
-  mode: "create" | "update" = "create";
+  mode: 'create' | 'update' = 'create';
   operators = [
-    { name: "MTN", value: "mtn" },
-    { name: "VODAFONE", value: "vodafone" },
-    { name: "AIRTEL-TIGO", value: "airtel-tigo" },
+    { name: 'MTN', value: 'mtn' },
+    { name: 'MOOV', value: 'moov'},
+    { name: 'VODAFONE', value: 'vodafone' },
+    { name: 'AIRTEL-TIGO', value: 'airtel-tigo' },
   ];
 
   countryData = {
     BJ: {
-      currency: "XOF",
-      code: "+229",
-      operators: [{ name: "MTN", value: "mtn" }],
+      currency: 'XOF',
+      code: '+229',
+      operators: [{ name: 'MTN', value: 'mtn' }, { name: 'MOOV', value: 'moov' }],
     },
     CI: {
-      currency: "XOF",
-      code: "+225",
+      currency: 'XOF',
+      code: '+225',
       operators: [
-        { name: "MTN", value: "mtn" },
-        { name: "ORANGE", value: "orange" },
+        { name: 'MTN', value: 'mtn' },
+        { name: 'ORANGE', value: 'orange' },
+        { name: 'MOOV', value: 'moov' }
       ],
     },
     GH: {
-      currency: "GHS",
-      code: "+233",
+      currency: 'GHS',
+      code: '+233',
       operators: [
-        { name: "MTN", value: "mtn" },
-        { name: "VODAFONE", value: "vodafone" },
-        { name: "AIRTEL-TIGO", value: "airtel-tigo" },
+        { name: 'MTN', value: 'mtn' },
+        { name: 'VODAFONE', value: 'vodafone' },
+        { name: 'AIRTEL-TIGO', value: 'airtel-tigo' },
       ],
     },
     TG: {
-      currency: "XOF",
-      code: "+227",
-      operators: [{ name: "MOOV", value: "moov" }],
+      currency: 'XOF',
+      code: '+227',
+      operators: [{ name: 'MOOV', value: 'moov' }],
     },
     SN: {
-      currency: "XOF",
-      code: "+221",
+      currency: 'XOF',
+      code: '+221',
       operators: [
-        { name: "MTN", value: "MTN" },
-        { name: "ORANGE", value: "orange" },
+        { name: 'MTN', value: 'MTN' },
+        { name: 'ORANGE', value: 'orange' },
       ],
     },
     NG: {
-      currency: "NGN",
-      code: "+234",
-      operators: [{ name: "MTN", value: "MTN" }],
+      currency: 'NGN',
+      code: '+234',
+      operators: [{ name: 'MTN', value: 'MTN' }],
     },
   };
 
   icClose = icClose;
   transferForm: FormGroup;
-  currency: string = "XOF";
-  dailingCode: string = "+229";
+  currency: string = 'XOF';
+  dailingCode: string = '+229';
   maxLength: number = 8;
   transferData: any;
   userData: User;
-  module_id: any = "102";
+  module_id: any = '102';
   moduleData: Object[];
   userBusinessData: MerchantData;
   isDisbursing: boolean;
@@ -108,24 +111,26 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
 
   validationMessages = {
     repeat_phone_no: {
-      pattern: "Only digits allowed starting with ",
-      required: "Receiver's Phone Field  is required.",
-      min: "Please provide a correct phone number",
+      pattern: 'Only digits allowed starting with ',
+      required: 'Receiver\'s Phone Field  is required.',
+      min: 'Please provide a correct phone number',
     },
     phone_no: {
-      pattern: "Only digits allowed starting with ",
-      required: "Receiver's Phone Field  is required.",
-      min: "Please provide a correct phone number",
+      pattern: 'Only digits allowed starting with ',
+      required: 'Receiver\'s Phone Field  is required.',
+      min: 'Please provide a correct phone number',
+      invalidPrefix: 'Invalid phone number prefix, Operator not found!',
     },
     amount: {
-      pattern: "Only decimal number allowed",
-      required: "Amount This Field  is required.",
+      pattern: 'Only decimal number allowed',
+      required: 'Amount This Field  is required.',
     },
   };
   merchantSummaryData: SummaryData;
-  placeHolder: string = "96040522";
+  placeHolder = '96040522';
   networkProviders: any[];
-  country: any;
+  @Input() country: any;
+  operatorPrefixData: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -147,13 +152,13 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initForm();
     const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
     this.userBusinessData = JSON.parse(businessData);
-    this.mode = this.defaults ? "update" : "create";
+    this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
+    this.mode = this.defaults?.customer ? 'update' : 'create';
+    this.setOperatorDialingCodes();
     this.initForm();
 
-    this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
     this.getModulesData(this.credentials);
   }
 
@@ -165,29 +170,75 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
   initForm() {
     this.transferForm = this.fb.group({
       phone_no: [
-        this.defaults?.phone || "",
+        this.defaults?.phone || '',
         [
           Validators.required,
           Validators.pattern(this.phoneNumberValidationPattern),
           Validators.min(8),
+          this.validatePrefixlidator
         ],
       ],
       repeat_phone_no: [
-        this.defaults?.phone || "",
+        this.defaults?.phone || '',
         [
           Validators.required,
           Validators.pattern(this.phoneNumberValidationPattern),
           Validators.min(8),
         ],
       ],
-      name: [this.defaults?.name || ""],
+      name: [this.defaults?.name || ''],
       amount: [
-        this.defaults?.amount || "",
+        this.defaults?.amount || '',
         [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)],
       ],
-      operator: [this.defaults?.network || "mtn", Validators.required],
+      operator: [this.defaults?.network || 'mtn', Validators.required],
+      Object: [this.defaults.object || '']
+    });
+
+    this.transferForm.get('phone_no').valueChanges.subscribe((value) => {
+      const prefixesData = this.operatorPrefixData.filter(
+        (data) => data.country === this.defaults.country
+      );
+      const isValidPrefix = prefixesData.some((data) =>
+        data.prefixes.includes(value.substring(0, 2))
+      );
+      if (isValidPrefix) {
+        const prefixData = prefixesData.find((data) =>
+          data.prefixes.includes(value.substring(0, 2))
+        );
+        const operator = prefixData?.operator;
+        this.transferForm.get('operator').patchValue(operator);
+      } else {
+        this.transferForm.get('phone_no').setErrors({ invalidPrefix: true });
+      }
+      this.transferForm.updateValueAndValidity();
     });
   }
+
+  validatePrefixlidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      const prefixesData = this.operatorPrefixData.filter(
+        (data) => data.country === this.defaults.country
+      );
+      prefixesData.forEach((prefixeData) => {
+        if (!prefixeData.prefixes.split(',').includes(control.value.substring(0, 2))) {
+          return { invalidPrefix: true };
+        }
+      });
+      return null;
+    };
+}
+
+setOperatorDialingCodes() {
+  this.transactionsService
+    .getOperatorDailingPrefixes(this.credentials)
+    .pipe(take(1))
+    .subscribe((response) => {
+      if (response && response?.status === true) {
+        this.operatorPrefixData = response.data;
+      }
+    });
+}
 
   getNetworkProviders(value) {
     return this.countryData[value].operators;
@@ -196,15 +247,15 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
   confirmTransfers() {
     this.dialog.open(ConfirmTransfersComponent);
     const fee = this.getPalFee(
-      this.transferForm.value["amount"],
-      this.transferForm.value["country"]
+      this.transferForm.value['amount'],
+      this.transferForm.value['country']
     );
-    const amount = parseFloat(this.transferForm.value["amount"]);
-    this.transferForm.get("amount").setValue(amount);
+    const amount = parseFloat(this.transferForm.value['amount']);
+    this.transferForm.get('amount').setValue(amount);
 
-    if (!this.transferForm.value["object"]) {
+    if (!this.transferForm.value['object']) {
       this.transferForm
-        .get("object")
+        .get('object')
         .setValue(this.userBusinessData?.business_legal_name);
     }
     // this.isDisbursing = true;
@@ -220,14 +271,14 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
   }
 
   openSnackbar(message) {
-    this.snackBar.open(message, "CLOSE", {
+    this.snackBar.open(message, 'CLOSE', {
       duration: 3000,
-      horizontalPosition: "right",
+      horizontalPosition: 'right',
     });
   }
 
   get maxTransactionAmount() {
-    return this.currency === "XOF" ? 560000 : 6190;
+    return this.currency === 'XOF' ? 560000 : 6190;
   }
 
   get hasExceededFeeTransfers(): boolean {
@@ -241,9 +292,9 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
     const charges = this.userBusinessData.charges;
     if (this.hasExceededFeeTransfers && charges === 0) {
       switch (country) {
-        case "GH":
+        case 'GH':
           return (amount * 0.5) / 100;
-        case "BJ":
+        case 'BJ':
           return (amount * 1) / 100;
         default:
           return 0;
@@ -268,7 +319,7 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
   }
 
   getMaxLength(country) {
-    if (country === "BJ") {
+    if (country === 'BJ') {
       return 8;
     } else {
       return 10;
@@ -280,29 +331,29 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
     this.currency = this.countryData[option.value].currency;
     this.dailingCode = this.countryData[option.value].code;
     this.maxLength = this.getMaxLength(option.value);
-    this.placeHolder = option.value === "BJ" ? "96040522" : "0544990518";
+    this.placeHolder = option.value === 'BJ' ? '96040522' : '0544990518';
     // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
 
-    if (option.value === "BJ") {
+    if (option.value === 'BJ') {
       this.networkProviders = this.networkProviders.filter(
-        (provider) => provider !== "vodafone" && provider !== "airtel-tigo"
+        (provider) => provider !== 'vodafone' && provider !== 'airtel-tigo'
       );
     }
-    if (option.value === "GH") {
+    if (option.value === 'GH') {
       this.module_id = 103;
-      this.transferForm.get("operator").setValue("mtn");
+      this.transferForm.get('operator').setValue('mtn');
     }
   }
 
   setSelectedModule(option) {
     const selectedModule = this.moduleData.find((data) => {
       return (
-        data["country"] === this.country &&
-        data["currency"] === this.currency &&
-        data["operator"] === option.value
+        data['country'] === this.country &&
+        data['currency'] === this.currency &&
+        data['operator'] === option.value
       );
     });
-    this.module_id = selectedModule["id"];
+    this.module_id = selectedModule['id'];
   }
 
   close() {
@@ -311,28 +362,28 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
 
   onCheckConfirmNumber = () => {
     if (
-      this.transferForm.value["phone_no"] ===
-      this.transferForm.value["repeat_phone_no"]
+      this.transferForm.value['phone_no'] ===
+      this.transferForm.value['repeat_phone_no']
     ) {
       this.hasPhoneInputError = false;
     } else {
       this.hasPhoneInputError = true;
-      this.checkPhoneErrorMessage = "phone numbers must be identical";
+      this.checkPhoneErrorMessage = 'phone numbers must be identical';
     }
   };
 
   get phoneNumber(): AbstractControl {
-    return this.transferForm.controls["phone_no"];
+    return this.transferForm.controls['phone_no'];
   }
 
   get confirmPhoneNumber(): AbstractControl {
-    return this.transferForm.controls["repeat_phone_no"];
+    return this.transferForm.controls['repeat_phone_no'];
   }
 
   save() {
-    if (this.mode === "create") {
+    if (this.mode === 'create') {
       this.addDisbursement();
-    } else if (this.mode === "update") {
+    } else if (this.mode === 'update') {
       this.updateDisbursement();
     }
   }
@@ -345,6 +396,7 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
       name: this.defaults?.name,
       network: disbursement.operator,
       index: this.defaults?.index,
+      object: this.defaults.object
     };
 
     this.dialogRef.close(filteredDisbursement);
@@ -358,16 +410,17 @@ export class AddUpdateDisbursementModalComponent implements OnInit, OnDestroy {
       name: this.defaults?.name,
       network: disbursement.operator,
       index: this.defaults?.index,
+      object: this.defaults.object
     };
 
     this.dialogRef.close(filteredDisbursement);
   }
 
   get isCreateMode() {
-    return this.mode === "create";
+    return this.mode === 'create';
   }
 
   get isUpdateMode() {
-    return this.mode === "update";
+    return this.mode === 'update';
   }
 }

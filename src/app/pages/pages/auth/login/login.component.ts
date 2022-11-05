@@ -83,7 +83,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isProcessing = true;
     const email = this.form.value["email"];
     const password = this.form.value["password"];
-    console.log('[remember]', this.form.value['remember']);
     if(this.form.value['remember'] === true) {
       const credentials = { email, password };
       localStorage.setItem(USER_CREDENTIALS, JSON.stringify(credentials));

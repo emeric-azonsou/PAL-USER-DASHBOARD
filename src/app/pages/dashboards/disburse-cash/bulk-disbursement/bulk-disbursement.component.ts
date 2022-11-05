@@ -165,6 +165,7 @@ export class BulkDisbursementComponent
   ];
   operators = [
     { name: 'MTN', value: 'mtn' },
+    { name: 'MOOV', value: 'moov' },
     { name: 'VODAFONE', value: 'vodafone' },
     { name: 'AIRTEL-TIGO', value: 'airtel-tigo' },
   ];
@@ -214,6 +215,7 @@ export class BulkDisbursementComponent
   tempName: string;
   moduleData: any;
   verifyingIndex = 0;
+  operatorPrefixData: any;
 
   constructor(
     private authService: AuthserviceService,
@@ -298,13 +300,13 @@ export class BulkDisbursementComponent
     this.form = this.fb.group({
       country: ['', Validators.required],
       currency: [''],
-      purpose: ['']
+      object: [''],
     });
 
     this.uploadFileForm = this.fb.group({
       country: ['', Validators.required],
       currency: [''],
-      purpose: ['']
+      object: [''],
     });
 
     // this.data$.pipe(
@@ -314,24 +316,26 @@ export class BulkDisbursementComponent
     //   this.dataSource.data = customers;
     // });
 
+    this.setOperatorDialingCodes();
+
     this.searchCtrl.valueChanges
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((value) => this.onFilterChange(value));
 
-    this.uploadFileForm.get('country').valueChanges.subscribe(value => {
-        this.form.get('country').setValue(value);
-        this.setCurrency(value);
-     });
-    this.uploadFileForm.get('purpose').valueChanges.subscribe(value => {
-      this.form.get('purpose').setValue(value);
-   });
+    this.uploadFileForm.get('country').valueChanges.subscribe((value) => {
+      this.form.get('country').setValue(value);
+      this.setCurrency(value);
+    });
+    this.uploadFileForm.get('object').valueChanges.subscribe((value) => {
+      this.form.get('object').setValue(value);
+    });
   }
 
   resetForm() {
     this.form = this.fb.group({
       country: [''],
       currency: [''],
-      purpose: [''],
+      object: [''],
     });
   }
 
@@ -374,6 +378,8 @@ export class BulkDisbursementComponent
         raw: true,
       });
       this.disbursementData = disbursementData.map((disbursement, index) => {
+        const operator = this.getOperator(disbursement['phone']);
+        disbursement['network'] = operator;
         disbursement['index'] = index + 1;
         return disbursement;
       });
@@ -445,6 +451,10 @@ export class BulkDisbursementComponent
     } else if (this.form.value.country) {
       this.setCurrency(this.form.value.country);
     }
+
+    if (!this.form.value.object || this.form.value.object === '') {
+      this.form.get('object').setValue(this.uploadFileForm.value.object);
+    }
     this.isDisbursing = true;
     this.transactionService
       .createBulkTransfer(
@@ -470,7 +480,9 @@ export class BulkDisbursementComponent
         (error) => {
           this.isDisbursing = false;
           this.hasError = true;
-          this.errorMessage = error.message || 'Something went wrong please try again or contact support';
+          this.errorMessage =
+            error.message ||
+            'Something went wrong please try again or contact support';
           this.openSnackbar(this.errorMessage);
         }
       );
@@ -492,9 +504,36 @@ export class BulkDisbursementComponent
     disbursements.forEach((d) => this.deleteDisbursement(d));
   }
 
+  setOperatorDialingCodes() {
+    this.transactionService
+      .getOperatorDailingPrefixes(this.credentials)
+      .pipe(take(1))
+      .subscribe((response) => {
+        if (response && response?.status === true) {
+          this.operatorPrefixData = response.data;
+        }
+      });
+  }
+
+  getOperator(phoneNumber) {
+    phoneNumber = `${phoneNumber}`;
+    const prefixesData = this.operatorPrefixData.filter(
+      (data) => data.country === this.form.value.country
+    );
+
+    prefixesData.forEach((prefixeData) => {
+      if (prefixeData.prefixes.includes(phoneNumber.substring(0, 2))) {
+        const operator = prefixeData.operator;
+        return operator;
+      }
+    });
+  }
+
   addDisbursement() {
     this.dialog
-      .open(AddUpdateDisbursementModalComponent)
+      .open(AddUpdateDisbursementModalComponent, {
+        data: { country: this.form.value.country, object: this.form.value.object || this.uploadFileForm.value.object },
+      })
       .afterClosed()
       .subscribe((disbursement: any) => {
         /**
@@ -524,7 +563,9 @@ export class BulkDisbursementComponent
             phone_no: disbursement.phone,
             operator: disbursement.network,
             country: this.form.value.country,
+            object: this.uploadFileForm.value.object || this.form.value.object
           };
+
           this.updateDataSource();
           this.getClientData(transferData, this.disbursementData?.length);
         }
@@ -582,7 +623,7 @@ export class BulkDisbursementComponent
           );
           this.disbursementData[currentIndex][
             'name'
-          ] = `${this.tempName} (not verified)`;
+          ] = `${this.tempName || ''} (not verified)`;
 
           this.updateDataSource();
         }
@@ -599,7 +640,7 @@ export class BulkDisbursementComponent
         );
         this.disbursementData[currentIndex][
           'name'
-        ] = `${this.tempName} (not verified)`;
+        ] = `${this.tempName || ''} (not verified)`;
 
         this.updateDataSource();
       };
@@ -608,7 +649,7 @@ export class BulkDisbursementComponent
   updateDisbursement(customer: any) {
     this.dialog
       .open(AddUpdateDisbursementModalComponent, {
-        data: customer,
+        data: { customer, object: this.form.value.object || this.uploadFileForm.value.object },
       })
       .afterClosed()
       .subscribe((updatedDisbursement) => {
@@ -620,7 +661,6 @@ export class BulkDisbursementComponent
            * Here we are updating our local array.
            * You would probably make an HTTP request here.
            */
-
 
           const index = this.disbursementData.findIndex(
             (existingany) => existingany['phone'] === updatedDisbursement.phone

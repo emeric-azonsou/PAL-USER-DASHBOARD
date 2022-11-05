@@ -58,7 +58,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       code: '+229',
       operators: [
         { name: 'MTN', value: 'mtn' },
-        { name: 'MOOV', value: 'moov' }
+        { name: 'MOOV', value: 'moov' },
       ],
     },
     CI: {
@@ -67,7 +67,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       operators: [
         { name: 'MTN', value: 'mtn' },
         { name: 'ORANGE', value: 'orange' },
-        { name: 'MOOV', value: 'moov' }
+        { name: 'MOOV', value: 'moov' },
       ],
     },
     GH: {
@@ -131,6 +131,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
       pattern: 'Only digits allowed starting with ',
       required: 'Receiver\'s Phone Field  is required.',
       min: 'Please provide a correct phone number',
+      invalidPrefix: 'Invalid phone number prefix, Operator not found!',
     },
     amount: {
       pattern: 'Only number allowed',
@@ -143,6 +144,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
   placeHolder = '96040522';
   networkProviders: any[];
   country: any;
+  operatorPrefixData: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public defaults: any,
@@ -159,12 +161,25 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
 
     const summaryData = JSON.parse(localStorage.getItem(SUMMARY_DATA_KEY));
     this.merchantSummaryData = summaryData;
+
+    const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
+    this.userBusinessData = JSON.parse(businessData);
+  }
+
+  setOperatorDialingCodes() {
+    this.transactionsService
+      .getOperatorDailingPrefixes(this.credentials)
+      .pipe(take(1))
+      .subscribe((response) => {
+        if (response && response?.status === true) {
+          this.operatorPrefixData = response.data;
+        }
+      });
   }
 
   ngOnInit() {
-    const businessData = localStorage.getItem(BUSINESS_DATA_KEY);
-    this.userBusinessData = JSON.parse(businessData);
-
+    this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
+    this.setOperatorDialingCodes();
     this.transferForm = this.fb.group({
       country: ['BJ', Validators.required],
       phone_no: [
@@ -173,6 +188,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
           Validators.required,
           Validators.pattern(this.phoneNumberValidationPattern),
           Validators.min(8),
+          // this.validatePrefix
         ],
       ],
       repeat_phone_no: [
@@ -194,12 +210,52 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
           .get('amount')
           .setErrors({ amountExceededLimit: true });
       }
-      if (this.currency === 'XOF' && value.includes('.')) {
+      if (this.currency === 'XOF' && value?.includes('.')) {
         this.transferForm.get('amount').setErrors({ hasComma: true });
       }
     });
-    this.credentials = `${this.userBusinessData.api_secret_key_live}:${this.userBusinessData.api_public_key_live}`;
+
     this.getModulesData(this.credentials);
+    this.transferForm.get('phone_no').valueChanges.subscribe((value) => {
+      this.transferForm.updateValueAndValidity();
+      const prefixesData = this.operatorPrefixData.filter(
+        (data) => data.country === this.transferForm.get('country').value
+      );
+      const isValidPrefix = prefixesData.some((data) =>
+        data.prefixes.includes(value.substring(0, 2))
+      );
+      if (isValidPrefix) {
+        const prefixData = prefixesData.find((data) =>
+          data.prefixes.includes(value.substring(0, 2))
+        );
+        const operator = prefixData?.operator;
+        this.transferForm.get('operator').patchValue(operator);
+      } else {
+        this.transferForm.get('phone_no').setErrors({ invalidPrefix: true });
+      }
+      this.transferForm.updateValueAndValidity();
+    });
+  }
+
+  validatePrefix(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      console.log('[control]', control);
+      const prefixesData = this.operatorPrefixData.filter(
+        (data) => data.country === this.transferForm.get('country').value
+      );
+      console.log('[prefixesData]', prefixesData);
+
+      prefixesData.forEach((prefixeData) => {
+        if (
+          !prefixeData.prefixes
+            .split(',')
+            .includes(control.value.substring(0, 2))
+        ) {
+          return { invalidPrefix: true };
+        }
+      });
+      return null;
+    };
   }
 
   ngOnDestroy() {
@@ -228,6 +284,7 @@ export class DisburseCashComponent implements OnInit, OnDestroy {
     // this.isDisbursing = true;
     this.transferData = {
       ...this.transferForm.value,
+      object: this.transferForm.value['object'],
       currency: this.currency,
       module_id: this.module_id,
       user_id: this.userData.user_id,
